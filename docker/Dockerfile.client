@@ -1,0 +1,34 @@
+# Sử dụng image Ubuntu làm base image
+FROM ubuntu:20.04
+
+# Cập nhật package list và cài đặt các công cụ mạng cơ bản
+RUN apt-get update && \
+    apt-get install -y \
+    openssh-client \
+    iputils-ping \
+    netcat \
+    curl \
+    wget \
+    vim \
+    rsync \
+    && rm -rf /var/lib/apt/lists/*
+
+# Tạo người dùng cho client
+RUN useradd -ms /bin/bash clientuser && echo 'clientuser:clientpassword' | chpasswd
+
+# Đặt hostname cho client (có thể tùy chỉnh)
+ARG HOSTNAME=client
+RUN echo $HOSTNAME > /etc/hostname
+
+# Cấu hình SSH client (ví dụ: disable host key checking)
+RUN mkdir -p /home/clientuser/.ssh && \
+    echo "Host *\n\tStrictHostKeyChecking no\n" > /home/clientuser/.ssh/config && \
+    chown -R clientuser:clientuser /home/clientuser/.ssh
+
+# Chuyển sang user clientuser
+USER clientuser
+WORKDIR /home/clientuser
+
+# Lệnh khởi động container
+CMD ["tail", "-f", "/dev/null"]
+# Trong Dockerfile này, chúng ta sử dụng image Ubuntu 20.04 làm base image và cài đặt một số công cụ mạng cơ bản như openssh-client, iputils-ping, netcat, curl, wget, vim, rsync.

@@ -1,0 +1,35 @@
+# Sử dụng image Ubuntu làm base image
+FROM ubuntu:20.04
+
+# Cập nhật package list và cài đặt SSH server cùng với các công cụ mạng cơ bản
+RUN apt-get update && \
+    apt-get install -y \
+    openssh-server \
+    iputils-ping \
+    netcat \
+    curl \
+    wget \
+    vim \
+    rsync \
+    && rm -rf /var/lib/apt/lists/*
+
+# Tạo thư mục để chứa các file SSH và chạy SSH daemon
+RUN mkdir /var/run/sshd
+
+# Đặt mật khẩu root cho SSH (có thể tùy chỉnh theo ý bạn)
+RUN echo 'root:rootpassword' | chpasswd
+
+# Cho phép đăng nhập SSH với tài khoản root
+RUN sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+# Cho phép đăng nhập bằng mật khẩu
+RUN sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+
+# Xóa các tùy chọn DNS để cải thiện tốc độ kết nối SSH
+RUN echo "UseDNS no" >> /etc/ssh/sshd_config
+
+# Expose cổng 22 để SSH có thể kết nối
+EXPOSE 22
+
+# Chạy SSH daemon trong foreground
+CMD ["/usr/sbin/sshd", "-D"]

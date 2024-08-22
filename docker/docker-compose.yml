@@ -1,0 +1,66 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    container_name: linux-server
+    ports:
+      - "2222:22"
+    networks:
+      - lan_network
+
+  client1:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: linux-client1
+    depends_on:
+      - server
+    networks:
+      - lan_network
+
+  client2:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: linux-client2
+    depends_on:
+      - server
+    networks:
+      - lan_network
+
+  client3:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: linux-client3
+    depends_on:
+      - server
+    networks:
+      - lan_network
+
+  client4:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: linux-client4
+    depends_on:
+      - server
+    networks:
+      - lan_network
+
+  client5:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: linux-client5
+    depends_on:
+      - server
+    networks:
+      - lan_network
+
+networks:
+  lan_network:
+    driver: bridge
