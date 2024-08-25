@@ -11,7 +11,13 @@ RUN apt-get update && \
     wget \
     vim \
     rsync \
+    neofetch \
+    tzdata \
     && rm -rf /var/lib/apt/lists/*
+
+# Đặt múi giờ
+ENV TZ=Asia/Ho_Chi_Minh
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 # Tạo người dùng cho client
 RUN useradd -ms /bin/bash clientuser && echo 'clientuser:clientpassword' | chpasswd
@@ -31,4 +37,3 @@ WORKDIR /home/clientuser
 
 # Lệnh khởi động container
 CMD ["tail", "-f", "/dev/null"]
-# Trong Dockerfile này, chúng ta sử dụng image Ubuntu 20.04 làm base image và cài đặt một số công cụ mạng cơ bản như openssh-client, iputils-ping, netcat, curl, wget, vim, rsync.
