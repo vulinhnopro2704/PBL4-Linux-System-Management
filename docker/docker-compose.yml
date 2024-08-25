@@ -60,7 +60,16 @@ services:
       - server
     networks:
       - lan_network
+  client6:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    container_name: linux-other-client
+    networks:
+      - other_lan_network
 
 networks:
   lan_network:
+    driver: bridge
+  other_lan_network:
     driver: bridge
