@@ -12,6 +12,9 @@ target/
 *.iml
 *.ipr
 
+.idea
+.idea/
+
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -30,12 +33,12 @@ target/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
-.idea
-.idea/
 
-/build/
 ### VS Code ###
 .vscode/
 
 ### Mac OS ###
 .DS_Store
+
+# Ignore build directories
+/build/
