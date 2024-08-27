@@ -1,41 +1,53 @@
-Connect Github repository to Jira
-
 pbl4/
+├── ansible/
+│   ├── inventory.ini
+│   ├── playbook.yml
+│   ├── ansible.cfg
+├── server/
+│   ├── Dockerfile
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   ├── com/
+│   │   │   │   │   ├── myapp/
+│   │   │   │   │   │   ├── MainServer.java
+│   │   │   │   │   │   ├── controller/
+│   │   │   │   │   │   │   ├── ServerController.java
+│   │   │   │   │   │   ├── model/
+│   │   │   │   │   │   │   ├── Server.java
+│   │   │   │   │   │   ├── util/
+│   │   │   │   │   │   │   ├── SSHConnection.java
+│   │   │   │   │   │   ├── view/
+│   │   │   │   │   │   │   ├── ServerView.fxml
+│   │   ├── resources/
+│   │   │   ├── css/
+│   │   │   ├── images/
+│   ├── scripts/
+│   │   ├── start_server.sh
+│   ├── pom.xml
+├── client/
+│   ├── Dockerfile
+│   ├── src/
+│   │   ├── main/
+│   │   │   ├── java/
+│   │   │   │   ├── com/
+│   │   │   │   │   ├── myapp/
+│   │   │   │   │   │   ├── MainClient.java
+│   │   │   │   │   │   ├── controller/
+│   │   │   │   │   │   │   ├── ClientController.java
+│   │   │   │   │   │   ├── model/
+│   │   │   │   │   │   │   ├── Client.java
+│   │   │   │   │   │   ├── util/
+│   │   │   │   │   │   ├── view/
+│   │   │   │   │   │   │   ├── ClientView.fxml
+│   │   ├── resources/
+│   │   │   ├── css/
+│   │   │   ├── images/
+│   ├── scripts/
+│   │   ├── start_client.sh
+│   ├── pom.xml
 ├── docker/
-│   ├── Dockerfile.client
-│   ├── Dockerfile.server
 │   ├── docker-compose.yml
-├── src/
-│   ├── main/
-│   │   ├── java/
-│   │   │   ├── com/
-│   │   │   │   ├── myapp/
-│   │   │   │   │   ├── Main.java
-│   │   │   │   │   ├── controller/
-│   │   │   │   │   │   ├── ClientController.java
-│   │   │   │   │   │   ├── ServerController.java
-│   │   │   │   │   ├── model/
-│   │   │   │   │   │   ├── Client.java
-│   │   │   │   │   │   ├── Server.java
-│   │   │   │   │   ├── util/
-│   │   │   │   │   │   ├── SSHConnection.java
-│   │   │   │   │   ├── view/
-│   │   │   │   │   │   ├── MainView.fxml
-│   │   │   │   │   │   ├── ClientView.fxml
-│   │   │   │   │   │   ├── ServerView.fxml
-│   ├── resources/
-│   │   ├── css/
-│   │   │   ├── styles.css
-│   │   ├── images/
-│   │   │   ├── logo.png
-│   ├── test/
-│   │   ├── java/
-│   │   │   ├── com/
-│   │   │   │   ├── myapp/
-│   │   │   │   │   ├── MainTest.java
-├── scripts/
-│   ├── start_clients.sh
-│   ├── start_server.sh
+├── start_services.sh
 ├── .gitignore
 ├── README.md
-├── pom.xml
