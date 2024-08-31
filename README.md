@@ -9,7 +9,7 @@ pbl4/
 │   │   ├── main/
 │   │   │   ├── java/
 │   │   │   │   ├── com/
-│   │   │   │   │   ├── myapp/
+│   │   │   │   │   ├── clientapp/
 │   │   │   │   │   │   ├── MainServer.java
 │   │   │   │   │   │   ├── controller/
 │   │   │   │   │   │   │   ├── ServerController.java
@@ -31,7 +31,7 @@ pbl4/
 │   │   ├── main/
 │   │   │   ├── java/
 │   │   │   │   ├── com/
-│   │   │   │   │   ├── myapp/
+│   │   │   │   │   ├── serverapp/
 │   │   │   │   │   │   ├── MainClient.java
 │   │   │   │   │   │   ├── controller/
 │   │   │   │   │   │   │   ├── ClientController.java
