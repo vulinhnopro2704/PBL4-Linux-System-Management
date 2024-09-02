@@ -1,4 +1,4 @@
-package com.clientapp;
+package com.clientapp.controller;
 
 import javafx.event.ActionEvent;
 
