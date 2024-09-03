@@ -1,49 +1,31 @@
 package com.clientapp.util.implement;
 
+import com.clientapp.util.IConvertData;
 import com.clientapp.util.ISystemInfoCollector;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
 import oshi.hardware.GlobalMemory;
-import oshi.hardware.NetworkIF;
 import oshi.hardware.HardwareAbstractionLayer;
-import oshi.software.os.OperatingSystem;
-import oshi.software.os.OperatingSystem.OSVersionInfo;
+import oshi.hardware.NetworkIF;
 import oshi.software.os.FileSystem;
 import oshi.software.os.OSFileStore;
+import oshi.software.os.OperatingSystem;
+import oshi.software.os.OperatingSystem.OSVersionInfo;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.clientapp.MainClient.*;
-
 public class SystemInfoCollector implements ISystemInfoCollector {
 
     private final SystemInfo systemInfo;
     private final HardwareAbstractionLayer hardware;
     private final OperatingSystem os;
-
-    /**
-     * Converts bytes to megabytes (MB).
-     *
-     * @param bytes The number of bytes.
-     * @return The equivalent number of megabytes.
-     */
-    private static long bytesToMB(long bytes) {
-        return bytes / (1024 * 1024);
-    }
-
-    /**
-     * Converts bytes to gigabytes (GB) with two decimal places.
-     *
-     * @param bytes The number of bytes.
-     * @return The equivalent number of gigabytes as a formatted string.
-     */
-    private static String bytesToGB(long bytes) {
-        double gb = bytes / (double) (1024 * 1024 * 1024);
-        return String.format("%.2f", gb);
-    }
+    private final ObjectMapper objectMapper;
+    private IConvertData convertData;
 
     /**
      * Retrieves the hostname of the current machine.
@@ -64,9 +46,28 @@ public class SystemInfoCollector implements ISystemInfoCollector {
         this.systemInfo = new SystemInfo();
         this.hardware = systemInfo.getHardware();
         this.os = systemInfo.getOperatingSystem();
+        this.objectMapper = new ObjectMapper();
+        this.convertData = new ConvertData();
     }
 
-    // Implement all the methods defined in the interface
+    @Override
+    public String getSystemInfoAsJson() {
+        try {
+            ObjectNode rootNode = objectMapper.createObjectNode();
+
+            rootNode.put("cpuInfo", getCpuInfo());
+            rootNode.put("memoryInfo", getMemoryInfo());
+            rootNode.put("osInfo", getOsInfo());
+            rootNode.put("hostname", getHostname());
+            rootNode.putPOJO("networkInfo", getNetworkInfo());
+            rootNode.putPOJO("diskUsageInfo", getDiskUsageInfo());
+
+            return objectMapper.writeValueAsString(rootNode);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "{}";
+        }
+    }
 
     @Override
     public String getCpuInfo() {
@@ -81,7 +82,7 @@ public class SystemInfoCollector implements ISystemInfoCollector {
     public String getMemoryInfo() {
         GlobalMemory memory = hardware.getMemory();
         return String.format("Total Memory: %d MB, Available Memory: %d MB",
-                bytesToMB(memory.getTotal()), bytesToMB(memory.getAvailable()));
+                convertData.bytesToMB(memory.getTotal()), convertData.bytesToMB(memory.getAvailable()));
     }
 
     @Override
@@ -128,7 +129,7 @@ public class SystemInfoCollector implements ISystemInfoCollector {
             long free = fs.getFreeSpace();
             long used = total - free;
             diskDetails.add(String.format("File System: %s, Total Space: %s GB, Used Space: %s GB, Free Space: %s GB",
-                    fs.getMount(), bytesToGB(total), bytesToGB(used), bytesToGB(free)));
+                    fs.getMount(), convertData.bytesToGB(total), convertData.bytesToGB(used), convertData.bytesToGB(free)));
         }
         return diskDetails;
     }

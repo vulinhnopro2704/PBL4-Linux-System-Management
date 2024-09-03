@@ -1,30 +1,53 @@
 package com.serverapp;
 
-import com.serverapp.controller.MainController;
-import com.serverapp.model.ChatModel;
+import java.net.ServerSocket;
+
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/serverapp/server/hello-view.fxml"));
-            Parent root = loader.load();
+        //Port 2567 is just for Test, implementer can change in the future
+        try (ServerSocket serverSocket = new ServerSocket(2567)) {
+            System.out.println("Server started on port 2567. Waiting for connections...");
 
-//            MainController controller = loader.getController();
-//            ChatModel.startServer(controller);
+            while (true) {
+                try {
+                    java.net.Socket clientSocket = serverSocket.accept();
+                    System.out.println("New client connected: " + clientSocket.getInetAddress().getHostAddress());
 
-            primaryStage.setTitle("Server Application");
-            primaryStage.setScene(new Scene(root));
-            primaryStage.show();
-        } catch (Exception e) {
-            e.printStackTrace(); // Log the exception to the console
+                    // Create a new thread to handle the client
+                    new Thread(() -> {
+                        try (
+                            java.io.BufferedReader in = new java.io.BufferedReader(new java.io.InputStreamReader(clientSocket.getInputStream()));
+                            java.io.PrintWriter out = new java.io.PrintWriter(clientSocket.getOutputStream(), true)
+                        ) {
+                            String inputLine;
+                            while ((inputLine = in.readLine()) != null) {
+                                // Assuming the input is in JSON format
+                                System.out.println("Received JSON from client: " + inputLine);
+
+                            }
+                        } catch (java.io.IOException e) {
+                            System.err.println("Error handling client: " + e.getMessage());
+                        } finally {
+                            try {
+                                clientSocket.close();
+                            } catch (java.io.IOException e) {
+                                System.err.println("Error closing client socket: " + e.getMessage());
+                            }
+                        }
+                    }).start();
+
+                } catch (java.io.IOException e) {
+                    System.err.println("Error accepting client connection: " + e.getMessage());
+                    break;
+                }
+            }
         }
+
     }
 
     public static void main(String[] args) {
