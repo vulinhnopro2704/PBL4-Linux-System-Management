@@ -11,6 +11,7 @@ module com.clientapp {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires com.github.oshi;
+    requires com.fasterxml.jackson.databind;
 
     opens com.clientapp to javafx.fxml;
     exports com.clientapp;

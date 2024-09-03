@@ -45,4 +45,11 @@ public interface ISystemInfoCollector {
      * @return A list of strings, each containing details of a disk.
      */
     List<String> getDiskUsageInfo();
+
+    /**
+     * Retrieves system information in JSON format.
+     *
+     * @return A string containing system information in JSON format.
+     */
+    String getSystemInfoAsJson();
 }
