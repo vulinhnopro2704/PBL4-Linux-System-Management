@@ -25,7 +25,7 @@ public class SystemInfoCollector implements ISystemInfoCollector {
     private final HardwareAbstractionLayer hardware;
     private final OperatingSystem os;
     private final ObjectMapper objectMapper;
-    private IConvertData convertData;
+    private final IConvertData convertData;
 
     /**
      * Retrieves the hostname of the current machine.

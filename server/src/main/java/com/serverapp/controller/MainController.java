@@ -1,64 +1,74 @@
 package com.serverapp.controller;
 
-import com.serverapp.model.ChatModel;
+import com.serverapp.util.ITCPServer;
+import com.serverapp.util.implement.TCPServer;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
-import javafx.scene.control.Label;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.scene.control.*;
+
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import java.io.StringReader;
 
 public class MainController {
+    @FXML private TextField portField;
+    @FXML private TextArea logArea;
+    @FXML private TextField hostnameField;
+    @FXML private TextField cpuInfoField;
+    @FXML private TextField memoryInfoField;
+    @FXML private TextField osInfoField;
+    @FXML private ListView<String> networkInfoListView;
+    @FXML private ListView<String> diskUsageInfoListView;
+
+    private ITCPServer server;
 
     @FXML
-    private ImageView adminAvatar;
-
-    @FXML
-    private Label adminName;
-
-    @FXML
-    private Label adminIpAddress;
-
-    @FXML
-    private ListView<String> chatListView;
-
-    @FXML
-    private TextField messageInput;
-
-    @FXML
-    private Button sendButton;
-
-    @FXML
-    private Button imageButton;
-
-    private ObservableList<String> chatMessages;
-
-    public void initialize() {
-        chatMessages = FXCollections.observableArrayList();
-        chatListView.setItems(chatMessages);
-
-        sendButton.setOnAction(event -> sendMessage());
-        imageButton.setOnAction(event -> selectImage());
-    }
-
-    private void sendMessage() {
-        String message = messageInput.getText();
-        if (!message.isEmpty()) {
-            chatMessages.add("Server: " + message);
-            // Call the server to send the message to the client
-            ChatModel.sendToClient(message);
-            messageInput.clear();
+    private void startServer() {
+        try {
+            int port = Integer.parseInt(portField.getText());
+            server = new TCPServer();
+            server.setPort(port);
+            server.setMainController(this);
+            server.start();
+            appendLog("Server started on port " + port);
+        } catch (NumberFormatException e) {
+            appendLog("Invalid port number");
         }
     }
 
-    private void selectImage() {
-        // Handle image selection and sending logic
-        System.out.println("Select and send an image or video to the client");
+    @FXML
+    private void stopServer() {
+        if (server != null) {
+            server.stop();
+            appendLog("Server stopped");
+        }
     }
 
-    public void receiveMessage(String message) {
-        chatMessages.add("Client: " + message);
+    public void appendLog(String message) {
+        logArea.appendText(message + "\n");
+    }
+
+    public void updateClientInfo(String jsonData) {
+        try (JsonReader jsonReader = Json.createReader(new StringReader(jsonData))) {
+            JsonObject json = jsonReader.readObject();
+
+            hostnameField.setText(json.getString("hostname"));
+            cpuInfoField.setText(json.getString("cpuInfo"));
+            memoryInfoField.setText(json.getString("memoryInfo"));
+            osInfoField.setText(json.getString("osInfo"));
+
+            networkInfoListView.getItems().clear();
+            JsonArray networkInfo = json.getJsonArray("networkInfo");
+            for (int i = 0; i < networkInfo.size(); i++) {
+                networkInfoListView.getItems().add(networkInfo.getString(i));
+            }
+
+            diskUsageInfoListView.getItems().clear();
+            JsonArray diskUsageInfo = json.getJsonArray("diskUsageInfo");
+            for (int i = 0; i < diskUsageInfo.size(); i++) {
+                diskUsageInfoListView.getItems().add(diskUsageInfo.getString(i));
+            }
+        }
     }
 }

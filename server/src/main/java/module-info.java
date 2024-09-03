@@ -10,6 +10,7 @@ module com.serverapp {
     requires org.kordamp.bootstrapfx.core;
     requires eu.hansolo.tilesfx;
     requires jsch;
+    requires java.json;
 
     opens com.serverapp to javafx.fxml;
     exports com.serverapp;
