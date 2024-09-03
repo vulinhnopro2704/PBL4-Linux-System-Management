@@ -1,53 +1,42 @@
 package com.serverapp;
 
-import java.net.ServerSocket;
-
+import com.serverapp.util.ITCPServer;
+import com.serverapp.util.implement.TCPServer;
+import com.serverapp.controller.MainController;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    private ITCPServer server;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //Port 2567 is just for Test, implementer can change in the future
-        try (ServerSocket serverSocket = new ServerSocket(2567)) {
-            System.out.println("Server started on port 2567. Waiting for connections...");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/serverapp/server/main-view.fxml"));
+        Parent root = loader.load();
+        MainController mainController = loader.getController();
 
-            while (true) {
-                try {
-                    java.net.Socket clientSocket = serverSocket.accept();
-                    System.out.println("New client connected: " + clientSocket.getInetAddress().getHostAddress());
+        // Initialize and start the TCP server
+        server = new TCPServer();
+        server.setPort(2567);
+        server.setMainController(mainController);
+        server.start();
 
-                    // Create a new thread to handle the client
-                    new Thread(() -> {
-                        try (
-                            java.io.BufferedReader in = new java.io.BufferedReader(new java.io.InputStreamReader(clientSocket.getInputStream()));
-                            java.io.PrintWriter out = new java.io.PrintWriter(clientSocket.getOutputStream(), true)
-                        ) {
-                            String inputLine;
-                            while ((inputLine = in.readLine()) != null) {
-                                // Assuming the input is in JSON format
-                                System.out.println("Received JSON from client: " + inputLine);
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
-                            }
-                        } catch (java.io.IOException e) {
-                            System.err.println("Error handling client: " + e.getMessage());
-                        } finally {
-                            try {
-                                clientSocket.close();
-                            } catch (java.io.IOException e) {
-                                System.err.println("Error closing client socket: " + e.getMessage());
-                            }
-                        }
-                    }).start();
-
-                } catch (java.io.IOException e) {
-                    System.err.println("Error accepting client connection: " + e.getMessage());
-                    break;
-                }
-            }
+    @Override
+    public void stop() throws Exception {
+        // Stop the server when the application is closed
+        if (server != null) {
+            server.stop();
         }
-
+        super.stop();
     }
 
     public static void main(String[] args) {
