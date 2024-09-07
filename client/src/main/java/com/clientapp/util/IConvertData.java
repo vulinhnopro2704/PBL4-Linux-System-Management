@@ -7,7 +7,7 @@ public interface IConvertData {
      * @param bytes The number of bytes.
      * @return The equivalent number of megabytes.
      */
-    public long bytesToMB(long bytes);
+    public Long bytesToMB(Long bytes);
 
     /**
      * Converts bytes to gigabytes (GB) with two decimal places.
@@ -15,5 +15,5 @@ public interface IConvertData {
      * @param bytes The number of bytes.
      * @return The equivalent number of gigabytes as a formatted string.
      */
-    public String bytesToGB(long bytes);
+    public Long bytesToGB(Long bytes);
 }

@@ -11,6 +11,8 @@ module com.serverapp {
     requires eu.hansolo.tilesfx;
     requires jsch;
     requires java.json;
+    requires static lombok;
+    requires com.google.gson;
 
     opens com.serverapp to javafx.fxml;
     exports com.serverapp;

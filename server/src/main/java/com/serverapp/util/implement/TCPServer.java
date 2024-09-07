@@ -1,14 +1,18 @@
 package com.serverapp.util.implement;
 
-import com.serverapp.controller.MainController;
-import com.serverapp.util.ITCPServer;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSyntaxException;
+import com.serverapp.controller.MainController;
+import com.serverapp.util.ITCPServer;
 
 public class TCPServer implements ITCPServer {
     private int port;
@@ -77,11 +81,31 @@ public class TCPServer implements ITCPServer {
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 logMessage("Received JSON from client: " + inputLine);
+                System.out.println(inputLine);
+
+                // Parse the received JSON using Gson
+                Gson gson = new Gson();
+                JsonObject jsonObject = gson.fromJson(inputLine, JsonObject.class);
+
+                // Initialize variables with default values
+                String hostName = "N/A";
+                String ipAddress = "N/A";
+                String macAddress = "N/A";
+                String osInfo = "N/A";
+
+                            // Extract information from the JSON object
+                hostName = jsonObject.get("hostName").toString();
+                ipAddress = String.valueOf(clientSocket.getInetAddress());
+                macAddress = jsonObject.get("macAddress").toString();
+                osInfo = jsonObject.get("osVersion").toString();
+
                 // Update the UI with the received information
                 if (mainController != null) {
-                    mainController.updateClientInfo(inputLine);
+                    mainController.addClientCard(hostName, ipAddress, macAddress, osInfo);
                 }
             }
+        } catch (JsonSyntaxException e) {
+            logMessage("Error parsing JSON: " + e.getMessage());
         } catch (IOException e) {
             logMessage("Error handling client: " + e.getMessage());
         } finally {
@@ -95,7 +119,7 @@ public class TCPServer implements ITCPServer {
 
     private void logMessage(String message) {
         if (mainController != null) {
-            mainController.appendLog(message);
+            // mainController.appendLog(message);
         } else {
             System.out.println(message);
         }

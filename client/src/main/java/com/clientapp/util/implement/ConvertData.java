@@ -9,7 +9,7 @@ public class ConvertData implements IConvertData {
      * @param bytes The number of bytes.
      * @return The equivalent number of megabytes.
      */
-    public long bytesToMB(long bytes) {
+    public Long bytesToMB(Long bytes) {
         return bytes / (1024 * 1024);
     }
 
@@ -19,8 +19,7 @@ public class ConvertData implements IConvertData {
      * @param bytes The number of bytes.
      * @return The equivalent number of gigabytes as a formatted string.
      */
-    public String bytesToGB(long bytes) {
-        double gb = bytes / (double) (1024 * 1024 * 1024);
-        return String.format("%.2f", gb);
+    public Long bytesToGB(Long bytes) {
+        return (long) (bytes / (double) (1024 * 1024 * 1024));
     }
 }

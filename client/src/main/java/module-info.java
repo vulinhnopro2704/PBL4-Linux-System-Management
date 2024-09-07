@@ -12,9 +12,12 @@ module com.clientapp {
     requires eu.hansolo.tilesfx;
     requires com.github.oshi;
     requires com.fasterxml.jackson.databind;
+    requires com.google.gson;
 
     opens com.clientapp to javafx.fxml;
     exports com.clientapp;
     exports com.clientapp.controller;
     opens com.clientapp.controller to javafx.fxml;
+    exports com.clientapp.model;
+    opens com.clientapp.model to com.google.gson;
 }
