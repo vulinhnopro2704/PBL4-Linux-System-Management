@@ -1,5 +1,6 @@
 package com.clientapp.util.implement;
 
+import com.clientapp.model.ClientDetail;
 import com.clientapp.util.IConvertData;
 import com.clientapp.util.ISystemInfoCollector;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,11 +18,11 @@ import oshi.software.os.OperatingSystem.OSVersionInfo;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class SystemInfoCollector implements ISystemInfoCollector {
 
-    private final SystemInfo systemInfo;
     private final HardwareAbstractionLayer hardware;
     private final OperatingSystem os;
     private final ObjectMapper objectMapper;
@@ -43,7 +44,7 @@ public class SystemInfoCollector implements ISystemInfoCollector {
     }
 
     public SystemInfoCollector() {
-        this.systemInfo = new SystemInfo();
+        SystemInfo systemInfo = new SystemInfo();
         this.hardware = systemInfo.getHardware();
         this.os = systemInfo.getOperatingSystem();
         this.objectMapper = new ObjectMapper();
@@ -88,7 +89,7 @@ public class SystemInfoCollector implements ISystemInfoCollector {
     @Override
     public String getOsInfo() {
         OSVersionInfo versionInfo = os.getVersionInfo();
-        return String.format("Operating System: %s, Family: %s, Manufacturer: %s, Version: %s, Build: %s, Code Name: %s",
+        return String.format("%s, Family: %s, Manufacturer: %s, Version: %s, Build: %s, Code Name: %s",
                 os, os.getFamily(), os.getManufacturer(), versionInfo.getVersion(), versionInfo.getBuildNumber(), versionInfo.getCodeName());
     }
 
@@ -132,5 +133,28 @@ public class SystemInfoCollector implements ISystemInfoCollector {
                     fs.getMount(), convertData.bytesToGB(total), convertData.bytesToGB(used), convertData.bytesToGB(free)));
         }
         return diskDetails;
+    }
+
+    public ClientDetail getClientDetail(){
+        String hostName = getHostname();
+        var network = hardware.getNetworkIFs(false).getFirst();
+        String ipAddress = Arrays.toString(network.getIPv4addr());
+        String macAddress = network.getMacaddr();
+        String OSVersion = os.toString();
+        String processor = hardware.getProcessor().getProcessorIdentifier().toString();
+        Long Ram = convertData.bytesToMB(hardware.getMemory().getTotal());
+        List<OSFileStore> fileStores = os.getFileSystem().getFileStores();
+        Long totalDisk = 0L;
+        Long usedDisk = 0L;
+        for (OSFileStore fs : fileStores) {
+            long total = fs.getTotalSpace();
+            long free = fs.getFreeSpace();
+            long used = total - free;
+            totalDisk += convertData.bytesToGB(total);
+            usedDisk += convertData.bytesToGB(used);
+        }
+        return new ClientDetail(
+                hostName, ipAddress, macAddress, OSVersion, processor, Ram, usedDisk, totalDisk
+        );
     }
 }
