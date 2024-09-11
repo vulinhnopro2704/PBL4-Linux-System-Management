@@ -1,128 +1,128 @@
 /* Define a style class with a linear gradient background */
 /*Syntax -fx-background-color: linear-gradient(<angle>, <color-stop1>, <color-stop2>, ...);*/
 .gradient-background {
-    -fx-background-color: linear-gradient(from 128deg, #CB3CFF 19.86%, #7F25FB 68.34%);
+	-fx-background-color: linear-gradient(
+		from 128deg,
+		#cb3cff 19.86%,
+		#7f25fb 68.34%
+	);
 }
 
 /* Background primary color */
 .primary-background {
-    -fx-background-color: #CB3CFF; /* Primary background color */
+	-fx-background-color: #cb3cff; /* Primary background color */
 }
 
 /* SVG fill color */
 .primary-svg-fill {
-    -fx-fill: #CB3CFF; /* SVG fill color */
+	-fx-fill: #cb3cff; /* SVG fill color */
 }
 
 /* Text color */
 .primary-text {
-    -fx-text-fill: #CB3CFF; /* Text color */
+	-fx-text-fill: #cb3cff; /* Text color */
 }
 
-.dark-background{
-    -fx-background-color: #081028;
+.dark-background {
+	-fx-background-color: #081028;
 }
 
-.card-backgroud-color{
-    -fx-background-color: #0B1739;
+.card-backgroud-color {
+	-fx-background-color: #0b1739;
 }
 
-.card-border-color{
-    -fx-border-color: #343B4F; /* Border color */
-    -fx-border-width: 2px; /* Border width (adjust as needed) */
+.card-border-color {
+	-fx-border-color: #343b4f; /* Border color */
+	-fx-border-width: 2px; /* Border width (adjust as needed) */
 }
-
 
 /* Background primary color */
 .green-background {
-    -fx-background-color: #05C168;
+	-fx-background-color: #05c168;
 }
 
 .green-opacity-background {
-    -fx-background-color: rgba(5, 193, 104, 0.20);
-
+	-fx-background-color: rgba(5, 193, 104, 0.2);
 }
 
 /* SVG fill color */
 .green-svg-fill {
-    -fx-fill: #05C168; /* SVG fill color */
+	-fx-fill: #05c168; /* SVG fill color */
 }
 
 /* Text color */
 .green-text {
-    -fx-text-fill: #14CA74; /* Text color */
+	-fx-text-fill: #14ca74; /* Text color */
 }
 
 /* Border color */
 .green-border {
-    -fx-border-color: #05C168; /* Border color */
-    -fx-border-width: 2px; /* Border width (adjust as needed) */
+	-fx-border-color: #05c168; /* Border color */
+	-fx-border-width: 2px; /* Border width (adjust as needed) */
 }
 
 /* Background primary color */
 .blue-background {
-    -fx-background-color: #00C2FF; /* Primary background color */
+	-fx-background-color: #00c2ff; /* Primary background color */
 }
 
 /* SVG fill color */
 .blue-svg-fill {
-    -fx-fill: #00C2FF; /* SVG fill color */
+	-fx-fill: #00c2ff; /* SVG fill color */
 }
 
 /* Text color */
 .blue-text {
-    -fx-text-fill: #00C2FF; /* Text color */
+	-fx-text-fill: #00c2ff; /* Text color */
 }
 
 /* Border color */
 .blue-border {
-    -fx-border-color: #00C2FF; /* Border color */
-    -fx-border-width: 2px; /* Border width (adjust as needed) */
+	-fx-border-color: #00c2ff; /* Border color */
+	-fx-border-width: 2px; /* Border width (adjust as needed) */
 }
 
 /* Background primary color */
 .red-background {
-    -fx-background-color: #DC2B2B; /* Primary background color */
+	-fx-background-color: #dc2b2b; /* Primary background color */
 }
 
 /* SVG fill color */
 .red-svg-fill {
-    -fx-fill: #DC2B2B; /* SVG fill color */
+	-fx-fill: #dc2b2b; /* SVG fill color */
 }
 
 /* Text color */
 .red-text {
-    -fx-text-fill: #DC2B2B; /* Text color */
+	-fx-text-fill: #dc2b2b; /* Text color */
 }
 
 /* Border color */
 .red-border {
-    -fx-border-color: #DC2B2B; /* Border color */
-    -fx-border-width: 2px; /* Border width (adjust as needed) */
+	-fx-border-color: #dc2b2b; /* Border color */
+	-fx-border-width: 2px; /* Border width (adjust as needed) */
 }
 
 .red-opacity-background {
-    -fx-background-color: rgba(255, 90, 101, 0.20);
+	-fx-background-color: rgba(255, 90, 101, 0.2);
 }
 
 .gray-background {
-    -fx-background-color: #AEB9E1; /* Primary background color */
+	-fx-background-color: #aeb9e1; /* Primary background color */
 }
 
 /* SVG fill color */
 .gray-svg-fill {
-    -fx-fill: #AEB9E1; /* SVG fill color */
+	-fx-fill: #aeb9e1; /* SVG fill color */
 }
 
 /* Text color */
 .gray-text {
-    -fx-text-fill: #AEB9E1; /* Text color */
+	-fx-text-fill: #aeb9e1; /* Text color */
 }
 
 /* Border color */
 .gray-border {
-    -fx-border-color: #AEB9E1; /* Border color */
-    -fx-border-width: 2px; /* Border width (adjust as needed) */
+	-fx-border-color: #aeb9e1; /* Border color */
+	-fx-border-width: 2px; /* Border width (adjust as needed) */
 }
-
-

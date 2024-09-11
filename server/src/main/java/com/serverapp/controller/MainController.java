@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.serverapp.model.ClientCard;
 import com.serverapp.model.Redis;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,7 +23,7 @@ public class MainController {
     private int currentRow = 0;
     private int currentColumn = 0;
 
-    public void addClientCard(String hostName, String ipAddress, String macAddress, String osVersion) {
+    public void addClientCard(String hostName, String ipAddress, String macAddress, String osVersion, Boolean isConnect) {
         Platform.runLater(() -> {
             try {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/client-card.fxml"));
@@ -30,7 +31,7 @@ public class MainController {
 
                 ClientCardController controller = loader.getController();
                 if (controller != null) {
-                    controller.setClientInfo(hostName, ipAddress, macAddress, osVersion);
+                    controller.setClientInfo(hostName, ipAddress, macAddress, osVersion, isConnect);
 
                     clientCardContainer.add(clientCard, currentColumn, currentRow);
 
@@ -65,11 +66,14 @@ public class MainController {
                     clientCard.getHostName(),
                     clientCard.getIpAddress(),
                     clientCard.getMacAddress(),
-                    clientCard.getOsVersion());
+                    clientCard.getOsVersion(),
+                    clientCard.getIsConnect());
         });
     }
 
     public void appendLog(String message) {
-        logArea.appendText(message + "\n");
+        Platform.runLater(() -> {
+            logArea.appendText(message + "\n");
+        });
     }
 }
