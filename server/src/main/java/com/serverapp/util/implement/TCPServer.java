@@ -4,18 +4,24 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.serverapp.controller.MainController;
+import com.serverapp.model.ClientCard;
+import com.serverapp.model.ClientDetail;
+import com.serverapp.model.Redis;
+import com.serverapp.util.INetworkInfoCollector;
 import com.serverapp.util.ITCPServer;
 
 public class TCPServer implements ITCPServer {
-    private int port;
+    private int port = 2567;
     private MainController mainController;
     private ServerSocket serverSocket;
     private boolean running;
@@ -68,6 +74,10 @@ public class TCPServer implements ITCPServer {
                     break;
                 }
             }
+            INetworkInfoCollector networkInfoCollector = new NetworkInfoCollector();
+            List<ClientCard> list = networkInfoCollector.getAllClientCardsInLAN();
+            Redis.getInstance().putAllClientCard(list);
+            mainController.updateUI();
         } catch (IOException e) {
             logMessage("Error starting server: " + e.getMessage());
         }
@@ -87,22 +97,26 @@ public class TCPServer implements ITCPServer {
                 Gson gson = new Gson();
                 JsonObject jsonObject = gson.fromJson(inputLine, JsonObject.class);
 
-                // Initialize variables with default values
-                String hostName = "N/A";
-                String ipAddress = "N/A";
-                String macAddress = "N/A";
-                String osInfo = "N/A";
-
-                            // Extract information from the JSON object
-                hostName = jsonObject.get("hostName").toString();
-                ipAddress = String.valueOf(clientSocket.getInetAddress());
-                macAddress = jsonObject.get("macAddress").toString();
-                osInfo = jsonObject.get("osVersion").toString();
+                Redis.getInstance().putClientDetail(
+                        String.join(":",
+                            clientSocket.getInetAddress().toString(),
+                            Integer.toString(clientSocket.getPort())
+                        ),
+                        new ClientDetail().builder()
+                        .hostName(jsonObject.get("hostName").getAsString())
+                        .ipAddress(clientSocket.getInetAddress().toString())
+                        .macAddress(jsonObject.get("macAddress").getAsString())
+                        .ram(Long.valueOf(jsonObject.get("ram").toString()))
+                        .cpuModel(jsonObject.get("cpuModel").toString())
+                        .osVersion(jsonObject.get("osVersion").getAsString())
+                        .isConnect(true)
+                        .usedDisk(jsonObject.get("usedDisk").getAsLong())
+                        .totalDisk(jsonObject.get("totalDisk").getAsLong())
+                        .build()
+                );
 
                 // Update the UI with the received information
-                if (mainController != null) {
-                    mainController.addClientCard(hostName, ipAddress, macAddress, osInfo);
-                }
+                mainController.updateUI();
             }
         } catch (JsonSyntaxException e) {
             logMessage("Error parsing JSON: " + e.getMessage());
@@ -119,7 +133,7 @@ public class TCPServer implements ITCPServer {
 
     private void logMessage(String message) {
         if (mainController != null) {
-            // mainController.appendLog(message);
+             mainController.appendLog(message);
         } else {
             System.out.println(message);
         }

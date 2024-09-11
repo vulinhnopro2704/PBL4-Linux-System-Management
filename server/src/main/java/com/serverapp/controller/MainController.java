@@ -1,16 +1,23 @@
 package com.serverapp.controller;
 
 import java.io.IOException;
+import java.util.List;
 
+import com.serverapp.model.ClientCard;
+import com.serverapp.model.Redis;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 
 public class MainController {
     @FXML
     private GridPane clientCardContainer;
+
+    @FXML
+    private TextArea logArea;
 
     private int currentRow = 0;
     private int currentColumn = 0;
@@ -40,5 +47,29 @@ public class MainController {
                 e.printStackTrace();
             }
         });
+    }
+
+    public void clearClientCards() {
+        Platform.runLater(() -> {
+            clientCardContainer.getChildren().clear();
+            currentRow = 0;
+            currentColumn = 0;
+        });
+    }
+
+    public void updateUI(){
+        clearClientCards();
+        List<ClientCard> list = Redis.getInstance().getAllClientCard();
+        list.stream().forEach(clientCard -> {
+            addClientCard(
+                    clientCard.getHostName(),
+                    clientCard.getIpAddress(),
+                    clientCard.getMacAddress(),
+                    clientCard.getOsVersion());
+        });
+    }
+
+    public void appendLog(String message) {
+        logArea.appendText(message + "\n");
     }
 }

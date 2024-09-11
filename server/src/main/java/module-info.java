@@ -13,6 +13,7 @@ module com.serverapp {
     requires java.json;
     requires static lombok;
     requires com.google.gson;
+    requires com.github.oshi;
 
     opens com.serverapp to javafx.fxml;
     exports com.serverapp;
