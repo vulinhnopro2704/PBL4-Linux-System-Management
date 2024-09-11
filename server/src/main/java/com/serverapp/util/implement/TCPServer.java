@@ -8,6 +8,8 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -25,6 +27,15 @@ public class TCPServer implements ITCPServer {
     private MainController mainController;
     private ServerSocket serverSocket;
     private boolean running;
+
+    private ExecutorService clientHandlerPool;
+    private ExecutorService networkScannerPool;
+
+    public TCPServer() {
+        clientHandlerPool = Executors.newFixedThreadPool(10); // Create a thread pool for client handling
+        networkScannerPool = Executors.newSingleThreadExecutor(); // Single thread for network scanning
+        start();
+    }
 
     @Override
     public void start() {
@@ -59,13 +70,29 @@ public class TCPServer implements ITCPServer {
             serverSocket = new ServerSocket(port);
             logMessage("Server started on port " + port + ". Waiting for connections...");
 
+            // Start network scanning in a separate thread
+            networkScannerPool.submit(() -> {
+                long startTime = System.currentTimeMillis();
+
+                INetworkInfoCollector networkInfoCollector = new NetworkInfoCollector();
+                List<ClientCard> list = networkInfoCollector.getAllClientCardsInLAN();
+                Redis.getInstance().putAllClientCard(list);
+                mainController.updateUI();
+
+                long endTime = System.currentTimeMillis();
+                // Calculate the elapsed time
+                long elapsedTime = endTime - startTime;
+                // Print the elapsed time
+                logMessage("Execution time in milliseconds: " + elapsedTime);
+            });
+
             while (running) {
                 try {
                     Socket clientSocket = serverSocket.accept();
                     logMessage("New client connected: " + clientSocket.getInetAddress().getHostAddress());
 
                     // Create a new thread to handle the client
-                    new Thread(() -> handleClient(clientSocket)).start();
+                    clientHandlerPool.submit(() -> handleClient(clientSocket));
 
                 } catch (IOException e) {
                     if (running) {
@@ -74,10 +101,6 @@ public class TCPServer implements ITCPServer {
                     break;
                 }
             }
-            INetworkInfoCollector networkInfoCollector = new NetworkInfoCollector();
-            List<ClientCard> list = networkInfoCollector.getAllClientCardsInLAN();
-            Redis.getInstance().putAllClientCard(list);
-            mainController.updateUI();
         } catch (IOException e) {
             logMessage("Error starting server: " + e.getMessage());
         }
@@ -99,12 +122,11 @@ public class TCPServer implements ITCPServer {
 
                 Redis.getInstance().putClientDetail(
                         String.join(":",
-                            clientSocket.getInetAddress().toString(),
-                            Integer.toString(clientSocket.getPort())
+                            clientSocket.getInetAddress().toString()
                         ),
                         new ClientDetail().builder()
                         .hostName(jsonObject.get("hostName").getAsString())
-                        .ipAddress(clientSocket.getInetAddress().toString())
+                        .ipAddress(clientSocket.getInetAddress().toString().substring(1))
                         .macAddress(jsonObject.get("macAddress").getAsString())
                         .ram(Long.valueOf(jsonObject.get("ram").toString()))
                         .cpuModel(jsonObject.get("cpuModel").toString())

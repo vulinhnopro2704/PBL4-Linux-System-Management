@@ -12,7 +12,6 @@ import com.serverapp.util.INetworkInfoCollector;
 import oshi.SystemInfo;
 import oshi.hardware.HardwareAbstractionLayer;
 import oshi.hardware.NetworkIF;
-import oshi.software.os.OperatingSystem;
 
 public class NetworkInfoCollector implements INetworkInfoCollector {
 
@@ -72,7 +71,7 @@ public class NetworkInfoCollector implements INetworkInfoCollector {
 
     public List<ClientCard> getAllClientCardsInLAN() {
         List<ClientCard> clientCards = new ArrayList<>();
-        String subnet = getSubnet();
+        String subnet = getWifiSubnet();
 
         // Perform a network scan
         List<String> activeHosts = scanNetwork(subnet);
@@ -89,6 +88,7 @@ public class NetworkInfoCollector implements INetworkInfoCollector {
                         .ipAddress(ip)
                         .macAddress(macAddress)
                         .osVersion(osVersion)
+                        .isConnect(false)
                         .build();
 
                 clientCards.add(clientCard);
@@ -100,17 +100,31 @@ public class NetworkInfoCollector implements INetworkInfoCollector {
         return clientCards;
     }
 
-    private String getSubnet() {
-        NetworkIF networkIF = getActiveNetworkInterface();
-        if (networkIF != null) {
-            String ip = networkIF.getIPv4addr()[0];
-            return ip.substring(0, ip.lastIndexOf('.'));
+//    private String getSubnet() {
+//        NetworkIF networkIF = getActiveNetworkInterface();
+//        if (networkIF != null) {
+//            String ip = networkIF.getIPv4addr()[0];
+//            return ip.substring(0, ip.lastIndexOf('.'));
+//        }
+//        return "192.168.1"; // Default subnet if not found
+//    }
+
+    private String getWifiSubnet() {
+        SystemInfo si = new SystemInfo();
+        HardwareAbstractionLayer hal = si.getHardware();
+        List<NetworkIF> networkIFs = hal.getNetworkIFs();
+
+        for (NetworkIF net : networkIFs) {
+            net.updateAttributes();
+            if (net.getIPv4addr().length > 0 && net.getIfOperStatus() == NetworkIF.IfOperStatus.UP && net.getName().toLowerCase().contains("w")) {
+                String ip = net.getIPv4addr()[0];
+                return ip.substring(0, ip.lastIndexOf('.'));
+            }
         }
         return "192.168.1"; // Default subnet if not found
     }
 
     private List<String> scanNetwork(String subnet) {
-        subnet = "192.168.1";
         List<String> activeHosts = new ArrayList<>();
         int numProcessors = Runtime.getRuntime().availableProcessors();
         ExecutorService executor = Executors.newFixedThreadPool(numProcessors);
@@ -154,7 +168,7 @@ public class NetworkInfoCollector implements INetworkInfoCollector {
                 String host = subnet + "." + i;
                 try {
                     InetAddress address = InetAddress.getByName(host);
-                    if (address.isReachable(100)) {
+                    if (address.isReachable(30)) {
                         activeHosts.add(host);
                     }
                 } catch (IOException e) {

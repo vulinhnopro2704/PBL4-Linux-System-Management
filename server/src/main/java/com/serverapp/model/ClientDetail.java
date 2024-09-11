@@ -16,5 +16,4 @@ public class ClientDetail extends ClientCard {
     private Long ram;
     private Long usedDisk;
     private Long totalDisk;
-    private Boolean isConnect;
 }
