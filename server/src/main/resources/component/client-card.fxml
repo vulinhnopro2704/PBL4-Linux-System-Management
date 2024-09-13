@@ -10,13 +10,14 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="283.0" prefWidth="431.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.ClientCardController">
-   <children>
-      <ImageView fitHeight="107.0" fitWidth="141.0" layoutX="145.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/computer-icon.png" />
-         </image>
-      </ImageView>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="283.0" prefWidth="431.0"
+            style="-fx-background-radius: 10px; -fx-border-radius: 10px;" stylesheets="@../styles/styles.css"
+            xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.serverapp.controller.ClientCardController"
+            onMouseClicked="#handleCardClick">
+   <ImageView fitHeight="107.0" fitWidth="141.0" layoutX="145.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
+      <Image url="@../images/computer-icon.png" />
+   </ImageView>
       <Label id="hostName" fx:id="txtHostName" layoutX="118.0" layoutY="14.0" prefHeight="23.0" prefWidth="194.0" style="-fx-alignment: center;" text="DESKTOP NAME" textAlignment="CENTER" textFill="WHITE">
          <font>
             <Font name="Montserrat Medium" size="18.0" />
@@ -53,7 +54,6 @@
          </font>
       </Label>
       <Circle fx:id="iconStatus" fill="#04ef72" layoutX="397.0" layoutY="26.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" styleClass="green-background" />
-   </children>
    <styleClass>
       <String fx:value="card-backgroud-color" />
       <String fx:value="gray-border" />

@@ -14,6 +14,7 @@ module com.serverapp {
     requires static lombok;
     requires com.google.gson;
     requires com.github.oshi;
+    requires java.desktop;
 
     opens com.serverapp to javafx.fxml;
     exports com.serverapp;

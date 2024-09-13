@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="283.0" prefWidth="905.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <ImageView fitHeight="139.0" fitWidth="232.0" layoutX="77.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/computer-icon.png" />
+            </image>
+        </ImageView>
+        <Line endX="-100.0" endY="124.60000610351562" layoutX="436.0" layoutY="64.0" startX="-100.0" stroke="WHITE" strokeWidth="3.0" />
+        <Line endX="738.7999267578125" endY="67.60000610351562" layoutX="140.0" layoutY="157.0" startX="-109.19998168945312" startY="67.60000610351562" stroke="WHITE" />
+        <FlowPane layoutX="366.0" layoutY="30.0" prefHeight="200.0" prefWidth="200.0" vgap="10.0">
+            <children>
+                <FlowPane hgap="20.0" prefHeight="28.0" prefWidth="400.0">
+                    <children>
+                        <Label prefWidth="110.0" text="Desktop name" textFill="WHITE">
+                            <font>
+                                <Font name="Montserrat Medium" size="16.0" />
+                            </font>
+                        </Label>
+                        <Label id="lbIpAddress" prefHeight="22.0" prefWidth="194.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="DESKTOP-GU8TUS" textFill="WHITE">
+                            <font>
+                                <Font name="Montserrat Medium" size="16.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </FlowPane>
+                <FlowPane hgap="20.0" prefHeight="28.0" prefWidth="400.0">
+                    <children>
+                        <Label prefWidth="110.0" text="MAC Address" textFill="WHITE">
+                            <font>
+                                <Font name="Montserrat Medium" size="16.0" />
+                            </font>
+                        </Label>
+                        <Label id="lbIpAddress" prefHeight="22.0" prefWidth="194.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="00-0C-29-34-E9-B1" textFill="WHITE">
+                            <font>
+                                <Font name="Montserrat Medium" size="16.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </FlowPane>
+                <FlowPane hgap="20.0" prefHeight="28.0" prefWidth="400.0">
+                    <children>
+                        <Label prefWidth="110.0" text="IP Address" textFill="WHITE">
+                            <font>
+                                <Font name="Montserrat Medium" size="16.0" />
+                            </font>
+                        </Label>
+                        <Label id="lbIpAddress" prefHeight="22.0" prefWidth="194.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="192.168.232.156" textFill="WHITE">
+                            <font>
+                                <Font name="Montserrat Medium" size="16.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </FlowPane>
+                <FlowPane hgap="20.0" prefHeight="28.0" prefWidth="400.0">
+                    <children>
+                        <Label prefWidth="110.0" text="CPU Model" textFill="WHITE">
+                            <font>
+                                <Font name="Montserrat Medium" size="16.0" />
+                            </font>
+                        </Label>
+                        <Label id="lbIpAddress" prefHeight="22.0" prefWidth="194.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="Intel(R) Core(TM) i7-124000H CPU @ 2.70Hz" textFill="WHITE">
+                            <font>
+                                <Font name="Montserrat Medium" size="16.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </FlowPane>
+                <FlowPane hgap="20.0" prefHeight="28.0" prefWidth="400.0">
+                    <children>
+                        <Label prefWidth="110.0" text="OS version" textFill="WHITE">
+                            <font>
+                                <Font name="Montserrat Medium" size="16.0" />
+                            </font>
+                        </Label>
+                        <Label id="lbIpAddress" prefHeight="22.0" prefWidth="194.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="Ubuntu Linux 24.02 LTS" textFill="WHITE">
+                            <font>
+                                <Font name="Montserrat Medium" size="16.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </FlowPane>
+            </children>
+        </FlowPane>
+        <FlowPane hgap="20.0" layoutX="49.0" layoutY="232.0" prefHeight="46.0" prefWidth="831.0">
+            <children>
+                <Label prefWidth="60.0" text="RAM" textFill="WHITE">
+                    <font>
+                        <Font name="Montserrat Medium" size="16.0" />
+                    </font>
+                </Label>
+                <Label id="lbIpAddress" prefHeight="26.0" prefWidth="74.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="8GB" textFill="WHITE">
+                    <font>
+                        <Font name="Montserrat Medium" size="16.0" />
+                    </font>
+                </Label>
+                <Label prefHeight="26.0" prefWidth="128.0" text="Used / Total disk" textFill="WHITE">
+                    <font>
+                        <Font name="Montserrat Medium" size="16.0" />
+                    </font>
+                </Label>
+                <AnchorPane prefHeight="20.0" prefWidth="350.0" style="-fx-background-radius: 10px;" stylesheets="@../styles/styles.css">
+                    <children>
+                        <AnchorPane layoutX="240.0" layoutY="6.0" prefHeight="20.0" prefWidth="350.0" style="-fx-background-radius: 10px; -fx-background-color: #fff;" stylesheets="@../styles/styles.css" AnchorPane.leftAnchor="0.0">
+                            <children>
+                                <AnchorPane layoutX="33.0" layoutY="2.0" prefHeight="20.0" prefWidth="320.0" style="-fx-background-radius: 10px;" styleClass="gradient-background" stylesheets="@../styles/styles.css" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                            </children>
+                        </AnchorPane>
+                    </children>
+                </AnchorPane>
+                <Label id="lbIpAddress" prefHeight="26.0" prefWidth="96.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="500/512 GB" textFill="WHITE">
+                    <font>
+                        <Font name="Montserrat Medium" size="16.0" />
+                    </font>
+                </Label>
+            </children>
+        </FlowPane>
+        <ImageView fx:id="btnReload" fitHeight="20.0" fitWidth="24.0" layoutX="867.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+            <image>
+                <Image url="@../images/reload-icon.png" />
+            </image>
+        </ImageView>
+    </children>
+    <styleClass>
+        <String fx:value="card-backgroud-color" />
+        <String fx:value="gray-border" />
+    </styleClass>
+    <cursor>
+        <Cursor fx:constant="HAND" />
+    </cursor>
+    <effect>
+        <DropShadow />
+    </effect>
+</AnchorPane>

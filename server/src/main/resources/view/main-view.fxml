@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.String?>
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -16,17 +11,27 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="root" fx:id="root" prefHeight="763.0" prefWidth="1313.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.MainController">
-   <children>
-      <AnchorPane id="sideBar" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="316.0" styleClass="dark-background" stylesheets="@../styles/styles.css" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <effect>
-            <DropShadow />
-         </effect>
-         <fx:include source="../component/side-bar.fxml" />
-      </AnchorPane>
+<AnchorPane prefHeight="719.0" prefWidth="1312.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
 
+      <fx:include source="../component/side-bar.fxml" />
+      <GridPane hgap="40.0" layoutX="349.0" layoutY="113.0" prefHeight="574.0" prefWidth="873.0" vgap="40.0" AnchorPane.leftAnchor="349.0" AnchorPane.topAnchor="113.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+
+            <fx:include source="../component/client-card.fxml" fx:id="clientCard1" />
+            <fx:include source="../component/client-card.fxml" fx:id="clientCard2" GridPane.columnIndex="1" />
+            <fx:include source="../component/client-card.fxml" fx:id="clientCard3" GridPane.rowIndex="1" />
+            <fx:include source="../component/client-card.fxml" fx:id="clientCard4" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+      </GridPane>
       <FlowPane layoutX="349.0" layoutY="21.0" prefHeight="70.0" prefWidth="349.0" vgap="5.0" AnchorPane.leftAnchor="349.0" AnchorPane.topAnchor="21.0">
-         <children>
+
             <Label text="Welcome back, Admin name" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="24.0" />
@@ -37,56 +42,22 @@
                   <Font name="Montserrat Medium" size="14.0" />
                </font>
             </Label>
-         </children>
+
       </FlowPane>
       <Button layoutX="1214.0" layoutY="31.0" mnemonicParsing="false" style="-fx-background-color: transperant;" />
-      <FlowPane hgap="20.0" layoutX="1197.0" layoutY="21.0" prefHeight="25.0" prefWidth="80.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="21.0">
-         <children>
-            <ImageView id="icon-list-view" fitHeight="28.0" fitWidth="55.0" pickOnBounds="true" preserveRatio="true">
-               <image>
+      <FlowPane hgap="20.0" layoutX="1159.0" layoutY="23.0" prefHeight="25.0" prefWidth="80.0" AnchorPane.rightAnchor="73.0" AnchorPane.topAnchor="23.0">
+
+            <ImageView id="icon-list-view" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+
                   <Image url="@../images/list-view-icon.png" />
-               </image>
+
             </ImageView>
             <ImageView id="icon-grid-view" fitHeight="24.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-               <image>
+
                   <Image url="@../images/grid-view-icon.png" />
-               </image>
+
             </ImageView>
-         </children>
+
       </FlowPane>
-      <AnchorPane centerShape="false" layoutX="343.0" layoutY="730.0" prefHeight="164.0" prefWidth="942.0" styleClass="card-backgroud-color" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="338.6" AnchorPane.rightAnchor="32.0">
-         <children>
-            <TextArea id="logArea" fx:id="logArea" editable="false" layoutX="6.0" layoutY="12.0" prefHeight="140.0" prefWidth="935.0" promptText="Server log will be show here" wrapText="true" AnchorPane.bottomAnchor="12.0" AnchorPane.leftAnchor="5.7999999999999545" AnchorPane.rightAnchor="1.3999999999999773" AnchorPane.topAnchor="12.0">
-               <styleClass>
-                  <String fx:value="card-border-color" />
-                  <String fx:value="card-backgroud-color" />
-                  <String fx:value="blue-text" />
-               </styleClass>
-               <font>
-                  <Font name="Montserrat Regular" size="16.0" />
-               </font></TextArea>
-         </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </AnchorPane>
-      <ScrollPane centerShape="false" layoutX="330.4" layoutY="91.0" pannable="true" prefHeight="505.0" prefWidth="946.0" scaleShape="false" style="-fx-background-color: transparent; -fx-background: transparent;" styleClass="dark-background" AnchorPane.bottomAnchor="167.0" AnchorPane.leftAnchor="330.0" AnchorPane.rightAnchor="37.0" AnchorPane.topAnchor="91.0">
-        <content>
-          <AnchorPane focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="852.0" prefWidth="913.0" styleClass="dark-background">
-               <children>
-                  <GridPane id="clientCardContainer" fx:id="clientCardContainer" alignment="TOP_CENTER" focusTraversable="true" hgap="40.0" layoutX="35.2" layoutY="29.0" prefHeight="558.0" prefWidth="859.0" styleClass="dark-background" stylesheets="@../styles/styles.css" vgap="40.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="19.0" AnchorPane.topAnchor="29.0">
-                     <columnConstraints>
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="457.199951171875" minWidth="10.0" prefWidth="443.5999755859375" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="481.2000732421875" minWidth="10.0" prefWidth="480.4000244140625" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                  </GridPane>
-               </children>
-            </AnchorPane>
-        </content>
-      </ScrollPane>
-   </children>
+
 </AnchorPane>
