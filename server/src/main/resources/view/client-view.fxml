@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="719.0" prefWidth="1312.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+        <fx:include source="../component/side-bar.fxml" />
+        <GridPane hgap="40.0" layoutX="349.0" layoutY="113.0" prefHeight="574.0" prefWidth="873.0" vgap="40.0" AnchorPane.leftAnchor="349.0" AnchorPane.topAnchor="113.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+                <fx:include source="../component/client-detail.fxml" fx:id="clientCard1" />
+        </GridPane>
+        <FlowPane layoutX="349.0" layoutY="21.0" prefHeight="70.0" prefWidth="349.0" vgap="5.0" AnchorPane.leftAnchor="349.0" AnchorPane.topAnchor="21.0">
+                <Label text="Welcome back, Admin name" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+                <Label text="All computer in your LAN will be showed here!!!!" textFill="WHITE">
+                    <font>
+                        <Font name="Montserrat Medium" size="14.0" />
+                    </font>
+                </Label>
+        </FlowPane>
+        <Button layoutX="1214.0" layoutY="31.0" mnemonicParsing="false" style="-fx-background-color: transperant;" />
+        <FlowPane hgap="20.0" layoutX="1159.0" layoutY="23.0" prefHeight="25.0" prefWidth="80.0" AnchorPane.rightAnchor="73.0" AnchorPane.topAnchor="23.0">
+                <ImageView id="icon-list-view" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../images/list-view-icon.png" />
+                </ImageView>
+                <ImageView id="icon-grid-view" fitHeight="24.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+                        <Image url="@../images/grid-view-icon.png" />
+                </ImageView>
+        </FlowPane>
+</AnchorPane>

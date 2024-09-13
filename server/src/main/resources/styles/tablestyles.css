@@ -1,0 +1,22 @@
+/* Set the cell text color to white */
+.table-view .table-cell {
+    -fx-text-fill: white;
+}
+
+/* Set the column header text color to white */
+.table-view .column-header .label {
+    -fx-text-fill: white;
+}
+
+.scroll-bar:vertical .track {
+    -fx-background-color: #081028
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: linear-gradient(from 25% 0% to 75% 100%, #CB3CFF 19.86%, #7F25FB 68.34%);; /* Màu của đường track */
+; /* Màu của thanh trượt (thumb) */
+}
+.scroll-bar:vertical .increment-button,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color: #7F25FB; /* Màu của nút cuộn lên/xuống */
+}

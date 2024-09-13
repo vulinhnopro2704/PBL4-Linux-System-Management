@@ -1,8 +1,15 @@
 package com.serverapp.controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class SidebarController {
 
@@ -62,5 +69,22 @@ public class SidebarController {
     private void handleSetting() {
         // Handle Setting button click
         System.out.println("Setting button clicked");
+    }
+
+    @FXML
+    private void handleSystemClick(javafx.scene.input.MouseEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/main-view.fxml"));
+            Parent root = loader.load();
+
+            // Lấy stage hiện tại và chuyển màn hình
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
