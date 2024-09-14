@@ -18,8 +18,8 @@ module com.serverapp {
 
     opens com.serverapp to javafx.fxml;
     exports com.serverapp;
-    exports com.serverapp.controller;
-    opens com.serverapp.controller to javafx.fxml;
     exports com.serverapp.controller.view;
     opens com.serverapp.controller.view to javafx.fxml;
+    exports com.serverapp.controller.component;
+    opens com.serverapp.controller.component to javafx.fxml;
 }

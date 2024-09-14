@@ -13,7 +13,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="283.0" prefWidth="431.0"
             style="-fx-background-radius: 10px; -fx-border-radius: 10px;" stylesheets="@../styles/styles.css"
             xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.serverapp.controller.ClientCardController"
+            fx:controller="com.serverapp.controller.component.ClientCardController"
             onMouseClicked="#handleCardClick">
    <ImageView fitHeight="107.0" fitWidth="141.0" layoutX="145.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
       <Image url="@../images/computer-icon.png" />
