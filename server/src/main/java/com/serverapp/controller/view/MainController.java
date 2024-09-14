@@ -3,7 +3,7 @@ package com.serverapp.controller.view;
 import java.io.IOException;
 import java.util.List;
 
-import com.serverapp.controller.ClientCardController;
+import com.serverapp.controller.component.ClientCardController;
 import com.serverapp.model.ClientCard;
 import com.serverapp.model.Redis;
 

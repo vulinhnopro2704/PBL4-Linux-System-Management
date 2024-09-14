@@ -1,5 +1,5 @@
 
-package com.serverapp.controller;
+package com.serverapp.controller.component;
 
 import java.awt.event.MouseEvent;
 import java.io.IOException;

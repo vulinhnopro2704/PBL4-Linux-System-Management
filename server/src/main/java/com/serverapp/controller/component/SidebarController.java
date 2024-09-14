@@ -1,4 +1,4 @@
-package com.serverapp.controller;
+package com.serverapp.controller.component;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
