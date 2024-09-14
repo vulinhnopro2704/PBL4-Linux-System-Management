@@ -2,7 +2,7 @@ package com.serverapp;
 
 import com.serverapp.util.ITCPServer;
 import com.serverapp.util.implement.TCPServer;
-import com.serverapp.controller.MainController;
+import com.serverapp.controller.view.MainController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

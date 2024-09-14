@@ -3,28 +3,21 @@ package com.serverapp.controller;
 
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.util.List;
 
-import com.serverapp.model.ClientCard;
-import com.serverapp.model.Redis;
+import com.serverapp.controller.view.MainController;
 
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
-import java.io.IOException;
 
 public class ClientCardController {
+    final private MainController mainController = new MainController();
 
     @FXML
     private Label txtHostName;
@@ -47,7 +40,7 @@ public class ClientCardController {
     @FXML
     private void handleCardClick(MouseEvent event) {
         // Handle card click event
-        System.out.println("Card clicked: " + txtIpAddress.getText() + ", " + txtOSVersion.getText());
+        mainController.appendLog("Card clicked: " + txtIpAddress.getText() + ", " + txtOSVersion.getText());
     }
 
     public void setClientInfo(String hostName, String ipAddress, String macAddress, String osVersion, Boolean isConnect) {

@@ -1,6 +1,6 @@
 package com.serverapp.util;
 
-import com.serverapp.controller.MainController;
+import com.serverapp.controller.view.MainController;
 
 public interface ITCPServer {
     void start();
