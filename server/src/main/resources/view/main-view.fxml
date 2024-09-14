@@ -14,7 +14,7 @@
 
 <AnchorPane prefHeight="753.0" prefWidth="1312.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.MainController">
 
-      <fx:include source="../component/side-bar.fxml" />
+    <fx:include source="../component/side-bar.fxml" />
     <ScrollPane fitToWidth="true" layoutX="349.0" layoutY="100.0" prefHeight="430.0" prefWidth="918.0" style="-fx-background: transparent; -fx-background-color: transparent;" AnchorPane.bottomAnchor="223.0" AnchorPane.leftAnchor="349.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="100.0"> <!-- Thêm thuộc tính fitToWidth="true" -->
         <FlowPane fx:id="clientCardContainer" hgap="40.0" prefHeight="390.0" vgap="40.0" />
     </ScrollPane>
