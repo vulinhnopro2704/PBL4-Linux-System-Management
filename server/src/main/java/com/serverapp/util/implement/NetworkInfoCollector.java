@@ -100,15 +100,6 @@ public class NetworkInfoCollector implements INetworkInfoCollector {
         return clientCards;
     }
 
-//    private String getSubnet() {
-//        NetworkIF networkIF = getActiveNetworkInterface();
-//        if (networkIF != null) {
-//            String ip = networkIF.getIPv4addr()[0];
-//            return ip.substring(0, ip.lastIndexOf('.'));
-//        }
-//        return "192.168.1"; // Default subnet if not found
-//    }
-
     private String getWifiSubnet() {
         SystemInfo si = new SystemInfo();
         HardwareAbstractionLayer hal = si.getHardware();
@@ -168,7 +159,7 @@ public class NetworkInfoCollector implements INetworkInfoCollector {
                 String host = subnet + "." + i;
                 try {
                     InetAddress address = InetAddress.getByName(host);
-                    if (address.isReachable(30)) {
+                    if (address.isReachable(200)) {
                         activeHosts.add(host);
                     }
                 } catch (IOException e) {

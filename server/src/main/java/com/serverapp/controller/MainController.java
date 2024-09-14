@@ -33,8 +33,8 @@ public class MainController {
                 if (controller != null) {
                     controller.setClientInfo(hostName, ipAddress, macAddress, osVersion, isConnect);
 
-                    clientCardContainer.add(clientCard, currentColumn, currentRow);
-
+//                    clientCardContainer.add(, currentColumn, currentRow);
+                    clientCardContainer.getChildren().add(clientCard);
                     // Update column and row for next card
                     currentColumn++;
                     if (currentColumn == 2) {
