@@ -14,61 +14,6 @@ import oshi.hardware.HardwareAbstractionLayer;
 import oshi.hardware.NetworkIF;
 
 public class NetworkInfoCollector implements INetworkInfoCollector {
-
-    @Override
-    public String getHostName() {
-        try {
-            InetAddress localHost = InetAddress.getLocalHost();
-            return localHost.getHostName();
-        } catch (UnknownHostException e) {
-            return "Unknown Host";
-        }
-    }
-
-    @Override
-    public String getIPv4Address() {
-        NetworkIF networkIF = getActiveNetworkInterface();
-        if (networkIF != null) {
-            String[] ipv4s = networkIF.getIPv4addr();
-            if (ipv4s.length > 0) {
-                return ipv4s[0];
-            }
-        }
-        return "No IPv4 Address";
-    }
-
-    @Override
-    public String getMacAddress() {
-        NetworkIF networkIF = getActiveNetworkInterface();
-        if (networkIF != null) {
-            return networkIF.getMacaddr();
-        }
-        return "No MAC Address";
-    }
-
-    private NetworkIF getActiveNetworkInterface() {
-        SystemInfo si = new SystemInfo();
-        HardwareAbstractionLayer hal = si.getHardware();
-        List<NetworkIF> networkIFs = hal.getNetworkIFs();
-
-        for (NetworkIF net : networkIFs) {
-            net.updateAttributes();
-            if (net.getIPv4addr().length > 0 && !net.getName().contains("lo")) {
-                return net;
-            }
-        }
-        return null;
-    }
-
-    public String getHostName(NetworkIF networkIF) {
-        try {
-            InetAddress inetAddress = InetAddress.getByName(networkIF.getIPv4addr()[0]);
-            return inetAddress.getHostName();
-        } catch (UnknownHostException e) {
-            return "Unknown Host";
-        }
-    }
-
     public List<ClientCard> getAllClientCardsInLAN() {
         List<ClientCard> clientCards = new ArrayList<>();
         String subnet = getWifiSubnet();

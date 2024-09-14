@@ -18,8 +18,8 @@ public class MainClient extends Application {
         // Send system info to server
         networkClient.sendSystemInfo();
 
-        // Double-check System Information of Client Computer
-        System.out.println(infoCollector.getSystemInfoAsJson());
+        // Close the connection
+        networkClient.closeConnection();
     }
 
     public static void main(String[] args) {
