@@ -7,9 +7,14 @@ import com.serverapp.controller.component.ClientCardController;
 import com.serverapp.model.ClientCard;
 import com.serverapp.model.Redis;
 
+import javafx.scene.control.Label;
+import javafx.stage.Stage;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -20,6 +25,43 @@ public class MainController {
 
     @FXML
     private TextArea logArea;
+
+    private int currentRow = 0;
+    private int currentColumn = 0;
+    @FXML
+    private Label Btn_general;
+
+    @FXML
+    private Label Btn_process;
+
+    @FXML
+    private Label Btn_performance;
+
+    @FXML
+    private Label Btn_screen;
+
+    // Khởi tạo controller
+    @FXML
+    public void initialize() {
+        Btn_general.setOnMouseClicked(event -> loadPage("/view/client-view.fxml"));
+        Btn_process.setOnMouseClicked(event -> loadPage("/view/client-process.fxml"));
+        Btn_performance.setOnMouseClicked(event -> loadPage("/view/client-performance.fxml"));
+        Btn_screen.setOnMouseClicked(event -> loadPage("/view/client-screen.fxml"));
+    }
+
+    // Hàm để load trang mới
+    private void loadPage(String fxmlFile) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+            Parent root = loader.load();
+
+            // Lấy stage hiện tại và thay đổi scene
+            Stage stage = (Stage) Btn_general.getScene().getWindow();
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void addClientCard(String hostName, String ipAddress, String macAddress, String osVersion, Boolean isConnect) {
         Platform.runLater(() -> {
