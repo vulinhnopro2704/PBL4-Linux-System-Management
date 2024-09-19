@@ -34,12 +34,6 @@ public class SidebarController {
     @FXML
     private Button btnSetting;
 
-    // Add your event handling methods here
-    @FXML
-    private void handleSystemMonitoring() {
-        // Handle System Monitoring button click
-        System.out.println("System Monitoring button clicked");
-    }
 
     @FXML
     private void handleUserAndAccess() {
@@ -48,9 +42,20 @@ public class SidebarController {
     }
 
     @FXML
-    private void handleFileAndDirectory() {
-        // Handle File & Directory button click
-        System.out.println("File & Directory button clicked");
+    private void handleFileAndDirectory(javafx.scene.input.MouseEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/filedirectory-view.fxml"));
+            Parent root = loader.load();
+
+            // Lấy stage hiện tại và chuyển màn hình
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -72,7 +77,7 @@ public class SidebarController {
     }
 
     @FXML
-    private void handleSystemClick(javafx.scene.input.MouseEvent event) {
+    private void handleSystemMonitoring(javafx.scene.input.MouseEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/main-view.fxml"));
             Parent root = loader.load();
