@@ -10,6 +10,8 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="753.0" prefWidth="1312.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.MainController">
@@ -48,19 +50,7 @@
             </ImageView>
 
       </FlowPane>
-   <TextArea fx:id="logArea" editable="false" layoutX="349.0" layoutY="548.0" prefHeight="181.0" prefWidth="929.0" promptText="All Log will be showed here" style="-fx-background: transparent; -fx-background-color: transparent;" wrapText="true" AnchorPane.bottomAnchor="24.0" AnchorPane.leftAnchor="349.0" AnchorPane.rightAnchor="34.0">
-      <effect>
-         <DropShadow />
-      </effect>
-      <font>
-         <Font name="Montserrat Medium" size="14.0" />
-      </font>
-      <styleClass>
-         <String fx:value="card-backgroud-color" />
-         <String fx:value="blue-text" />
-         <String fx:value="card-border-color" />
-         <String fx:value="blue-svg-fill" />
-      </styleClass>
-   </TextArea>
+
+     <fx:include layoutX="414.0" layoutY="543.0" source="../component/panel-port.fxml" />
 
 </AnchorPane>
