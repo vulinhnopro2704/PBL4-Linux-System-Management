@@ -1,66 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="283.0" prefWidth="431.0"
-            style="-fx-background-radius: 10px; -fx-border-radius: 10px;" stylesheets="@../styles/styles.css"
-            xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.serverapp.controller.component.ClientCardController"
-            onMouseClicked="#handleCardClick">
-   <ImageView fitHeight="107.0" fitWidth="141.0" layoutX="145.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handleCardClick" prefHeight="205.0" prefWidth="359.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.ClientCardController">
+   <!-- Desktop Name - Căn giữa và đặt trên cùng -->
+   <Label id="hostName" fx:id="txtHostName" layoutY="7.0" prefHeight="23.0" prefWidth="431.0" style="-fx-alignment: center;" text="DESKTOP NAME" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <font>
+         <Font size="14.0" />
+      </font>
+   </Label>
+
+   <!-- Hình ảnh máy tính căn giữa -->
+   <ImageView fitHeight="95.0" fitWidth="129.0" layoutX="116.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true">
       <Image url="@../images/computer-icon.png" />
    </ImageView>
-      <Label id="hostName" fx:id="txtHostName" layoutX="118.0" layoutY="14.0" prefHeight="23.0" prefWidth="194.0" style="-fx-alignment: center;" text="DESKTOP NAME" textAlignment="CENTER" textFill="WHITE">
-         <font>
-            <Font name="Montserrat Medium" size="18.0" />
-         </font>
-      </Label>
-      <Label layoutX="50.0" layoutY="167.0" text="IP Address" textFill="WHITE">
-         <font>
-            <Font name="Montserrat Medium" size="16.0" />
-         </font>
-      </Label>
-      <Label layoutX="50.0" layoutY="201.0" text="MAC Address" textFill="WHITE">
-         <font>
-            <Font name="Montserrat Medium" size="16.0" />
-         </font>
-      </Label>
-      <Label layoutX="50.0" layoutY="239.0" text="OS version" textFill="WHITE">
-         <font>
-            <Font name="Montserrat Medium" size="16.0" />
-         </font>
-      </Label>
-      <Label id="lbIpAddress" fx:id="txtIpAddress" layoutX="181.0" layoutY="165.0" prefHeight="22.0" prefWidth="194.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="192.168.1.1" textFill="WHITE">
-         <font>
-            <Font name="Montserrat Medium" size="16.0" />
-         </font>
-      </Label>
-      <Label fx:id="txtMACAddress" layoutX="181.0" layoutY="198.0" prefHeight="22.0" prefWidth="194.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="00-0C-29-34-E9-B1" textFill="WHITE">
-         <font>
-            <Font name="Montserrat Medium" size="16.0" />
-         </font>
-      </Label>
-      <Label id="lbOSVersion" fx:id="txtOSVersion" layoutX="181.0" layoutY="236.0" prefHeight="22.0" prefWidth="194.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="Linux 22.04 LTS" textFill="WHITE">
-         <font>
-            <Font name="Montserrat Medium" size="16.0" />
-         </font>
-      </Label>
-      <Circle fx:id="iconStatus" fill="#04ef72" layoutX="397.0" layoutY="26.0" radius="9.0" stroke="BLACK" strokeType="INSIDE" styleClass="green-background" />
+
+   <!-- Trạng thái -->
+   <Circle fx:id="iconStatus" fill="#04ef72" layoutX="331.0" layoutY="17.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" styleClass="green-background" />
+   <FlowPane layoutX="2.0" layoutY="131.0" prefHeight="79.0" prefWidth="415.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+      <children>
+      
+         <!-- Địa chỉ IP -->
+         <Label prefWidth="100.0" text="IP Address" textFill="WHITE">
+            <FlowPane.margin>
+               <Insets left="80.0" />
+            </FlowPane.margin>
+         </Label>
+         <Label id="lbIpAddress" fx:id="txtIpAddress" prefHeight="22.0" prefWidth="150.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="192.168.1.1" textFill="WHITE" />
+      
+         <!-- Địa chỉ MAC -->
+         <Label prefWidth="100.0" text="MAC Address" textFill="WHITE">
+            <FlowPane.margin>
+               <Insets left="80.0" />
+            </FlowPane.margin>
+         </Label>
+         <Label fx:id="txtMACAddress" prefHeight="22.0" prefWidth="150.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="00-0C-29-34-E9-B1" textFill="WHITE" />
+      
+         <!-- Phiên bản hệ điều hành -->
+         <Label prefWidth="100.0" text="OS version" textFill="WHITE">
+            <FlowPane.margin>
+               <Insets left="80.0" />
+            </FlowPane.margin>
+         </Label>
+         <Label id="lbOSVersion" fx:id="txtOSVersion" prefHeight="22.0" prefWidth="150.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="Linux 22.04 LTS" textFill="WHITE" />
+      </children>
+   </FlowPane>
+
+   <!-- Style classes -->
    <styleClass>
       <String fx:value="card-backgroud-color" />
       <String fx:value="gray-border" />
    </styleClass>
+
    <cursor>
       <Cursor fx:constant="HAND" />
    </cursor>
+
    <effect>
       <DropShadow />
    </effect>
