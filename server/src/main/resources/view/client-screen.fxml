@@ -11,33 +11,32 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane fx:controller="com.serverapp.controller.view.MainController" onMouseClicked="#viewchange" prefHeight="719.0" prefWidth="1312.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
-        <fx:include source="../component/side-bar.fxml" />
-             <fx:include fx:id="clientCard" layoutX="414.0" layoutY="165.0" source="../component/client-detail.fxml" />
-        <FlowPane layoutX="346.4" layoutY="7.0" prefHeight="70.0" prefWidth="349.0" vgap="5.0" AnchorPane.leftAnchor="346.4" AnchorPane.topAnchor="7.0">
-            <Label text="Welcome back, Admin name" textFill="WHITE">
-                <font>
-                    <Font name="System Bold" size="24.0" />
-                </font>
-            </Label>
-            <Label text="All computer in your LAN will be showed here!!!!" textFill="WHITE">
-                <font>
-                    <Font name="Montserrat Medium" size="14.0" />
-                </font>
-            </Label>
-        </FlowPane>
-        <Button layoutX="1214.0" layoutY="31.0" mnemonicParsing="false" style="-fx-background-color: transperant;" />
-        <FlowPane hgap="20.0" layoutX="1159.0" layoutY="23.0" prefHeight="25.0" prefWidth="80.0" AnchorPane.rightAnchor="73.0" AnchorPane.topAnchor="23.0">
-                <ImageView id="icon-list-view" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../images/list-view-icon.png" />
-                </ImageView>
-                <ImageView id="icon-grid-view" fitHeight="24.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                        <Image url="@../images/grid-view-icon.png" />
-                </ImageView>
-        </FlowPane>
-        <fx:include layoutX="414.0" layoutY="543.0" source="../component/panel-port.fxml" />
+    <fx:include source="../component/side-bar.fxml" />
+    <FlowPane layoutX="346.4" layoutY="7.0" prefHeight="70.0" prefWidth="349.0" vgap="5.0" AnchorPane.leftAnchor="346.4" AnchorPane.topAnchor="7.0">
+        <Label text="Welcome back, Admin name" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+        <Label text="All computer in your LAN will be showed here!!!!" textFill="WHITE">
+            <font>
+                <Font name="Montserrat Medium" size="14.0" />
+            </font>
+        </Label>
+    </FlowPane>
+    <Button layoutX="1214.0" layoutY="31.0" mnemonicParsing="false" style="-fx-background-color: transperant;" />
+    <FlowPane hgap="20.0" layoutX="1159.0" layoutY="23.0" prefHeight="25.0" prefWidth="80.0" AnchorPane.rightAnchor="73.0" AnchorPane.topAnchor="23.0">
+        <ImageView id="icon-list-view" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../images/list-view-icon.png" />
+        </ImageView>
+        <ImageView id="icon-grid-view" fitHeight="24.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
+            <Image url="@../images/grid-view-icon.png" />
+        </ImageView>
+    </FlowPane>
+    <fx:include layoutX="414.0" layoutY="543.0" source="../component/panel-port.fxml" />
         <FlowPane layoutX="414.0" layoutY="90.0" prefHeight="50.0" prefWidth="830.0">
             <children>
-                <Label fx:id="btnGeneral" alignment="CENTER" prefHeight="40.0" prefWidth="150.0" styleClass="primary-text" text="General" textAlignment="CENTER" textFill="WHITE">
+                <Label fx:id="btnGeneral" alignment="CENTER" prefHeight="40.0" prefWidth="150.0" text="General" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="16.0" />
                     </font>
@@ -61,7 +60,7 @@
                         <Insets left="45.0" />
                     </FlowPane.margin>
                 </Label>
-                <Label fx:id="btnScreen" alignment="CENTER" prefHeight="40.0" prefWidth="150.0" text="Screen" textAlignment="CENTER" textFill="WHITE">
+                <Label fx:id="btnScreen" alignment="CENTER" prefHeight="40.0" prefWidth="150.0" styleClass="primary-text" text="Screen" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="16.0" />
                     </font>
@@ -71,9 +70,14 @@
                 </Label>
                 <Line endX="92.60003662109375" startX="-15.39996337890625" stroke="#cb3cff" strokeWidth="3.0" style="-fx-fill: #fff;">
                     <FlowPane.margin>
-                        <Insets left="67.0" />
+                        <Insets left="649.0" />
                     </FlowPane.margin>
                 </Line>
             </children>
         </FlowPane>
+    <ImageView fitHeight="346.0" fitWidth="830.0" layoutX="414.0" layoutY="159.0" pickOnBounds="true" preserveRatio="true">
+      <image>
+         <Image url="@../images/computer-icon.png" />
+      </image>
+   </ImageView>
 </AnchorPane>

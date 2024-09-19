@@ -61,7 +61,7 @@
                   <Font name="Montserrat Medium" size="14.0" />
                </font>
             </Button>
-            <Button id="btnFileAndDirectory" fx:id="btnFileAndDirectory" mnemonicParsing="false" onAction="#handleFileAndDirectory" prefHeight="35.0" prefWidth="286.0" style="-fx-background-color: transparent; -fx-alignment: left;" styleClass="gray-text" stylesheets="@../styles/styles.css" text="   File &amp; Directory">
+            <Button id="btnFileAndDirectory" fx:id="btnFileAndDirectory" mnemonicParsing="false" onMouseClicked="#handleFileAndDirectory" prefHeight="35.0" prefWidth="286.0" style="-fx-background-color: transparent; -fx-alignment: left;" styleClass="gray-text" stylesheets="@../styles/styles.css" text="   File &amp; Directory">
                <graphic>
                   <ImageView id="icon-file" fitHeight="16.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                      <image>
