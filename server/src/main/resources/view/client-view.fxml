@@ -37,7 +37,7 @@
         <fx:include layoutX="414.0" layoutY="543.0" source="../component/panel-port.fxml" />
         <FlowPane layoutX="414.0" layoutY="90.0" prefHeight="50.0" prefWidth="830.0">
             <children>
-                <Label fx:id="Btn_general" alignment="CENTER" prefHeight="40.0" prefWidth="150.0" styleClass="primary-text" text="General" textAlignment="CENTER" textFill="WHITE">
+                <Label fx:id="btnGeneral" alignment="CENTER" prefHeight="40.0" prefWidth="150.0" styleClass="primary-text" text="General" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="16.0" />
                     </font>
@@ -45,7 +45,7 @@
                         <Insets left="45.0" />
                     </FlowPane.margin>
                 </Label>
-                <Label fx:id="Btn_process" alignment="CENTER" prefHeight="40.0" prefWidth="150.0" text="Process" textAlignment="CENTER" textFill="WHITE">
+                <Label fx:id="btnProcess" alignment="CENTER" prefHeight="40.0" prefWidth="150.0" text="Process" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="16.0" />
                     </font>
@@ -53,7 +53,7 @@
                         <Insets left="45.0" />
                     </FlowPane.margin>
                 </Label>
-                <Label fx:id="Btn_performance" alignment="CENTER" prefHeight="40.0" prefWidth="150.0" text="Performance" textAlignment="CENTER" textFill="WHITE">
+                <Label fx:id="btnPerformance" alignment="CENTER" prefHeight="40.0" prefWidth="150.0" text="Performance" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="16.0" />
                     </font>
@@ -61,7 +61,7 @@
                         <Insets left="45.0" />
                     </FlowPane.margin>
                 </Label>
-                <Label fx:id="Btn_screen" alignment="CENTER" prefHeight="40.0" prefWidth="150.0" text="Screen" textAlignment="CENTER" textFill="WHITE">
+                <Label fx:id="btnScreen" alignment="CENTER" prefHeight="40.0" prefWidth="150.0" text="Screen" textAlignment="CENTER" textFill="WHITE">
                     <font>
                         <Font name="System Bold" size="16.0" />
                     </font>
