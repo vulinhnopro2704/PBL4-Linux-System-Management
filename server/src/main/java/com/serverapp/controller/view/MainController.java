@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.serverapp.controller.component.ClientCardController;
+import com.serverapp.controller.component.PanelPortController;
 import com.serverapp.model.ClientCard;
 import com.serverapp.model.Redis;
 
@@ -23,12 +24,6 @@ public class MainController {
     private FlowPane clientCardContainer;
 
     @FXML
-    private TextArea logArea;
-
-    private int currentRow = 0;
-    private int currentColumn = 0;
-
-    @FXML
     private Label btnGeneral;
 
     @FXML
@@ -40,6 +35,11 @@ public class MainController {
     @FXML
     private Label btnScreen;
 
+    @FXML
+    private AnchorPane panelPortInclude;
+
+    private PanelPortController panelPortController;
+
     // Khởi tạo controller
     @FXML
     public void viewchange() {
@@ -47,6 +47,43 @@ public class MainController {
         btnProcess.setOnMouseClicked(event -> loadPage("/view/client-process.fxml"));
         btnPerformance.setOnMouseClicked(event -> loadPage("/view/client-performance.fxml"));
         btnScreen.setOnMouseClicked(event -> loadPage("/view/client-screen.fxml"));
+    }
+
+    @FXML
+    public void initialize() {
+        try {
+            // Load panel-port.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/panel-port.fxml"));
+            AnchorPane panelPortRoot = loader.load(); // Lấy root từ panel-port.fxml
+
+            // Set controller từ panel-port.fxml
+            panelPortController = loader.getController();
+            if (panelPortInclude != null) {
+                // Thêm panelPortRoot vào panelPortInclude (AnchorPane trong main-view.fxml)
+                panelPortInclude.getChildren().setAll(panelPortRoot); // Đặt nội dung của panelPortInclude thành panelPortRoot
+            } else {
+                System.err.println("PanelPortController is null");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        updateListClientCard();
+    }
+
+    private void updateListClientCard() {
+        Redis redis = Redis.getInstance();
+        List<ClientCard> list = redis.getAllClientCard();
+        if (list != null && list.size() > 0) {
+            list.stream().forEach(clientCard -> {
+                addClientCard(
+                        clientCard.getHostName(),
+                        clientCard.getIpAddress(),
+                        clientCard.getMacAddress(),
+                        clientCard.getOsVersion(),
+                        clientCard.getIsConnect());
+            });
+        }
     }
 
     // Hàm để load trang mới
@@ -91,20 +128,16 @@ public class MainController {
 
     public void updateUI(){
         clearClientCards();
-        List<ClientCard> list = Redis.getInstance().getAllClientCard();
-        list.stream().forEach(clientCard -> {
-            addClientCard(
-                    clientCard.getHostName(),
-                    clientCard.getIpAddress(),
-                    clientCard.getMacAddress(),
-                    clientCard.getOsVersion(),
-                    clientCard.getIsConnect());
-        });
+        updateListClientCard();
     }
 
     public void appendLog(String message) {
         Platform.runLater(() -> {
-            logArea.appendText(message + "\n");
+            if (panelPortController != null) {
+                panelPortController.updateLogContent(message);
+            } else {
+                System.err.println("PanelPortController is not initialized.");
+            }
         });
     }
 }

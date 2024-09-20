@@ -2,7 +2,6 @@ module com.clientapp {
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.web;
-    requires transitive javafx.graphics;
 
     requires org.controlsfx.controls;
     requires com.dlsc.formsfx;
@@ -13,6 +12,7 @@ module com.clientapp {
     requires com.github.oshi;
     requires com.fasterxml.jackson.databind;
     requires com.google.gson;
+    requires javafx.swing;
 
     opens com.clientapp to javafx.fxml;
     exports com.clientapp;

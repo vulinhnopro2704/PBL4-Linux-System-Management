@@ -22,7 +22,7 @@ public class ClientCardController {
     private Label txtHostName;
 
     @FXML
-    private Label txtIpAddress;
+    private Label txtIPAddress;
 
     @FXML
     private Label txtMACAddress;
@@ -34,15 +34,9 @@ public class ClientCardController {
     private Circle iconStatus;
 
 
-   /* @FXML
-    private void handleCardClick(MouseEvent event) {
-        // Handle card click event
-        mainController.appendLog("Card clicked: " + txtIpAddress.getText() + ", " + txtOSVersion.getText());
-    }
-*/
     public void setClientInfo(String hostName, String ipAddress, String macAddress, String osVersion, Boolean isConnect) {
         txtHostName.setText(hostName);
-        txtIpAddress.setText(ipAddress);
+        txtIPAddress.setText(ipAddress);
         txtMACAddress.setText(macAddress);
         txtOSVersion.setText(osVersion);
         if (isConnect != null && isConnect) {
