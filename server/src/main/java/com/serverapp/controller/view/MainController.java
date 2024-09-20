@@ -29,24 +29,24 @@ public class MainController {
     private int currentColumn = 0;
 
     @FXML
-    private Label Btn_general;
+    private Label btnGeneral;
 
     @FXML
-    private Label Btn_process;
+    private Label btnProcess;
 
     @FXML
-    private Label Btn_performance;
+    private Label btnPerformance;
 
     @FXML
-    private Label Btn_screen;
+    private Label btnScreen;
 
     // Khởi tạo controller
     @FXML
     public void viewchange() {
-        Btn_general.setOnMouseClicked(event -> loadPage("/view/client-view.fxml"));
-        Btn_process.setOnMouseClicked(event -> loadPage("/view/client-process.fxml"));
-        Btn_performance.setOnMouseClicked(event -> loadPage("/view/client-performance.fxml"));
-        Btn_screen.setOnMouseClicked(event -> loadPage("/view/client-screen.fxml"));
+        btnGeneral.setOnMouseClicked(event -> loadPage("/view/client-view.fxml"));
+        btnProcess.setOnMouseClicked(event -> loadPage("/view/client-process.fxml"));
+        btnPerformance.setOnMouseClicked(event -> loadPage("/view/client-performance.fxml"));
+        btnScreen.setOnMouseClicked(event -> loadPage("/view/client-screen.fxml"));
     }
 
     // Hàm để load trang mới
@@ -56,7 +56,7 @@ public class MainController {
             Parent root = loader.load();
 
             // Lấy stage hiện tại và thay đổi scene
-            Stage stage = (Stage) Btn_general.getScene().getWindow();
+            Stage stage = (Stage) btnGeneral.getScene().getWindow();
             stage.setScene(new Scene(root));
         } catch (IOException e) {
             e.printStackTrace();
