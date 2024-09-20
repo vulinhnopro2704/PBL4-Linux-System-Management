@@ -37,12 +37,12 @@ public class ClientCardController {
     private Stage stage;
     private Parent root;
 
-    @FXML
+   /* @FXML
     private void handleCardClick(MouseEvent event) {
         // Handle card click event
         mainController.appendLog("Card clicked: " + txtIpAddress.getText() + ", " + txtOSVersion.getText());
     }
-
+*/
     public void setClientInfo(String hostName, String ipAddress, String macAddress, String osVersion, Boolean isConnect) {
         txtHostName.setText(hostName);
         txtIpAddress.setText(ipAddress);

@@ -12,7 +12,6 @@ import javafx.stage.Stage;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
@@ -28,6 +27,7 @@ public class MainController {
 
     private int currentRow = 0;
     private int currentColumn = 0;
+
     @FXML
     private Label Btn_general;
 
@@ -42,7 +42,7 @@ public class MainController {
 
     // Khởi tạo controller
     @FXML
-    public void initialize() {
+    public void viewchange() {
         Btn_general.setOnMouseClicked(event -> loadPage("/view/client-view.fxml"));
         Btn_process.setOnMouseClicked(event -> loadPage("/view/client-process.fxml"));
         Btn_performance.setOnMouseClicked(event -> loadPage("/view/client-performance.fxml"));

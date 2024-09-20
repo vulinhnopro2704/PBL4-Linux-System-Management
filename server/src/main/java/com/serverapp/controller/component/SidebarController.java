@@ -34,12 +34,6 @@ public class SidebarController {
     @FXML
     private Button btnSetting;
 
-    // Add your event handling methods here
-    @FXML
-    private void handleSystemMonitoring() {
-        // Handle System Monitoring button click
-        System.out.println("System Monitoring button clicked");
-    }
 
     @FXML
     private void handleUserAndAccess() {
@@ -72,7 +66,7 @@ public class SidebarController {
     }
 
     @FXML
-    private void handleSystemClick(javafx.scene.input.MouseEvent event) {
+    private void handleSystemMonitoring(javafx.scene.input.MouseEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/main-view.fxml"));
             Parent root = loader.load();
