@@ -7,23 +7,16 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:controller="com.serverapp.controller.view.MainController" onMouseClicked="#viewchange" prefHeight="719.0" prefWidth="1312.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
-    <fx:include source="../component/side-bar.fxml" />
-    <FlowPane layoutX="346.4" layoutY="7.0" prefHeight="70.0" prefWidth="349.0" vgap="5.0" AnchorPane.leftAnchor="346.4" AnchorPane.topAnchor="7.0">
-        <Label text="Welcome back, Admin name" textFill="WHITE">
-            <font>
-                <Font name="System Bold" size="24.0" />
-            </font>
-        </Label>
-        <Label text="All computer in your LAN will be showed here!!!!" textFill="WHITE">
-            <font>
-                <Font name="Montserrat Medium" size="14.0" />
-            </font>
-        </Label>
-    </FlowPane>
+<AnchorPane onMouseClicked="#viewchange" prefHeight="719.0" prefWidth="1312.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.MainController">
+   <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <children>
+          <fx:include source="../component/side-bar.fxml" />
+      </children>
+   </AnchorPane>
     <Button layoutX="1214.0" layoutY="31.0" mnemonicParsing="false" style="-fx-background-color: transperant;" />
     <FlowPane hgap="20.0" layoutX="1159.0" layoutY="23.0" prefHeight="25.0" prefWidth="80.0" AnchorPane.rightAnchor="73.0" AnchorPane.topAnchor="23.0">
         <ImageView id="icon-list-view" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
@@ -33,8 +26,7 @@
             <Image url="@../images/grid-view-icon.png" />
         </ImageView>
     </FlowPane>
-    <fx:include layoutX="414.0" layoutY="543.0" source="../component/panel-port.fxml" />
-        <FlowPane layoutX="414.0" layoutY="90.0" prefHeight="50.0" prefWidth="830.0">
+        <FlowPane layoutX="404.0" layoutY="64.0" prefHeight="50.0" prefWidth="830.0" AnchorPane.leftAnchor="404.0" AnchorPane.topAnchor="64.0">
             <children>
                 <Label fx:id="btnGeneral" alignment="CENTER" prefHeight="40.0" prefWidth="150.0" text="General" textAlignment="CENTER" textFill="WHITE">
                     <font>
@@ -75,9 +67,10 @@
                 </Line>
             </children>
         </FlowPane>
-    <ImageView fitHeight="346.0" fitWidth="830.0" layoutX="414.0" layoutY="159.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../images/computer-icon.png" />
-      </image>
-   </ImageView>
+   <Pane layoutX="396.0" layoutY="147.0" prefHeight="344.0" prefWidth="848.0" styleClass="blue-background" AnchorPane.bottomAnchor="228.0" AnchorPane.leftAnchor="396.0" AnchorPane.rightAnchor="68.0" />
+   <AnchorPane layoutX="395.0" layoutY="509.0" prefHeight="177.0" prefWidth="848.0" AnchorPane.bottomAnchor="33.0" AnchorPane.leftAnchor="395.0" AnchorPane.rightAnchor="69.0">
+      <children>
+          <fx:include fx:id="panelPortInclude" source="../component/panel-port.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      </children>
+   </AnchorPane>
 </AnchorPane>

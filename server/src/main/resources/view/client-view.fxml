@@ -10,9 +10,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:controller="com.serverapp.controller.view.MainController" onMouseClicked="#viewchange" prefHeight="719.0" prefWidth="1312.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
-        <fx:include source="../component/side-bar.fxml" />
-             <fx:include fx:id="clientCard" layoutX="414.0" layoutY="165.0" source="../component/client-detail.fxml" />
+<AnchorPane onMouseClicked="#viewchange" prefHeight="719.0" prefWidth="1312.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.MainController">
         <FlowPane layoutX="346.4" layoutY="7.0" prefHeight="70.0" prefWidth="349.0" vgap="5.0" AnchorPane.leftAnchor="346.4" AnchorPane.topAnchor="7.0">
             <Label text="Welcome back, Admin name" textFill="WHITE">
                 <font>
@@ -34,7 +32,7 @@
                         <Image url="@../images/grid-view-icon.png" />
                 </ImageView>
         </FlowPane>
-        <fx:include layoutX="414.0" layoutY="543.0" source="../component/panel-port.fxml" />
+        <fx:include fx:id="panelPortInclude" source="../component/panel-port.fxml" AnchorPane.bottomAnchor="52.0" AnchorPane.leftAnchor="414.0" AnchorPane.rightAnchor="68.0" />
         <FlowPane layoutX="414.0" layoutY="90.0" prefHeight="50.0" prefWidth="830.0">
             <children>
                 <Label fx:id="btnGeneral" alignment="CENTER" prefHeight="40.0" prefWidth="150.0" styleClass="primary-text" text="General" textAlignment="CENTER" textFill="WHITE">
@@ -76,4 +74,14 @@
                 </Line>
             </children>
         </FlowPane>
+   <AnchorPane layoutX="360.0" layoutY="152.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="360.0" AnchorPane.rightAnchor="47.0" AnchorPane.topAnchor="152.0">
+      <children>
+                   <fx:include fx:id="clientCard" source="../component/client-detail.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      </children>
+   </AnchorPane>
+   <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <children>
+              <fx:include source="../component/side-bar.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      </children>
+   </AnchorPane>
 </AnchorPane>
