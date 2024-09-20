@@ -1,6 +1,9 @@
 package com.serverapp;
 
+import com.serverapp.controller.view.ScreenCaptureController;
 import com.serverapp.util.ITCPServer;
+import com.serverapp.util.implement.ScreenCaptureServer;
+import com.serverapp.util.implement.ScreenCaptureServerUDP;
 import com.serverapp.util.implement.TCPServer;
 import com.serverapp.controller.view.MainController;
 import javafx.application.Application;
@@ -21,7 +24,7 @@ public class Main extends Application {
 
         // Initialize and start the TCP server
         server = new TCPServer();
-        server.setPort(2567);
+        server.setPort(9999);
         server.setMainController(mainController);
         server.start();
 
@@ -29,6 +32,18 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/screen-capture.fxml"));
+//        Parent root = loader.load();
+//        ScreenCaptureController screenCaptureController = loader.getController();
+//
+//        // Initialize and start the screen capture server
+//        screenCaptureController.initialize();
+//        ScreenCaptureServer server = new ScreenCaptureServer(9999, screenCaptureController);
+//        server.start();
+//
+//        Scene scene = new Scene(root);
+//        primaryStage.setScene(scene);
+//        primaryStage.show();
     }
 
     @Override

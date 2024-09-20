@@ -9,7 +9,7 @@ import java.net.Socket;
 
 public class TCPClient implements INetworkClient {
     private static final String SERVER_ADDRESS = "localhost";
-    private static final int SERVER_PORT = 2567;
+    private static final int SERVER_PORT = 9999;
     private final Gson gson = new Gson();
     private final ISystemInfoCollector systemInfoCollector;
     private Socket socket;

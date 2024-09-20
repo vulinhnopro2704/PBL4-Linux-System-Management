@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.ScreenCaptureController">
+   <children>
+      <Pane fx:id="screenPane" layoutY="52.0" prefHeight="348.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="52.0" />
+      <Text layoutX="265.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Đây là Screen Capture" AnchorPane.leftAnchor="265.0" AnchorPane.rightAnchor="313.06328125" AnchorPane.topAnchor="21.0" />
+   </children>
+</AnchorPane>
