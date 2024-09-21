@@ -31,15 +31,15 @@
       <children>
       
          <!-- Địa chỉ IP -->
-         <Label prefWidth="100.0" text="IP Address" textFill="WHITE">
+         <Label fx:id="labelIpAddress" prefWidth="100.0" text="IP Address" textFill="WHITE">
             <FlowPane.margin>
                <Insets left="80.0" />
             </FlowPane.margin>
          </Label>
-         <Label id="lbIpAddress" fx:id="txtIpAddress" prefHeight="22.0" prefWidth="150.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="192.168.1.1" textFill="WHITE" />
+         <Label id="lbIpAddress" fx:id="txtIPAddress" prefHeight="22.0" prefWidth="150.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="192.168.1.1" textFill="WHITE" />
       
          <!-- Địa chỉ MAC -->
-         <Label prefWidth="100.0" text="MAC Address" textFill="WHITE">
+         <Label fx:id="labelMACAddress" prefWidth="100.0" text="MAC Address" textFill="WHITE">
             <FlowPane.margin>
                <Insets left="80.0" />
             </FlowPane.margin>
@@ -47,7 +47,7 @@
          <Label fx:id="txtMACAddress" prefHeight="22.0" prefWidth="150.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="00-0C-29-34-E9-B1" textFill="WHITE" />
       
          <!-- Phiên bản hệ điều hành -->
-         <Label prefWidth="100.0" text="OS version" textFill="WHITE">
+         <Label fx:id="labelOSVersion" prefWidth="100.0" text="OS version" textFill="WHITE">
             <FlowPane.margin>
                <Insets left="80.0" />
             </FlowPane.margin>
