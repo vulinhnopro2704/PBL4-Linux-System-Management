@@ -16,7 +16,11 @@
 
     <fx:include source="../component/side-bar.fxml" />
     <ScrollPane fitToWidth="true" layoutX="349.0" layoutY="100.0" prefHeight="430.0" prefWidth="918.0" style="-fx-background: transparent; -fx-background-color: transparent;" AnchorPane.bottomAnchor="223.0" AnchorPane.leftAnchor="349.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="100.0"> <!-- Thêm thuộc tính fitToWidth="true" -->
-        <FlowPane fx:id="clientCardContainer" hgap="40.0" prefHeight="390.0" vgap="40.0" />
+        <FlowPane fx:id="clientCardContainer" hgap="40.0" prefHeight="390.0" vgap="40.0">
+            <fx:include source="../component/client-card.fxml" />
+            <fx:include source="../component/client-card.fxml" />
+            <fx:include source="../component/client-card.fxml" />
+        </FlowPane>
     </ScrollPane>
 
     <FlowPane layoutX="349.0" layoutY="21.0" prefHeight="70.0" prefWidth="349.0" vgap="5.0" AnchorPane.leftAnchor="349.0" AnchorPane.topAnchor="21.0">
