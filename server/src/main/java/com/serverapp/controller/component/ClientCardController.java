@@ -1,7 +1,6 @@
 
 package com.serverapp.controller.component;
 
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 import com.serverapp.controller.view.MainController;
@@ -33,9 +32,7 @@ public class ClientCardController {
 
     @FXML
     private Circle iconStatus;
-    private Scene scene;
-    private Stage stage;
-    private Parent root;
+
 
    /* @FXML
     private void handleCardClick(MouseEvent event) {
