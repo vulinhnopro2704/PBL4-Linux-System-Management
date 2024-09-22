@@ -10,10 +10,8 @@
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="753.0" prefWidth="1312.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.MainController">
-
-    <fx:include source="../component/side-bar.fxml" />
-    <ScrollPane fitToWidth="true" layoutX="349.0" layoutY="100.0" prefHeight="430.0" prefWidth="918.0" style="-fx-background: transparent; -fx-background-color: transparent;" AnchorPane.bottomAnchor="223.0" AnchorPane.leftAnchor="349.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="100.0"> <!-- Thêm thuộc tính fitToWidth="true" -->
-        <FlowPane fx:id="clientCardContainer" hgap="40.0" prefHeight="390.0" vgap="40.0">
+    <ScrollPane fitToWidth="true" layoutX="349.0" layoutY="100.0" prefHeight="444.0" prefWidth="918.0" style="-fx-background: transparent; -fx-background-color: transparent;" AnchorPane.bottomAnchor="209.0" AnchorPane.leftAnchor="349.0" AnchorPane.rightAnchor="45.0" AnchorPane.topAnchor="100.0"> <!-- Thêm thuộc tính fitToWidth="true" -->
+        <FlowPane fx:id="clientCardContainer" hgap="30.0" prefHeight="440.0" prefWidth="903.0" vgap="30.0">
             <fx:include source="../component/client-card.fxml" />
             <fx:include source="../component/client-card.fxml" />
             <fx:include source="../component/client-card.fxml" />
@@ -48,11 +46,17 @@
 
             </ImageView>
       </FlowPane>
+   <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <children>
 
-     <fx:include fx:id="panelPortInclude"
-                 source="../component/panel-port.fxml"
-                 AnchorPane.bottomAnchor="52.0"
-                 AnchorPane.leftAnchor="414.0"
-                 AnchorPane.rightAnchor="68.0" />
+          <fx:include source="../component/side-bar.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      </children>
+   </AnchorPane>
+   <AnchorPane layoutX="316.0" layoutY="555.0" prefHeight="183.0" prefWidth="952.0" AnchorPane.bottomAnchor="14.800000000000011" AnchorPane.leftAnchor="316.0" AnchorPane.rightAnchor="44.0">
+      <children>
+
+           <fx:include fx:id="panelPortInclude" source="../component/panel-port.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+      </children>
+   </AnchorPane>
 
 </AnchorPane>
