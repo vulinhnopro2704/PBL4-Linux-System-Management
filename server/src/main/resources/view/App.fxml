@@ -12,20 +12,10 @@
     <!-- Sidebar: Hiển thị ở bên trái -->
     <fx:include source="../component/side-bar.fxml" />
 
-    <!-- Topbar: Hiển thị khi cần -->
-    <top>
-        <HBox fx:id="topBar" visible="false">
-            <Label text="Topbar" />
-            <!-- Các nút điều khiển như Detail, Process... -->
-            <Button text="Detail" onAction="#handleDetail"/>
-            <Button text="Process" onAction="#handleProcess"/>
-        </HBox>
-    </top>
-
     <!-- Vùng nội dung thay đổi (Detail, Process, File, etc.) -->
     <center>
         <StackPane fx:id="contentArea">
-            <!-- Nội dung mặc định có thể để trống -->
+            <!-- Thay đổi nội dung ở đây -->
         </StackPane>
     </center>
 

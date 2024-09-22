@@ -17,7 +17,6 @@ public class ScreenCaptureController {
     public void initialize() {
         swingNode = new SwingNode();
         screenPane.getChildren().add(swingNode);
-
     }
 
     public void updateScreenCapture(ImageIcon imageIcon) {
