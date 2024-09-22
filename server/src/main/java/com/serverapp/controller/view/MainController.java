@@ -8,6 +8,8 @@ import com.serverapp.controller.component.PanelPortController;
 import com.serverapp.model.ClientCard;
 import com.serverapp.model.Redis;
 
+import com.serverapp.util.ITCPServer;
+import com.serverapp.util.implement.TCPServer;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.application.Platform;
@@ -39,6 +41,7 @@ public class MainController {
     private AnchorPane panelPortInclude;
 
     private PanelPortController panelPortController;
+    private ITCPServer server;
 
     // Khởi tạo controller
     @FXML
@@ -55,6 +58,12 @@ public class MainController {
             // Load panel-port.fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/panel-port.fxml"));
             AnchorPane panelPortRoot = loader.load(); // Lấy root từ panel-port.fxml
+
+            // Initialize and start the TCP server
+            server = new TCPServer();
+            server.setPort(9999);
+            server.setMainController(this);
+            server.start();
 
             // Set controller từ panel-port.fxml
             panelPortController = loader.getController();
@@ -139,5 +148,12 @@ public class MainController {
                 System.err.println("PanelPortController is not initialized.");
             }
         });
+    }
+
+    private void stop(){
+        // Stop the server when the application is closed
+        if (server != null) {
+            server.stop();
+        }
     }
 }
