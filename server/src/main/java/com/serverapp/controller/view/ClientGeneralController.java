@@ -122,7 +122,5 @@ public class ClientGeneralController implements IController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    // Add methods to handle button clicks or other interactions if needed
+    }// Add methods to handle button clicks or other interactions if needed
 }

@@ -2,11 +2,11 @@ package com.serverapp.database;
 
 import com.serverapp.model.ClientCard;
 import com.serverapp.model.ClientDetail;
+import com.serverapp.model.ClientProcess;
 import lombok.Getter;
+import lombok.Setter;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Redis {
     private static Redis _instance;
@@ -16,6 +16,9 @@ public class Redis {
      */
     @Getter
     private Map<String, ClientDetail> mapClientDetailView = new HashMap<String, ClientDetail>();
+    @Getter
+    @Setter
+    private List<ClientProcess> clientProcessView = new ArrayList<ClientProcess>();
 
     public static Redis getInstance(){
         if (_instance == null){
@@ -49,6 +52,10 @@ public class Redis {
      - ClientDetail if this ip address already has value.
      */
     public ClientDetail getClientDetail(String key) {
+        Set<String> keySet = mapClientDetailView.keySet();
+        for (String keys : keySet) {
+            System.out.println(keys);
+        }
         return mapClientDetailView.get(key);
     }
 
@@ -75,6 +82,17 @@ public class Redis {
         return list.toList();
     }
 
+    public List<ClientDetail> getAllClientDetail(){
+        var list = mapClientDetailView.values().stream().map(clientDetail -> new ClientDetail(
+                clientDetail.getCpuModel(),
+                clientDetail.getRam(),
+                clientDetail.getUsedDisk(),
+                clientDetail.getTotalDisk(),
+                clientDetail.getProcessDetails()
+        ));
+        return list.toList();
+    }
+
     public void putAllClientCard(List<ClientCard> list){
         list.stream().forEach(clientCard -> {
             putClientDetail(
@@ -90,6 +108,7 @@ public class Redis {
             );
         });
     }
+
 
     public boolean containsIp(String ip){
         return mapClientDetailView.containsKey(ip);

@@ -14,6 +14,7 @@ module com.clientapp {
     requires com.google.gson;
     requires javafx.swing;
     requires static lombok;
+    requires jdk.management;
 
     opens com.clientapp to javafx.fxml;
     exports com.clientapp;
@@ -24,4 +25,5 @@ module com.clientapp {
     opens com.clientapp.model to com.google.gson;
     exports com.clientapp.socket;
     opens com.clientapp.socket to javafx.fxml;
+    exports com.clientapp.service.implement;
 }
