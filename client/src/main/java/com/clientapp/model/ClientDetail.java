@@ -1,5 +1,11 @@
 package com.clientapp.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
+@Getter
+@Setter
 public class ClientDetail {
     public String hostName;
     public String ipAddress;
@@ -10,6 +16,8 @@ public class ClientDetail {
     public Long usedDisk;
     public Long totalDisk;
     public Boolean isConnect;
+
+    public List<ClientProcessDetail> processDetails;
 
     public ClientDetail(
             String hostName, String ipAddress, String MACAddress,
