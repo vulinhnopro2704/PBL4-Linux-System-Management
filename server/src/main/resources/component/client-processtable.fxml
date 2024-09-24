@@ -7,24 +7,24 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="372.0" prefWidth="942.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" styleClass="card-backgroud-color" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="372.0" prefWidth="942.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" styleClass="card-backgroud-color" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.component.ProcessTableController">
     <children>
       <ScrollPane layoutX="4.8" prefHeight="372.0" prefWidth="942.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" styleClass="card-backgroud-color" stylesheets="@../styles/scrollpaneStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="372.0" prefWidth="928.5" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" styleClass="card-backgroud-color">
                <children>
-                    <TableView layoutX="-3.2" prefHeight="372.0" prefWidth="878.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" styleClass="card-backgroud-color" stylesheets="@../styles/tablestyles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <TableView fx:id="tableView" layoutX="-3.2" onMouseClicked="#clickHandler" prefHeight="372.0" prefWidth="878.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" styleClass="card-backgroud-color" stylesheets="@../styles/tablestyles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                         <columns>
-                            <TableColumn maxWidth="500.0" prefWidth="150.0" style="-fx-text-fill: white;" text="Process ID">
+                            <TableColumn fx:id="processIDCol" maxWidth="500.0" prefWidth="150.0" style="-fx-text-fill: white;" text="Process ID">
                                 <styleClass>
                                     <String fx:value="white-text" />
                                     <String fx:value="card-backgroud-color" />
                                 </styleClass>
                             </TableColumn>
-                            <TableColumn maxWidth="500.0" prefWidth="170.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="Process name" />
-                            <TableColumn prefWidth="250.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="Process path" />
-                        <TableColumn maxWidth="500.0" prefWidth="120.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="\%CPU" />
-                        <TableColumn maxWidth="500.0" prefWidth="130.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="\%RAM" />
+                            <TableColumn fx:id="processNameCol" maxWidth="500.0" prefWidth="170.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="Process name" />
+                            <TableColumn fx:id="processPathCol" prefWidth="250.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="Process path" />
+                        <TableColumn fx:id="cpuUsageCol" maxWidth="500.0" prefWidth="120.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="\%CPU" />
+                        <TableColumn fx:id="ramUsageCol" maxWidth="500.0" prefWidth="130.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="\%RAM" />
                         <TableColumn maxWidth="500.0" prefWidth="105.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="Port" />
                         </columns>
                     </TableView>

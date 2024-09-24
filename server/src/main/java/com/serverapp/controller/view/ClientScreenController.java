@@ -2,6 +2,7 @@ package com.serverapp.controller.view;
 
 import com.serverapp.controller.IController;
 import com.serverapp.enums.RequestType;
+import com.serverapp.socket.SocketManager;
 import com.serverapp.util.CurrentType;
 import com.serverapp.service.implement.ScreenCaptureServer;
 import javafx.application.Platform;
@@ -48,6 +49,7 @@ public class ClientScreenController implements IController {
         // Initialize and start the screen capture server
         CurrentType.getInstance().setType(RequestType.SCREEN_CAPTURE);
         currentClientIp = AppController.getInstance().getCurrentClientIp();
+//        SocketManager.getInstance().sendCurrentRequestType(currentClientIp);
         screenCaptureServer = new ScreenCaptureServer(this);
 
         screenCaptureServer.start();

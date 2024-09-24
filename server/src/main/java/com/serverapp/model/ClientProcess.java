@@ -12,9 +12,9 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ClientProcess {
-    private String processID;
-    private String processName;
-    private String processPath;
-    private String CPUusage;
-    private String RAMusage;
+    public String processID;
+    public String processName;
+    public String processPath;
+    public String CPUusage;
+    public String RAMusage;
 }
