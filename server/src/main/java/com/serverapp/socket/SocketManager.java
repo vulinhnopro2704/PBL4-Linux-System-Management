@@ -1,12 +1,6 @@
 package com.serverapp.socket;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
@@ -252,7 +246,6 @@ public class SocketManager {
                 return requestType.name();
             }
         }
-
         System.out.println("Encrypted Message: " + encryptedMessage);
         String decryptedMessage =  decryptWithAES(encryptedMessage, aesKey);
         System.out.println("Decrypted Message: " + decryptedMessage);
@@ -275,6 +268,13 @@ public class SocketManager {
         System.out.println("Encrypted Message: " + encryptedMessage);
         writer.write(encryptedMessage + "\n");
         writer.flush();
+    }
+
+    public void clearReceiveStream(String ipAddress) throws IOException {
+        DataInputStream dataInputStream = new DataInputStream(getClientCredentials(ipAddress).getInputStream());
+        if (dataInputStream.available() >0){
+            dataInputStream.readFully(new byte[dataInputStream.available()]);
+        }
     }
 
     // Encrypt with AES

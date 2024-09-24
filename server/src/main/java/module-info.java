@@ -17,6 +17,7 @@ module com.serverapp {
     requires com.github.oshi;
     requires javafx.swing;
     requires java.logging;
+    requires jdk.management;
 
     opens com.serverapp to javafx.fxml;
     exports com.serverapp;
@@ -40,4 +41,5 @@ module com.serverapp {
     exports com.serverapp.controller;
     opens com.serverapp.controller to javafx.fxml;
     opens com.serverapp.controller.component to javafx.fxml;
+
 }

@@ -97,7 +97,7 @@ public class MainCommandController implements IController {
                 // Receive encrypted response from client
                 String response;
                 if (isRunning)
-                     response = SocketManager.getInstance().receiveDecryptedMessage(clientSocket.getInetAddress().getHostAddress());
+                    response = SocketManager.getInstance().receiveDecryptedMessage(clientSocket.getInetAddress().getHostAddress());
                 else {
                     break;
                 }

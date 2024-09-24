@@ -2,12 +2,14 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" prefHeight="800.0" prefWidth="1234.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.ClientPerformanceController">
+<AnchorPane prefHeight="800.0" prefWidth="1234.0" styleClass="dark-background" stylesheets="@../styles/styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.ClientPerformanceController">
    <!-- (cac button chuyen) -->
    <FlowPane layoutX="35.0" layoutY="86.0" prefHeight="44.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="65.0">
       <children>
@@ -51,9 +53,20 @@
       </children>
    </FlowPane>
 
-   <!-- Include client performance chart -->
-   <AnchorPane fx:id="clientChartInclude" AnchorPane.leftAnchor="140.0" AnchorPane.rightAnchor="140.0" AnchorPane.topAnchor="200.0" />
-
    <!-- Include panel port -->
    <AnchorPane fx:id="panelPortInclude" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"> </AnchorPane>
+   <TabPane fx:id="clientChartIncludeTabPane" layoutX="43.0" layoutY="148.0" prefHeight="582.0" prefWidth="1177.0" tabClosingPolicy="UNAVAILABLE">
+      <tabs>
+         <Tab fx:id="performanceTab" text="Performance">
+            <content>
+               <AnchorPane fx:id="performanceAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="530.0" prefWidth="808.0" />
+            </content>
+         </Tab>
+         <Tab fx:id="CPUtab" text="CPU">
+            <content>
+               <AnchorPane fx:id="CPUinfoAnchorPane" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+         </Tab>
+      </tabs>
+   </TabPane>
 </AnchorPane>

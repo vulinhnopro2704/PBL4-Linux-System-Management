@@ -174,4 +174,18 @@ public class ClientSocket {
             e.printStackTrace();
         }
     }
+
+    //Ham gui khong ma hoa
+    // Send message without encryption for testing purposes
+    public void sendPlainMessage(String message) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+            writer.write(message + "\n");
+            writer.flush();
+            System.out.println("Sent plain message: " + message);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
