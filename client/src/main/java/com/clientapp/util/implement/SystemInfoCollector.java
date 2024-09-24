@@ -1,6 +1,7 @@
 package com.clientapp.util.implement;
 
 import com.clientapp.model.ClientDetail;
+import com.clientapp.model.ClientProcessDetail;
 import com.clientapp.util.IConvertData;
 import com.clientapp.util.ISystemInfoCollector;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -63,8 +64,10 @@ public class SystemInfoCollector implements ISystemInfoCollector {
             totalDisk += convertData.bytesToGB(total);
             usedDisk += convertData.bytesToGB(used);
         }
+        ClientProcessDetailCollector collector = new ClientProcessDetailCollector();
+        List<ClientProcessDetail> processDetails = collector.collectProcessDetails();
         return new ClientDetail(
-                hostName, ipAddress, macAddress, OSVersion, processor, Ram, usedDisk, totalDisk
+                hostName, ipAddress, macAddress, OSVersion, processor, Ram, usedDisk, totalDisk, processDetails
         );
     }
 }

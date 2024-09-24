@@ -22,7 +22,7 @@ public class ClientDetail {
     public ClientDetail(
             String hostName, String ipAddress, String MACAddress,
             String OSVersion, String cpuModel, Long ram,
-            Long usedDisk, Long totalDisk){
+            Long usedDisk, Long totalDisk, List<ClientProcessDetail> processDetails){
         this.hostName = hostName;
         this.ipAddress = ipAddress;
         this.macAddress = MACAddress;
@@ -31,5 +31,6 @@ public class ClientDetail {
         this.ram = ram;
         this.usedDisk = usedDisk;
         this.totalDisk = totalDisk;
+        this.processDetails = processDetails;
     }
 }

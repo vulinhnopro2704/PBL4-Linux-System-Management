@@ -124,7 +124,6 @@ public class MainController {
                 ClientCardController controller = loader.getController();
                 if (controller != null) {
                     controller.setClientInfo(hostName, ipAddress, macAddress, osVersion, isConnect);
-
                     clientCardContainer.getChildren().add(clientCard);
                 } else {
                     appendLog("ClientCardController is null");
