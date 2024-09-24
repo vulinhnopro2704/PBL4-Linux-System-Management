@@ -5,16 +5,17 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.*;
+import com.serverapp.controller.view.AppController;
 import com.serverapp.controller.view.MainSystemController;
 import com.serverapp.enums.RequestType;
+import com.serverapp.model.ClientProcess;
 import com.serverapp.socket.SocketManager;
 import com.serverapp.util.CurrentType;
 import com.serverapp.util.NetworkInfoCollector;
@@ -85,37 +86,41 @@ public class SystemMonitoring implements ISystemMonitoring {
         });
     }
 
-    private void handleClient(Socket clientSocket){
+    private void handleClient(Socket clientSocket) {
         try {
+            // Xử lý SYSTEM_INFO
             while (CurrentType.getInstance().getType() == RequestType.SYSTEM_INFO) {
-                String response =  SocketManager.getInstance().receiveDecryptedMessage(clientSocket.getInetAddress().getHostAddress());
+                String response = SocketManager.getInstance().receiveDecryptedMessage(clientSocket.getInetAddress().getHostAddress());
 
                 logMessage("Received JSON from client: " + response);
                 System.out.println(response);
-                // Parse the received JSON using Gson
+
                 Gson gson = new Gson();
                 JsonObject jsonObject = gson.fromJson(response, JsonObject.class);
 
+                // Lưu thông tin tĩnh (hostName, ip, macAddress, etc.)
                 Redis.getInstance().putClientDetail(
                         clientSocket.getInetAddress().getHostAddress(),
                         new ClientDetail().builder()
                                 .hostName(jsonObject.get("hostName").getAsString())
                                 .ipAddress(clientSocket.getInetAddress().toString().substring(1))
                                 .macAddress(jsonObject.get("macAddress").getAsString())
-                                .ram(Long.valueOf(jsonObject.get("ram").toString()))
-                                .cpuModel(jsonObject.get("cpuModel").toString())
+                                .ram(jsonObject.get("ram").getAsLong())
+                                .cpuModel(jsonObject.get("cpuModel").getAsString())
                                 .osVersion(jsonObject.get("osVersion").getAsString())
                                 .isConnect(true)
                                 .usedDisk(jsonObject.get("usedDisk").getAsLong())
                                 .totalDisk(jsonObject.get("totalDisk").getAsLong())
+                                .processDetails(new ArrayList<>())  // Khởi tạo danh sách process trống
                                 .build()
                 );
 
+                // Hiển thị thông tin tĩnh của client
                 Redis.getInstance().getMapClientDetailView().forEach((key, value) -> {
                     System.out.println(key + " : " + value);
                 });
 
-                // Update the UI with the received information
+                // Cập nhật UI với thông tin tĩnh
                 mainSystemController.updateUI();
                 break;
             }
