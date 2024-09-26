@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.effect.DropShadow?>
@@ -11,16 +12,16 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="283.0" prefWidth="905.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="900.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <ImageView fitHeight="139.0" fitWidth="232.0" layoutX="77.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fitHeight="139.0" fitWidth="232.0" layoutX="77.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="642.8859710693359" AnchorPane.topAnchor="37.0">
             <image>
                 <Image url="@../images/computer-icon.png" />
             </image>
         </ImageView>
-        <Line endX="-100.0" endY="124.60000610351562" layoutX="436.0" layoutY="64.0" startX="-100.0" stroke="WHITE" strokeWidth="3.0" />
-        <Line endX="738.7999267578125" endY="67.60000610351562" layoutX="140.0" layoutY="157.0" startX="-109.19998168945312" startY="67.60000610351562" stroke="WHITE" />
-        <FlowPane layoutX="366.0" layoutY="30.0" prefHeight="200.0" prefWidth="200.0" vgap="10.0">
+        <Line endX="-100.0" endY="124.60000610351562" layoutX="436.0" layoutY="58.0" startX="-100.0" stroke="WHITE" strokeWidth="3.0" AnchorPane.rightAnchor="561.5" AnchorPane.topAnchor="52.5" />
+        <Line endX="738.7999267578125" endY="67.60000610351562" layoutX="140.0" layoutY="157.0" startX="-109.19998168945312" startY="67.60000610351562" stroke="WHITE" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+        <FlowPane layoutX="366.0" layoutY="30.0" prefHeight="200.0" prefWidth="490.0" vgap="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
             <children>
                 <FlowPane hgap="20.0" prefHeight="28.0" prefWidth="400.0">
                     <children>
@@ -94,22 +95,31 @@
                 </FlowPane>
             </children>
         </FlowPane>
-        <FlowPane hgap="20.0" layoutX="49.0" layoutY="232.0" prefHeight="46.0" prefWidth="831.0">
+        <FlowPane hgap="20.0" layoutX="49.0" layoutY="232.0" prefHeight="53.0" prefWidth="900.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
                 <Label prefWidth="60.0" text="RAM" textFill="WHITE">
                     <font>
                         <Font name="Montserrat Medium" size="16.0" />
                     </font>
+               <FlowPane.margin>
+                  <Insets left="42.0" top="5.0" />
+               </FlowPane.margin>
                 </Label>
                 <Label id="lbIpAddress" prefHeight="26.0" prefWidth="74.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="8GB" textFill="WHITE">
                     <font>
                         <Font name="Montserrat Medium" size="16.0" />
                     </font>
+               <FlowPane.margin>
+                  <Insets left="10.0" top="5.0" />
+               </FlowPane.margin>
                 </Label>
                 <Label prefHeight="26.0" prefWidth="128.0" text="Used / Total disk" textFill="WHITE">
                     <font>
                         <Font name="Montserrat Medium" size="16.0" />
                     </font>
+               <FlowPane.margin>
+                  <Insets left="10.0" top="5.0" />
+               </FlowPane.margin>
                 </Label>
                 <AnchorPane prefHeight="20.0" prefWidth="350.0" style="-fx-background-radius: 10px;" stylesheets="@../styles/styles.css">
                     <children>
@@ -119,11 +129,17 @@
                             </children>
                         </AnchorPane>
                     </children>
+               <FlowPane.margin>
+                  <Insets left="10.0" top="2.0" />
+               </FlowPane.margin>
                 </AnchorPane>
                 <Label id="lbIpAddress" prefHeight="26.0" prefWidth="96.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="500/512 GB" textFill="WHITE">
                     <font>
                         <Font name="Montserrat Medium" size="16.0" />
                     </font>
+               <FlowPane.margin>
+                  <Insets left="10.0" top="5.0" />
+               </FlowPane.margin>
                 </Label>
             </children>
         </FlowPane>
