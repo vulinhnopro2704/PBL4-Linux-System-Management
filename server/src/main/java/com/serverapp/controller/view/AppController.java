@@ -1,54 +1,127 @@
 package com.serverapp.controller.view;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
-
+import javafx.scene.layout.AnchorPane;
 import java.io.IOException;
 
 public class AppController {
+    private static AppController _INSTANCE;
+
+    public static AppController getInstance() {
+        if (_INSTANCE == null) {
+            _INSTANCE = new AppController();
+        }
+        return _INSTANCE;
+    }
 
     @FXML
-    private StackPane contentArea;
+    public void initialize() {
+        _INSTANCE = this;
+        btnSystemMonitoring.getStyleClass().setAll("active-button");
+        setFxmlPath("/view/mainsystem-view.fxml");
+        loadPage(this.fxmlPath);
+    }
 
     @FXML
-    private TextArea logMessage;
+    public AnchorPane contentArea;
 
-    // Hàm xử lý khi nhấn vào System Monitoring Sidebar
-    public void handleSystemMonitoring(MouseEvent event) throws IOException {
-        // Tải file systemmonitoringpage.fxml vào vùng content
-        loadPage("/view/systemmonitoringpage.fxml");
+    @FXML
+    private Button btnSystemMonitoring;
+
+    @FXML
+    private Button btnCommandPrompt;
+
+    @FXML
+    private Button btnFileAndDirectory;
+
+    @FXML
+    private Button btnInstallAndUpdate;
+
+    @FXML
+    private Button btnSecurityManagement;
+
+    @FXML
+    private Button btnSetting;
+
+    private String fxmlPath;
+
+    public void setFxmlPath(String fxmlPath) {
+        this.fxmlPath = fxmlPath;
     }
 
-    // Hàm xử lý khi nhấn vào File and Directory Sidebar
-    public void handleFileAndDirectory(ActionEvent event) throws IOException {
-        // Tải file fileandirectpage.fxml vào vùng content
-        loadPage("/view/fileandirectpage.fxml");
+    // Reset button styles to default
+    private void resetButtonStyles() {
+        btnSystemMonitoring.getStyleClass().setAll("normal-button");
+        btnCommandPrompt.getStyleClass().setAll("normal-button");
+        btnFileAndDirectory.getStyleClass().setAll("normal-button");
+        btnInstallAndUpdate.getStyleClass().setAll("normal-button");
+        btnSecurityManagement.getStyleClass().setAll("normal-button");
+        btnSetting.getStyleClass().setAll("normal-button");
     }
 
-    // Hàm xử lý khi nhấn vào Detail
-    public void handleDetail(ActionEvent event) throws IOException {
-        // Tải file detail.fxml vào vùng content
-        loadPage("/view/detail.fxml");
+    @FXML
+    private void handleSystemMonitoring(MouseEvent event) {
+        resetButtonStyles();
+        btnSystemMonitoring.getStyleClass().setAll("active-button");
+        setFxmlPath("/view/mainsystem-view.fxml");
+        loadPage(this.fxmlPath);
     }
 
-    // Hàm xử lý khi nhấn vào Process
-    public void handleProcess(ActionEvent event) throws IOException {
-        // Tải file process.fxml vào vùng content
-        loadPage("/view/process.fxml");
+    @FXML
+    private void handleCommandPrompt(MouseEvent event) {
+        resetButtonStyles();
+        btnCommandPrompt.getStyleClass().setAll("active-button");
+        setFxmlPath("/view/main-command-view.fxml");
+        loadPage(this.fxmlPath);
     }
 
-    // Hàm tiện ích để load các trang vào vùng contentArea
-    private void loadPage(String fxmlFile) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-        Parent page = loader.load();
+    @FXML
+    private void handleFileAndDirectory(MouseEvent event) {
+        resetButtonStyles();
+        btnFileAndDirectory.getStyleClass().setAll("active-button");
+        setFxmlPath("/view/main-filedirectory-view.fxml");
+        loadPage(this.fxmlPath);
+    }
 
-        // Xóa tất cả các trang hiện tại và thêm trang mới
-        contentArea.getChildren().clear();
-        contentArea.getChildren().add(page);
+    @FXML
+    private void handleInstallAndUpdate(MouseEvent event) {
+        resetButtonStyles();
+        btnInstallAndUpdate.getStyleClass().setAll("active-button");
+        setFxmlPath("/view/main-install-view.fxml");
+        loadPage(this.fxmlPath);
+    }
+
+    @FXML
+    private void handleSecurityManagement(MouseEvent event) {
+        resetButtonStyles();
+        btnSecurityManagement.getStyleClass().setAll("active-button");
+        setFxmlPath("/view/main-security-view.fxml");
+        loadPage(this.fxmlPath);
+    }
+
+    @FXML
+    private void handleSetting(MouseEvent event) {
+        resetButtonStyles();
+        btnSetting.getStyleClass().setAll("active-button");
+        setFxmlPath("/view/main-setting-view.fxml");
+        loadPage(this.fxmlPath);
+    }
+
+    // Method to load pages into the contentArea
+    public void loadPage(String fxmlPath) {
+        if (fxmlPath != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+                Parent root = loader.load();
+                contentArea.getChildren().clear();
+                contentArea.getChildren().add(root);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

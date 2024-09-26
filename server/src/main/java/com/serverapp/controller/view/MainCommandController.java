@@ -15,7 +15,6 @@ import javafx.scene.control.TextField;
 import lombok.SneakyThrows;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
@@ -26,7 +25,7 @@ import java.util.Base64;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class CommandController {
+public class MainCommandController {
 
     @FXML
     private ListView<CheckBox> clientListView;
