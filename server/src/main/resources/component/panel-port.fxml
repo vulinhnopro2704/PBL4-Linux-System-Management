@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.TextArea?>
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="panelPortRoot" fx:controller="com.serverapp.controller.component.PanelPortController" prefHeight="158.0" prefWidth="830.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane prefHeight="158.0" prefWidth="925.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+    <styleClass>
+        <String fx:value="card-backgroud-color" />
+        <String fx:value="gray-border" />
+    </styleClass>
     <children>
-        <TextArea fx:id="logContent" layoutX="5.0" layoutY="23.0" prefHeight="112.0" prefWidth="821.0" style="-fx-background: transparent; -fx-background-color: transparent; text-area-background: transparent;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+        <Label id="lbIpAddress" fx:id="txtIpAddress" layoutX="7.199999999999999" layoutY="8.8" prefHeight="22.0" prefWidth="723.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="Server is listening to connect in port 2357...." textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <padding>
+                <Insets left="20.0" top="10.0" />
+            </padding>
+            <font>
+                <Font size="16.0" />
+            </font>
+        </Label>
     </children>
 </AnchorPane>
