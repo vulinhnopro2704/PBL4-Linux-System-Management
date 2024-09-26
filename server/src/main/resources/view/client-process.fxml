@@ -18,7 +18,7 @@
    </AnchorPane>
    <AnchorPane layoutX="407.0" layoutY="115.0" prefHeight="375.0" prefWidth="844.0" AnchorPane.bottomAnchor="229.0" AnchorPane.leftAnchor="407.0" AnchorPane.rightAnchor="61.0" AnchorPane.topAnchor="115.0">
       <children>
-          <fx:include layoutX="398.0" layoutY="155.0" source="../component/client-processtable.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+          <fx:include source="../component/client-processtable.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
       </children>
    </AnchorPane>
     <Button layoutX="1214.0" layoutY="31.0" mnemonicParsing="false" style="-fx-background-color: transperant;" />
