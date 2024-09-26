@@ -50,7 +50,8 @@
 	-fx-border-width: 10px;
 	-fx-border-color: #0B1739;
 	-fx-background-color: #081028;
-	-fx-border-radius: 12px;
+	-fx-background-radius: 15px;
+	-fx-border-radius: 10px;
 }
 
 .text-area .content {
@@ -213,4 +214,17 @@
 .gray-border {
 	-fx-border-color: #aeb9e1; /* Border color */
 	-fx-border-width: 2px; /* Border width (adjust as needed) */
+}
+
+.normal-button {
+	-fx-alignment: left;
+	-fx-background-color: transparent;
+	-fx-text-fill: #aeb9e1;
+
+}
+
+.active-button {
+	fx-alignment: left;
+	-fx-background-color: transparent;
+	-fx-text-fill: #cb3cff;
 }

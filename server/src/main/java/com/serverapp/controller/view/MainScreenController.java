@@ -14,7 +14,7 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class ScreenCaptureController {
+public class MainScreenController {
     @FXML
     private Pane screenPane;
     private ImageView imageView;
