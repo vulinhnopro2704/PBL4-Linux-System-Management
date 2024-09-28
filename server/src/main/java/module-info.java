@@ -22,4 +22,6 @@ module com.serverapp {
     opens com.serverapp.controller.view to javafx.fxml;
     exports com.serverapp.controller.component;
     opens com.serverapp.controller.component to javafx.fxml;
+
+    opens com.serverapp.model to javafx.base; // Mở gói model cho javafx.base
 }

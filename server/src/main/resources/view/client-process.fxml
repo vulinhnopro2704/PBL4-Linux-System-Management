@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane onMouseClicked="#viewchange" prefHeight="719.0" prefWidth="1312.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.MainController">
+<AnchorPane onMouseClicked="#viewchange" prefHeight="719.0" prefWidth="1312.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.ClientProcessController">
    <AnchorPane prefHeight="200.0" prefWidth="200.0">
       <children>
           <fx:include source="../component/side-bar.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />

@@ -5,6 +5,7 @@ import lombok.Getter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Redis {
     private static Redis _instance;
@@ -46,6 +47,10 @@ public class Redis {
      - ClientDetail if this ip address already has value.
      */
     public ClientDetail getClientDetail(String key) {
+        Set<String> keySet = mapClientDetailView.keySet();
+        for (String keys : keySet) {
+            System.out.println(keys);
+        }
         return mapClientDetailView.get(key);
     }
 
@@ -68,6 +73,17 @@ public class Redis {
                 clientDetail.getMacAddress(),
                 clientDetail.getOsVersion(),
                 clientDetail.getIsConnect()
+        ));
+        return list.toList();
+    }
+
+    public List<ClientDetail> getAllClientDetail(){
+        var list = mapClientDetailView.values().stream().map(clientDetail -> new ClientDetail(
+                clientDetail.getCpuModel(),
+                clientDetail.getRam(),
+                clientDetail.getUsedDisk(),
+                clientDetail.getTotalDisk(),
+                clientDetail.getProcessDetails()
         ));
         return list.toList();
     }

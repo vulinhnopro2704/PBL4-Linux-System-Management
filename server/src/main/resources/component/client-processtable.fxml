@@ -7,7 +7,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="371.0" prefWidth="739.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.component.ClientProcessController">
+<AnchorPane prefHeight="371.0" prefWidth="739.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.component.ProcessTableController">
     <children>
         <ScrollPane layoutX="4.8" prefHeight="364.0" prefWidth="850.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" styleClass="card-backgroud-color" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <content>
@@ -15,7 +15,7 @@
                     <children>
                         <TableView fx:id="tableView" prefHeight="367.0" prefWidth="845.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="-4.0">
                             <columns>
-                                <TableColumn id="processIDCol" fx:id="processIDCol" maxWidth="500.0" prefWidth="130.0" style="-fx-text-fill: white;" text="Process ID">
+                                <TableColumn fx:id="processIDCol" maxWidth="500.0" prefWidth="130.0" style="-fx-text-fill: white;" text="Process ID">
                                     <styleClass>
                                         <String fx:value="white-text" />
                                         <String fx:value="card-backgroud-color" />
