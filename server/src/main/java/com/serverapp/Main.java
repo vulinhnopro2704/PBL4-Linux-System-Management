@@ -16,12 +16,12 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/main-view.fxml"));
-        Parent root = loader.load();
-
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/main-view.fxml"));
+//        Parent root = loader.load();
+//
+//        Scene scene = new Scene(root);
+//        primaryStage.setScene(scene);
+//        primaryStage.show();
 
 //        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/screen-capture.fxml"));
 //        Parent root = loader.load();
@@ -31,6 +31,12 @@ public class Main extends Application {
 //        screenCaptureController.initialize();
 //        ScreenCaptureServer server = new ScreenCaptureServer(9999, screenCaptureController);
 //        server.start();
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/command-view.fxml"));
+        Parent root = loader.load();
+
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     @Override
