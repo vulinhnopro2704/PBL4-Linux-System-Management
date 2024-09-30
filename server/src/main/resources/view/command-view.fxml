@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml" fx:controller="com.serverapp.controller.view.CommandController">
+    <ListView fx:id="clientListView" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" />
+    <TextArea fx:id="logArea" layoutX="14.0" layoutY="220.0" prefHeight="200.0" prefWidth="200.0" />
+    <TextField fx:id="commandField" layoutX="14.0" layoutY="430.0" prefWidth="200.0" />
+    <Button layoutX="14.0" layoutY="460.0" mnemonicParsing="false" onAction="#sendCommand" text="Send Command" />
+</AnchorPane>
