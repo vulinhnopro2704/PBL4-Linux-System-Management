@@ -87,4 +87,15 @@ public class Redis {
             );
         });
     }
+
+    // Save Client's AES Key and OutputStream
+    private Map<String, ClientCredentials> clientSocketData = new HashMap<>();
+
+    public ClientCredentials getClientCredential(String clientAddress) {
+        return clientSocketData.get(clientAddress);
+    }
+
+    public void putClientCredential(String hostAddress, ClientCredentials clientCredentials) {
+        clientSocketData.put(hostAddress, clientCredentials);
+    }
 }
