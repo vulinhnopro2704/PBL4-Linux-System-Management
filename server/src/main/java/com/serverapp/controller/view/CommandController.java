@@ -49,7 +49,20 @@ public class CommandController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        CheckBox[] checkBoxes = new CheckBox[] {
+            new CheckBox("Client 1"),
+            new CheckBox("Client 2"),
+            new CheckBox("Client 3"),
+            new CheckBox("Client 4"),
+            new CheckBox("Client 5"),
+            new CheckBox("Client 6"),
+            new CheckBox("Client 7"),
+            new CheckBox("Client 8"),
+            new CheckBox("Client 9"),
+            new CheckBox("Client 10")
+        };
+        clientList.addAll(checkBoxes);
+        clientListView.setItems(clientList);
         // Khởi động server socket
         executor.submit(this::startServerSocket);
     }

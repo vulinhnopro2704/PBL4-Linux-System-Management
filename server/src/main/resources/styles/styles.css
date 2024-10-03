@@ -1,3 +1,95 @@
+/* Style for CheckBox */
+.check-box {
+	-fx-text-fill: #21C3FC; /* Text color */
+}
+
+.check-box .box {
+	-fx-border-color: #21C3FC; /* Border color of the box */
+	-fx-border-width: 2px; /* Border width */
+	-fx-background-color: transparent; /* Background color of the box */
+}
+
+.check-box:selected .box .mark {
+	-fx-background-color: #21C3FC; /* Check mark color when checked */
+}
+
+.scroll-bar {
+	-fx-background-color: #081028;
+}
+
+.scroll-bar:vertical .thumb, .scroll-bar:horizontal .thumb {
+	-fx-background-color: #cb3cff;
+	-fx-background-insets: 0;
+	-fx-background-radius: 5px;
+}
+
+.scroll-bar:vertical .track, .scroll-bar:horizontal .track {
+	-fx-background-color: #0093ff;
+	-fx-background-insets: 0;
+	-fx-background-radius: 5px;
+}
+
+.scroll-bar:vertical .increment-button, .scroll-bar:vertical .decrement-button,
+.scroll-bar:horizontal .increment-button, .scroll-bar:horizontal .decrement-button {
+	-fx-background-color: transparent;
+	-fx-padding: 0;
+	-fx-shape: null;
+}
+
+.scroll-bar:vertical .increment-arrow, .scroll-bar:vertical .decrement-arrow,
+.scroll-bar:horizontal .increment-arrow, .scroll-bar:horizontal .decrement-arrow {
+	-fx-background-color: transparent;
+	-fx-padding: 0;
+	-fx-shape: null;
+}
+
+.text-area{
+	-fx-font-size: 14px;
+	-fx-font-family: "Arial";
+	-fx-text-fill: #fff;
+	-fx-border-width: 10px;
+	-fx-border-color: #0B1739;
+	-fx-background-color: #081028;
+	-fx-border-radius: 12px;
+}
+
+.text-area .content {
+	-fx-background-color: #081028;
+}
+
+.list-view {
+	-fx-background-color: #081028;
+	-fx-text-fill: white;
+}
+
+.list-view .content{
+	-fx-background-color: #081028;
+}
+
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+	-fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%);
+}
+
+.list-cell {
+	-fx-background-color: transparent;
+	-fx-text-fill: white;
+}
+
+.list-cell:odd {
+	-fx-cell-hover-color: #0093ff;
+	-fx-background-color: #0B1739;
+}
+
+.list-cell:filled:hover {
+	-fx-cell-hover-color: #0093ff;
+	-fx-text-fill: white;
+}
+
+.list-cell:hover{
+	-fx-cell-hover-color: #0093ff;
+	-fx-text-fill: white;
+}
+
 /* Define a style class with a linear gradient background */
 /*Syntax -fx-background-color: linear-gradient(<angle>, <color-stop1>, <color-stop2>, ...);*/
 .gradient-background {
