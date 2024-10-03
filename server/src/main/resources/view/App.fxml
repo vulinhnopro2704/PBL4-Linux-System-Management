@@ -1,25 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <BorderPane fx:id="mainLayout" xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml" fx:controller="com.serverapp.controller.view.AppController">
 
-    <!-- Sidebar: Hiển thị ở bên trái -->
     <fx:include source="../component/side-bar.fxml" />
 
-    <!-- Vùng nội dung thay đổi (Detail, Process, File, etc.) -->
     <center>
         <StackPane fx:id="contentArea">
-            <!-- Thay đổi nội dung ở đây -->
         </StackPane>
     </center>
 
-    <!-- LogMessage TextArea: luôn hiển thị ở dưới -->
     <bottom>
         <TextArea fx:id="logMessage" editable="false" />
     </bottom>
