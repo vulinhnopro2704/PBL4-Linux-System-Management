@@ -1,11 +1,5 @@
 package com.serverapp;
 
-import com.serverapp.controller.view.ScreenCaptureController;
-import com.serverapp.util.ITCPServer;
-import com.serverapp.util.implement.ScreenCaptureServer;
-import com.serverapp.util.implement.ScreenCaptureServerUDP;
-import com.serverapp.util.implement.TCPServer;
-import com.serverapp.controller.view.MainController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -31,6 +25,8 @@ public class Main extends Application {
 //        screenCaptureController.initialize();
 //        ScreenCaptureServer server = new ScreenCaptureServer(9999, screenCaptureController);
 //        server.start();
+
+        // Initialize for run shell script in Client
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/command-view.fxml"));
         Parent root = loader.load();
 
