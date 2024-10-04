@@ -62,6 +62,12 @@ public class ClientCardController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/client-view.fxml"));
                 Parent root = loader.load();
 
+                // Lấy đối tượng ClientViewController từ FXMLLoader
+                ClientViewController clientViewController = loader.getController();
+
+                // Truyền IP cho ClientViewController
+                clientViewController.setClientIp(txtIPAddress.getText());
+
                 // Lấy stage hiện tại và chuyển màn hình
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 Scene scene = new Scene(root);
@@ -74,6 +80,5 @@ public class ClientCardController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
     }
 }

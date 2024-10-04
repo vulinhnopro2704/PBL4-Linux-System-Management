@@ -31,7 +31,16 @@ public class ClientProcessDetailCollector {
             ClientProcessDetail detail = new ClientProcessDetail();
             detail.setProcessID(String.valueOf(process.getProcessID()));
             detail.setProcessName(process.getName());
-            detail.setProcessPath(process.getPath());
+
+            // Kiểm tra nếu hệ điều hành là Windows để lấy đường dẫn tiến trình
+            if (os.getFamily().toLowerCase().contains("windows")) {
+                detail.setProcessPath(process.getPath() != null ? process.getPath() : "N/A");
+            } else {
+                // Với Linux, một số tiến trình không có đường dẫn rõ ràng
+                detail.setProcessPath(process.getPath() != null ? process.getPath() : "Unknown");
+            }
+
+            // Lấy mức độ sử dụng CPU và RAM
             detail.setCPUusage(String.format("%.2f%%", 100d * process.getProcessCpuLoadCumulative()));
             detail.setRAMusage(FormatUtil.formatBytes(process.getResidentSetSize()));
 
@@ -40,4 +49,3 @@ public class ClientProcessDetailCollector {
         return processDetails;
     }
 }
-

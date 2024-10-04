@@ -54,13 +54,25 @@ public class ProcessTableController {
 
     // Hàm kết thúc tiến trình dựa trên PID
     public static void killProcess(int pid) {
-        String killCommand = "taskkill /F /PID " + pid;
+        String os = System.getProperty("os.name").toLowerCase();
+        String killCommand;
+
+        if (os.contains("win")) {
+            killCommand = "taskkill /F /PID " + pid;  // Lệnh cho Windows
+        } else {
+            killCommand = "kill -9 " + pid;  // Lệnh cho Linux
+        }
 
         try {
             ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/c", killCommand);
+            if (!os.contains("win")) {
+                // Nếu không phải Windows, sử dụng shell lệnh thông thường
+                processBuilder = new ProcessBuilder("bash", "-c", killCommand);
+            }
+
             Process process = processBuilder.start();
             process.waitFor();
-            System.out.println("Process " + pid + " has been killed.");
+            System.out.println("Process " + pid + " has been killed on " + os);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
             System.out.println("Failed to kill process " + pid);
@@ -134,23 +146,23 @@ public class ProcessTableController {
     public void updateProcessTable() {
         Redis redis = Redis.getInstance();
         List<ClientDetail> list = redis.getAllClientDetail();
-
-        if (list != null && list.size() > 0) {
-            for (ClientDetail detail : list) {
-                System.out.println("Checking client with IP: " + detail.getIpAddress());
-                if (Objects.equals(detail.getIpAddress(), clientIp)) {
-                    System.out.println("Found matching client IP: " + clientIp);
-                    List<ClientProcess> processList = detail.getProcessDetails();
-                    System.out.println("Number of processes found: " + processList.size());
-
-                    // Cập nhật ObservableList
-                    observableProcessList.setAll(processList);
-                    tableView.setItems(observableProcessList);
-                    break;
-                }
-            }
-        } else {
-            System.out.println("ClientDetail list is empty or null.");
-        }
+        System.out.println(list.size());
+//        if (list != null && list.size() > 0) {
+//            for (ClientDetail detail : list) {
+//                System.out.println("Checking client with IP: " + detail.getIpAddress());
+//                if (Objects.equals(detail.getIpAddress(), clientIp)) {
+//                    System.out.println("Found matching client IP: " + clientIp);
+//                    List<ClientProcess> processList = detail.getProcessDetails();
+//                    System.out.println("Number of processes found: " + processList.size());
+//
+//                    // Cập nhật ObservableList
+//                    observableProcessList.setAll(processList);
+//                    tableView.setItems(observableProcessList);
+//                    break;
+//                }
+//            }
+//        } else {
+//            System.out.println("ClientDetail list is empty or null.");
+//        }
     }
 }
