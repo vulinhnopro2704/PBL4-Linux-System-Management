@@ -13,7 +13,7 @@
             <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;">
                     <children>
-                        <TableView fx:id="tableView" prefHeight="367.0" prefWidth="845.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="-4.0" AnchorPane.rightAnchor="-4.0" AnchorPane.topAnchor="-4.0">
+                        <TableView fx:id="tableView" layoutX="-2.0" onMouseClicked="#clickHandler" prefHeight="367.0" prefWidth="845.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" AnchorPane.bottomAnchor="0.7999999999999545" AnchorPane.leftAnchor="-2.0" AnchorPane.rightAnchor="-1.2000000000000455" AnchorPane.topAnchor="0.0">
                             <columns>
                                 <TableColumn fx:id="processIDCol" maxWidth="500.0" prefWidth="130.0" style="-fx-text-fill: white;" text="Process ID">
                                     <styleClass>
