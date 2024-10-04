@@ -44,12 +44,14 @@ public class ProcessTableController {
     private String clientIp;
 
     private ContextMenu contextMenu = new ContextMenu();
+    // Sử dụng observableProcessList toàn cục để theo dõi tiến trình
     private ObservableList<ClientProcess> observableProcessList = FXCollections.observableArrayList();
 
     // Hàm để thiết lập IP client
     public void setClientIp(String ip) {
         this.clientIp = ip;
         System.out.println("Received IP in ProcessTableController: " + clientIp);
+        updateProcessTable();  // Cập nhật bảng sau khi nhận IP
     }
 
     // Hàm kết thúc tiến trình dựa trên PID
@@ -66,7 +68,6 @@ public class ProcessTableController {
         try {
             ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/c", killCommand);
             if (!os.contains("win")) {
-                // Nếu không phải Windows, sử dụng shell lệnh thông thường
                 processBuilder = new ProcessBuilder("bash", "-c", killCommand);
             }
 
@@ -119,7 +120,7 @@ public class ProcessTableController {
                     System.out.println("Killing process with PID: " + pid);
                     killProcess(pid);  // Gọi hàm killProcess
 
-                    // Xóa tiến trình khỏi danh sách sau khi kill
+                    // Xóa tiến trình khỏi danh sách observableProcessList
                     observableProcessList.remove(selectedProcess);
                     tableView.refresh();  // Cập nhật lại bảng
                 }
@@ -142,27 +143,15 @@ public class ProcessTableController {
         }
     }
 
-    // Cập nhật bảng tiến trình
+    // Cập nhật bảng tiến trình từ Redis
     public void updateProcessTable() {
         Redis redis = Redis.getInstance();
-        List<ClientDetail> list = redis.getAllClientDetail();
-        System.out.println(list.size());
-//        if (list != null && list.size() > 0) {
-//            for (ClientDetail detail : list) {
-//                System.out.println("Checking client with IP: " + detail.getIpAddress());
-//                if (Objects.equals(detail.getIpAddress(), clientIp)) {
-//                    System.out.println("Found matching client IP: " + clientIp);
-//                    List<ClientProcess> processList = detail.getProcessDetails();
-//                    System.out.println("Number of processes found: " + processList.size());
-//
-//                    // Cập nhật ObservableList
-//                    observableProcessList.setAll(processList);
-//                    tableView.setItems(observableProcessList);
-//                    break;
-//                }
-//            }
-//        } else {
-//            System.out.println("ClientDetail list is empty or null.");
-//        }
+        ClientDetail clientDetail = redis.getClientDetail(clientIp);
+        if (clientDetail != null) {
+            List<ClientProcess> clientProcesses = clientDetail.getProcessDetails();
+            // Làm sạch danh sách cũ trước khi thêm mới
+            observableProcessList.setAll(clientProcesses);
+            tableView.setItems(observableProcessList);  // Đặt ObservableList cho bảng
+        }
     }
 }

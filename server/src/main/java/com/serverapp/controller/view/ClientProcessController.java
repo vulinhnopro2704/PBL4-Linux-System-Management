@@ -1,25 +1,15 @@
 package com.serverapp.controller.view;
 
-import com.serverapp.model.ClientCard;
-import com.serverapp.model.ClientDetail;
-import com.serverapp.model.ClientProcess;
-import com.serverapp.model.Redis;
+import com.serverapp.controller.component.ProcessTableController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 public class ClientProcessController {
 
@@ -37,16 +27,51 @@ public class ClientProcessController {
 
     private String clientIp;
 
+    @FXML
+    private AnchorPane processTableContainer;
+
+    // Phương thức để load và nhúng client-processtable.fxml
+    private void loadProcessTable(String clientIp) {
+        try {
+            // Load FXML của ProcessTable
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/client-processtable.fxml"));
+            Parent processTableView = loader.load();
+
+            // Lấy controller của ProcessTable
+            ProcessTableController processTableController = loader.getController();
+
+            // Truyền clientIp cho ProcessTableController
+            processTableController.setClientIp(clientIp);
+
+            // Thêm ProcessTable vào processTableContainer (AnchorPane)
+            processTableContainer.getChildren().clear();  // Xóa các thành phần cũ
+            processTableContainer.getChildren().add(processTableView);  // Thêm bảng mới
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Phương thức này để gán giá trị IP và load bảng tiến trình khi IP đã được gán
     public void setProcessClientIp(String ip) {
         this.clientIp = ip;
         System.out.println("Received IP in ClientProcessController: " + clientIp);
+
+        // Kiểm tra và load bảng tiến trình nếu clientIp đã được gán
+        if (clientIp != null && !clientIp.isEmpty()) {
+            loadProcessTable(clientIp);
+        }
     }
 
     // Khởi tạo controller
     @FXML
+    public void initialize() {
+        // Khi initialize() chạy, clientIp có thể chưa được truyền, vì vậy không làm gì tại đây.
+    }
+
+    @FXML
     public void viewchange() {
         btnGeneral.setOnMouseClicked(event -> loadPage("/view/client-view.fxml", clientIp));
-        btnProcess.setOnMouseClicked(event -> loadPage("/view/client-process.fxml", clientIp));  // Thêm clientIP vào đây
+        btnProcess.setOnMouseClicked(event -> loadPage("/view/client-process.fxml", clientIp));  // Truyền clientIP vào đây
         btnPerformance.setOnMouseClicked(event -> loadPage("/view/client-performance.fxml", clientIp));
         btnScreen.setOnMouseClicked(event -> loadPage("/view/client-screen.fxml", clientIp));
     }
@@ -61,19 +86,15 @@ public class ClientProcessController {
             Object controller = loader.getController();
 
             // Kiểm tra và truyền clientIP đến controller tương ứng
-            System.out.println("Client IP to pass: " + clientIP); // Kiểm tra giá trị clientIP trước khi truyền
             if (controller instanceof ClientViewController) {
                 ((ClientViewController) controller).setClientIp(clientIP);
             } else if (controller instanceof ClientProcessController) {
-                ((ClientProcessController) controller).setProcessClientIp(clientIP); // Truyền IP vào đây
+                ((ClientProcessController) controller).setProcessClientIp(clientIP);
             } else if (controller instanceof ClientPerformanceController) {
                 System.out.println("ClientPerformanceController: chưa triển khai.");
             } else if (controller instanceof ClientScreenController) {
                 System.out.println("ClientScreenController: chưa triển khai.");
             }
-
-            // Kiểm tra và truyền clientIP đến controller tương ứng
-            System.out.println("Client IP to pass: " + clientIP); // Kiểm tra giá trị clientIP trước khi truyền
 
             // Lấy stage hiện tại và thay đổi scene
             Stage stage = (Stage) btnProcess.getScene().getWindow();
@@ -83,4 +104,3 @@ public class ClientProcessController {
         }
     }
 }
-

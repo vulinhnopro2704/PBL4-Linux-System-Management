@@ -16,11 +16,11 @@
           <fx:include source="../component/side-bar.fxml" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" />
       </children>
    </AnchorPane>
-   <AnchorPane layoutX="407.0" layoutY="115.0" prefHeight="375.0" prefWidth="844.0" AnchorPane.bottomAnchor="229.0" AnchorPane.leftAnchor="407.0" AnchorPane.rightAnchor="61.0" AnchorPane.topAnchor="115.0">
-      <children>
-          <fx:include source="../component/client-processtable.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      </children>
-   </AnchorPane>
+
+    <AnchorPane fx:id="processTableContainer" layoutX="407.0" layoutY="115.0" prefHeight="375.0" prefWidth="844.0" AnchorPane.bottomAnchor="229.0" AnchorPane.leftAnchor="407.0" AnchorPane.rightAnchor="61.0" AnchorPane.topAnchor="115.0">
+        <!-- Đây là nơi chúng ta sẽ load FXML của ProcessTable vào từ Controller -->
+    </AnchorPane>
+
     <Button layoutX="1214.0" layoutY="31.0" mnemonicParsing="false" style="-fx-background-color: transperant;" />
     <FlowPane hgap="20.0" layoutX="1159.0" layoutY="23.0" prefHeight="25.0" prefWidth="80.0" AnchorPane.rightAnchor="73.0" AnchorPane.topAnchor="23.0">
         <ImageView id="icon-list-view" fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
