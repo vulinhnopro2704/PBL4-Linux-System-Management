@@ -1,57 +1,66 @@
 package com.clientapp;
 
-import com.clientapp.util.INetworkClient;
-import com.clientapp.util.IScreenCaptureClient;
-import com.clientapp.util.ISystemInfoCollector;
+import com.clientapp.enums.RequestType;
+import com.clientapp.util.implement.ClientCommand;
 import com.clientapp.util.implement.ScreenCaptureClient;
-import com.clientapp.util.implement.ScreenCaptureClientUDP;
-import com.clientapp.util.implement.SystemInfoCollector;
-
 import com.clientapp.util.implement.TCPClient;
-import javafx.application.Application;
-import javafx.stage.Stage;
 
-public class MainClient extends Application {
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 
-    @Override
-    public void start(Stage stage)  {
-        ISystemInfoCollector infoCollector = new SystemInfoCollector();
-        INetworkClient networkClient = new TCPClient(infoCollector);
+public class MainClient {
+    private Socket clientSocket;
+    private PrintWriter out;
+    private BufferedReader in;
+    private String serverIp = "localhost";
+    private int serverPort = 8080;
 
-        // Send system info to server
-        networkClient.sendSystemInfo();
-
-        // Close the connection
-        networkClient.closeConnection();
-
-
-//        IScreenCaptureClient screenCaptureClient = new ScreenCaptureClient("localhost", 9999);
-//        new Thread(() -> {
-//            while (true) {
-//                screenCaptureClient.captureAndSendScreen();
-//                try {
-//                    Thread.sleep(80); // Capture and send every second
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
-
-//        ScreenCaptureClientUDP screenCaptureClient = new ScreenCaptureClientUDP("localhost", 9999);
-//        new Thread(() -> {
-//            while (true) {
-//                screenCaptureClient.captureAndSendScreen();
-//                try {
-//                    Thread.sleep(200); // Capture and send every second
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
+    public void start() throws IOException {
+        clientSocket = new Socket(serverIp, serverPort);
+        out = new PrintWriter(clientSocket.getOutputStream(), true);
+        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
     }
 
-    public static void main(String[] args) {
-        launch(args);
+    public void listenForRequests() throws IOException {
+        String request;
+        while ((request = in.readLine()) != null) {
+            RequestType requestType = RequestType.valueOf(request);
+            System.out.println(requestType);
+            switch (requestType) {
+                case SCREEN_CAPTURE:
+                    // Handle screen capture request
+                    ScreenCaptureClient screenCaptureClient = new ScreenCaptureClient(serverIp, serverPort);
+                    screenCaptureClient.start();
+                    break;
+                case SYSTEM_INFO:
+                    // Handle system info request
+                    TCPClient tcpClient = new TCPClient(serverIp, serverPort);
+                    tcpClient.sendSystemInfo();
+                    break;
+                case PROCESS_LIST:
+                    // Handle process list request
+
+                    break;
+                case COMMAND:
+                    //Handle Command request
+                    ClientCommand clientCommand = new ClientCommand(serverIp, serverPort);
+                    clientCommand.start();
+                    break;
+            }
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        MainClient client =  new MainClient();
+        client.start();
+        try {
+            client.listenForRequests();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 
