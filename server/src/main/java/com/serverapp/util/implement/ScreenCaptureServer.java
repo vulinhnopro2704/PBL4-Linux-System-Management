@@ -1,18 +1,20 @@
 package com.serverapp.util.implement;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import com.serverapp.controller.view.ScreenCaptureController;
+import com.serverapp.enums.RequestType;
 import com.serverapp.util.IScreenCaptureServer;
 
 public class ScreenCaptureServer implements IScreenCaptureServer {
     private ServerSocket serverSocket;
     private ScreenCaptureController screenCaptureController;
 
-    public ScreenCaptureServer(int port, ScreenCaptureController screenCaptureController) throws IOException {
-        this.serverSocket = new ServerSocket(port);
+    public ScreenCaptureServer(ScreenCaptureController screenCaptureController) throws IOException {
+        this.serverSocket = TCPServer.getInstance().getServerSocket();
         this.screenCaptureController = screenCaptureController;
     }
 
@@ -22,6 +24,8 @@ public class ScreenCaptureServer implements IScreenCaptureServer {
             while (true) {
                 try {
                     Socket clientSocket = serverSocket.accept();
+                    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                    out.println(RequestType.SCREEN_CAPTURE);
                     new Thread(new ScreenCaptureHandler(clientSocket, screenCaptureController)).start();
                 } catch (IOException e) {
                     e.printStackTrace();
