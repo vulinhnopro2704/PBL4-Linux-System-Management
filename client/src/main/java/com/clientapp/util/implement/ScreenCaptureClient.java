@@ -2,11 +2,7 @@ package com.clientapp.util.implement;
 
 import com.clientapp.util.IScreenCaptureClient;
 
-import javax.imageio.IIOImage;
 import javax.imageio.ImageIO;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
-import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -19,6 +15,7 @@ public class ScreenCaptureClient implements IScreenCaptureClient {
     private int serverPort;
     private Socket socket;
     private DataOutputStream out;
+    private static final int CHUNK_SIZE = 1024 * 64; // 64KB
 
     public ScreenCaptureClient(String serverAddress, int serverPort) {
         this.serverAddress = serverAddress;
@@ -31,77 +28,43 @@ public class ScreenCaptureClient implements IScreenCaptureClient {
         }
     }
 
+    public void start() throws IOException {
+        while (true) {
+            try {
+                captureAndSendScreen();
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                closeConnection();
+            }
+        }
+    }
+
     public void captureAndSendScreen() {
         try {
             Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
             Robot robot = new Robot();
             BufferedImage screenCapture = robot.createScreenCapture(screenRect);
 
-
-           BufferedImage resizedImage = resizeImage(screenCapture, 640, 360); // Thay đổi kích thước nếu cần
-
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            ImageIO.write(resizedImage, "jpg", baos); // Có thể điều chỉnh chất lượng nếu cần
+            ImageIO.write(screenCapture, "jpg", baos);
+            byte[] imageBytes = baos.toByteArray();
 
-            // Nén ảnh
-            byte[] imageBytes = compressImage(resizedImage, "jpg", 0.5f); // Adjust the quality as needed
+            int totalChunks = (int) Math.ceil((double) imageBytes.length / CHUNK_SIZE);
+            out.writeInt(totalChunks);
 
-            out.writeInt(imageBytes.length);
-            out.write(imageBytes);
-            out.flush();
+            for (int i = 0; i < totalChunks; i++) {
+                int start = i * CHUNK_SIZE;
+                int length = Math.min(imageBytes.length - start, CHUNK_SIZE);
+                out.writeInt(length);
+                out.write(imageBytes, start, length);
+                out.flush();
+            }
 
-            baos.close(); // Giải phóng tài nguyên
+            baos.close();
         } catch (AWTException | IOException e) {
             e.printStackTrace();
         }
-    }
-
-    public byte[] compressImage(BufferedImage image, String formatName, float quality) throws IOException {
-        // Kiểm tra nếu tỷ lệ chất lượng ngoài khoảng từ 0 đến 1
-        if (quality < 0f || quality > 1f) {
-            throw new IllegalArgumentException("Chất lượng nén phải nằm trong khoảng từ 0.0 đến 1.0");
-        }
-
-        try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
-             ImageOutputStream ios = ImageIO.createImageOutputStream(baos)) {
-
-            // Tìm ImageWriter phù hợp với định dạng
-            ImageWriter writer = ImageIO.getImageWritersByFormatName(formatName).next();
-            writer.setOutput(ios);
-
-            ImageWriteParam param = writer.getDefaultWriteParam();
-            if (param.canWriteCompressed()) {
-                param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-                param.setCompressionQuality(quality); // Tỷ lệ chất lượng nén
-            }
-
-            // Ghi hình ảnh với các tham số nén đã đặt
-            writer.write(null, new IIOImage(image, null, null), param);
-
-            writer.dispose();
-
-            // In kích thước của hình ảnh đã nén
-            byte[] compressedImage = baos.toByteArray();
-            System.out.println("Compressed image size: " + compressedImage.length);
-
-            return compressedImage;
-
-        } catch (IOException e) {
-            // Ghi log hoặc ném ngoại lệ khi có lỗi xảy ra
-            throw new IOException("Lỗi khi nén ảnh: " + e.getMessage(), e);
-        }
-    }
-
-    // Phương thức để thay đổi kích thước hình ảnh
-    private BufferedImage resizeImage(BufferedImage originalImage, int newWidth, int newHeight) {
-        Image resultingImage = originalImage.getScaledInstance(newWidth, newHeight, Image.SCALE_DEFAULT);
-        BufferedImage outputImage = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
-
-        Graphics2D g2d = outputImage.createGraphics();
-        g2d.drawImage(resultingImage, 0, 0, null);
-        g2d.dispose();
-
-        return outputImage;
     }
 
     @Override
