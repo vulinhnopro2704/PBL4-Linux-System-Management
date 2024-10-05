@@ -23,7 +23,7 @@ public class TCPClient implements INetworkClient {
         }
     }
 
-    // Send system information to test connect with server via TCP
+    // Send system information to test connection with server via TCP
     @Override
     public void sendSystemInfo() {
         try {
@@ -34,6 +34,16 @@ public class TCPClient implements INetworkClient {
 
             out.println(jsonClientDetail);
             System.out.println("System info sent to server.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Send process data via TCP
+    public void sendData(String data) {
+        try {
+            out.println(data);
+            System.out.println("Process data sent to server.");
         } catch (Exception e) {
             e.printStackTrace();
         }
