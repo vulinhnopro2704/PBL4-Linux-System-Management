@@ -1,15 +1,9 @@
 package com.serverapp.controller.view;
 
-import com.serverapp.controller.view.AppController;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import lombok.Setter;
 
 import java.io.IOException;
 
@@ -45,17 +39,9 @@ public class ClientPerformanceController {
         btnPerformance.setOnMouseClicked(event -> loadPage("/view/client-performance.fxml"));
         btnScreen.setOnMouseClicked(event -> loadPage("/view/client-screen.fxml"));
     }
-    private void loadPage(String fxmlFile) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-            Parent root = loader.load();
 
-            // Lấy stage hiện tại và thay đổi scene
-            Stage stage = (Stage) btnGeneral.getScene().getWindow();
-            stage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void loadPage(String fxmlPath) {
+        AppController.getInstance().loadPage(fxmlPath);
     }
 
     public void addPanelPort() {

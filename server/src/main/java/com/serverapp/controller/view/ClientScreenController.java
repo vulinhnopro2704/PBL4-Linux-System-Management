@@ -1,17 +1,20 @@
 package com.serverapp.controller.view;
 
-import com.serverapp.controller.view.AppController;
-
+import com.serverapp.enums.RequestType;
+import com.serverapp.util.implement.CurrentType;
+import com.serverapp.util.implement.ScreenCaptureServer;
+import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-import lombok.Setter;
 
+import javax.swing.*;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class ClientScreenController {
@@ -31,13 +34,8 @@ public class ClientScreenController {
     @FXML
     private Pane screenPane;
 
-    @FXML
-    private AnchorPane panelPortInclude;
 
-    @FXML
-    private void initialize() {
-        addPanelPort();
-    }
+    private ImageView imageView;
 
     @FXML
     public void viewchange() {
@@ -51,16 +49,26 @@ public class ClientScreenController {
         AppController.getInstance().loadPage(fxmlPath);
     }
 
-    public void addPanelPort() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/panel-port.fxml"));
-            AnchorPane panelPort = loader.load();
+    @FXML
+    public void initialize() throws IOException {
+        // Initialize and start the screen capture server
+        CurrentType.getInstance().setType(RequestType.SCREEN_CAPTURE);
+        ScreenCaptureServer server = new ScreenCaptureServer(this);
 
-            panelPortInclude.getChildren().add(panelPort);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        server.start();
+        imageView = new ImageView();
+        imageView.setPreserveRatio(true);
+        imageView.fitWidthProperty().bind(screenPane.widthProperty());
+        imageView.fitHeightProperty().bind(screenPane.heightProperty());
+        screenPane.getChildren().add(imageView);
     }
 
+    public void updateScreenCapture(ImageIcon imageIcon) {
+        Platform.runLater(() -> {
+            BufferedImage bufferedImage = (BufferedImage) imageIcon.getImage();
+            Image fxImage = SwingFXUtils.toFXImage(bufferedImage, null);
+            imageView.setImage(fxImage);
+        });
+    }
 
 }
