@@ -11,7 +11,7 @@
 <AnchorPane prefHeight="719.0" prefWidth="925.0" styleClass="card-backgroud-color" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.ClientScreenController">
     <FlowPane layoutX="5.0" layoutY="56.0" prefHeight="44.0" prefWidth="925.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="56.0">
         <children>
-            <Label fx:id="btnGeneral" onMouseClicked="#viewchange" alignment="CENTER" prefHeight="40.0" prefWidth="150.0" styleClass="primary-text" text="General" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="btnGeneral" alignment="CENTER" onMouseClicked="#viewchange" prefHeight="40.0" prefWidth="150.0" text="General" textAlignment="CENTER" textFill="WHITE">
                 <font>
                     <Font name="System Bold" size="16.0" />
                 </font>
@@ -19,7 +19,7 @@
                     <Insets left="66.0" />
                 </FlowPane.margin>
             </Label>
-            <Label fx:id="btnProcess" onMouseClicked="#viewchange" alignment="CENTER" prefHeight="40.0" prefWidth="150.0" text="Process" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="btnProcess" alignment="CENTER" onMouseClicked="#viewchange" prefHeight="40.0" prefWidth="150.0" text="Process" textAlignment="CENTER" textFill="WHITE">
                 <font>
                     <Font name="System Bold" size="16.0" />
                 </font>
@@ -27,7 +27,7 @@
                     <Insets left="66.0" />
                 </FlowPane.margin>
             </Label>
-            <Label fx:id="btnPerformance" onMouseClicked="#viewchange" alignment="CENTER" prefHeight="40.0" prefWidth="150.0" text="Performance" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="btnPerformance" alignment="CENTER" onMouseClicked="#viewchange" prefHeight="40.0" prefWidth="150.0" text="Performance" textAlignment="CENTER" textFill="WHITE">
                 <font>
                     <Font name="System Bold" size="16.0" />
                 </font>
@@ -35,7 +35,7 @@
                     <Insets left="66.0" />
                 </FlowPane.margin>
             </Label>
-            <Label fx:id="btnScreen" onMouseClicked="#viewchange" alignment="CENTER" prefHeight="40.0" prefWidth="150.0" text="Screen" textAlignment="CENTER" textFill="WHITE">
+            <Label fx:id="btnScreen" alignment="CENTER" onMouseClicked="#viewchange" prefHeight="40.0" prefWidth="150.0" styleClass="primary-text" text="Screen" textAlignment="CENTER" textFill="WHITE">
                 <font>
                     <Font name="System Bold" size="16.0" />
                 </font>
@@ -45,11 +45,10 @@
             </Label>
             <Line endX="92.60003662109375" startX="-15.39996337890625" stroke="#cb3cff" strokeWidth="3.0" style="-fx-fill: #fff;">
                 <FlowPane.margin>
-                    <Insets left="89.0" />
+                    <Insets left="738.0" />
                 </FlowPane.margin>
             </Line>
         </children>
     </FlowPane>
-    <Pane fx:id="screenPane" layoutX="363.0" layoutY="129.0" prefHeight="510.0" prefWidth="876.0" styleClass="blue-background" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="363.0" AnchorPane.rightAnchor="73.0" AnchorPane.topAnchor="129.0" />
-    <AnchorPane fx:id="panelPortInclude" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"> </AnchorPane>
-</AnchorPane>
+    <Pane fx:id="screenPane" prefHeight="510.0" prefWidth="876.0" styleClass="blue-background" AnchorPane.leftAnchor="24.0" AnchorPane.topAnchor="145.0" />
+   </AnchorPane>

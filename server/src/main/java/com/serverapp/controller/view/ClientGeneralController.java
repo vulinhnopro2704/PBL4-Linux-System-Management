@@ -1,15 +1,9 @@
 package com.serverapp.controller.view;
 
-import com.serverapp.controller.view.AppController;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import lombok.Setter;
 
 import java.io.IOException;
 
@@ -46,6 +40,7 @@ public class ClientGeneralController {
         btnScreen.setOnMouseClicked(event -> loadPage("/view/client-screen.fxml"));
 
     }
+
     private void loadPage(String fxmlPath) {
         AppController.getInstance().loadPage(fxmlPath);
     }
