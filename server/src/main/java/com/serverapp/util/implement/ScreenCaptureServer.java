@@ -5,15 +5,15 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import com.serverapp.controller.view.ScreenCaptureController;
+import com.serverapp.controller.view.ClientScreenController;
 import com.serverapp.enums.RequestType;
 import com.serverapp.util.IScreenCaptureServer;
 
 public class ScreenCaptureServer implements IScreenCaptureServer {
     private ServerSocket serverSocket;
-    private ScreenCaptureController screenCaptureController;
+    private ClientScreenController screenCaptureController;
 
-    public ScreenCaptureServer(ScreenCaptureController screenCaptureController) throws IOException {
+    public ScreenCaptureServer(ClientScreenController screenCaptureController) throws IOException {
         this.serverSocket = TCPServer.getInstance().getServerSocket();
         this.screenCaptureController = screenCaptureController;
     }
