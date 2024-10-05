@@ -7,16 +7,17 @@ import java.net.Socket;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
-import com.serverapp.controller.view.ScreenCaptureController;
+import com.serverapp.controller.view.ClientScreenController;
+import com.serverapp.controller.view.ClientScreenController;
 import com.serverapp.util.IScreenCaptureHandler;
 
 public class ScreenCaptureHandler implements IScreenCaptureHandler {
     private Socket clientSocket;
-    private ScreenCaptureController screenCaptureController;
+    private ClientScreenController screenCaptureController;
     private int totalChunks;
     private int receivedChunks;
 
-    public ScreenCaptureHandler(Socket clientSocket, ScreenCaptureController screenCaptureController) {
+    public ScreenCaptureHandler(Socket clientSocket, ClientScreenController screenCaptureController) {
         this.clientSocket = clientSocket;
         this.screenCaptureController = screenCaptureController;
         this.totalChunks = 0;

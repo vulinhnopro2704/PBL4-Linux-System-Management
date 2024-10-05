@@ -22,7 +22,7 @@ public class AppController {
     public void initialize() {
         _INSTANCE = this;
         btnSystemMonitoring.getStyleClass().setAll("active-button");
-        setFxmlPath("/view/mainsystem-view.fxml");
+        setFxmlPath("/view/main-system-view.fxml");
         loadPage(this.fxmlPath);
     }
 
@@ -67,7 +67,7 @@ public class AppController {
     private void handleSystemMonitoring(MouseEvent event) {
         resetButtonStyles();
         btnSystemMonitoring.getStyleClass().setAll("active-button");
-        setFxmlPath("/view/mainsystem-view.fxml");
+        setFxmlPath("/view/main-system-view.fxml");
         loadPage(this.fxmlPath);
     }
 

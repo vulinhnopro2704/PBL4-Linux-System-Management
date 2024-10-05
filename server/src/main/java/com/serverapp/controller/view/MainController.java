@@ -44,15 +44,6 @@ public class MainController {
     private PanelPortController panelPortController;
     private ISystemMonitoring server;
 
-    // Khởi tạo controller
-    @FXML
-    public void viewchange() {
-        btnGeneral.setOnMouseClicked(event -> loadPage("/view/client-general.fxml"));
-        btnProcess.setOnMouseClicked(event -> loadPage("/view/client-process.fxml"));
-        btnPerformance.setOnMouseClicked(event -> loadPage("/view/client-performance.fxml"));
-        btnScreen.setOnMouseClicked(event -> loadPage("/view/client-screen.fxml"));
-    }
-
     @FXML
     public void initialize() {
         try {
@@ -69,7 +60,7 @@ public class MainController {
             // Set controller từ panel-port.fxml
             panelPortController = loader.getController();
             if (panelPortInclude != null) {
-                // Thêm panelPortRoot vào panelPortInclude (AnchorPane trong mainsystem-view.fxml)
+                // Thêm panelPortRoot vào panelPortInclude (AnchorPane trong main-view.fxml)
                 panelPortInclude.getChildren().setAll(panelPortRoot); // Đặt nội dung của panelPortInclude thành panelPortRoot
             } else {
                 System.err.println("PanelPortController is null");
