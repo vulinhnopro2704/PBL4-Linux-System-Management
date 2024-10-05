@@ -1,7 +1,9 @@
 package com.serverapp.controller.view;
 
+import com.serverapp.enums.RequestType;
 import com.serverapp.model.ClientCredentials;
 import com.serverapp.model.Redis;
+import com.serverapp.util.implement.TCPServer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +12,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import lombok.SneakyThrows;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -32,10 +35,13 @@ public class CommandController {
     @FXML
     private TextArea logArea;
 
+    private TCPServer server;
     private ObservableList<CheckBox> clientList = FXCollections.observableArrayList();
     private ExecutorService executor = Executors.newCachedThreadPool();
     private PublicKey rsaPublicKey;
     private PrivateKey rsaPrivateKey;
+
+    private DataOutputStream dataOutputStream;
 
     @FXML
     public void initialize() {
@@ -46,33 +52,21 @@ public class CommandController {
             KeyPair pair = keyGen.generateKeyPair();
             rsaPublicKey = pair.getPublic();
             rsaPrivateKey = pair.getPrivate();
+            server = TCPServer.getInstance();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        CheckBox[] checkBoxes = new CheckBox[] {
-            new CheckBox("Client 1"),
-            new CheckBox("Client 2"),
-            new CheckBox("Client 3"),
-            new CheckBox("Client 4"),
-            new CheckBox("Client 5"),
-            new CheckBox("Client 6"),
-            new CheckBox("Client 7"),
-            new CheckBox("Client 8"),
-            new CheckBox("Client 9"),
-            new CheckBox("Client 10")
-        };
-        clientList.addAll(checkBoxes);
-        clientListView.setItems(clientList);
         // Khởi động server socket
         executor.submit(this::startServerSocket);
     }
 
     private void startServerSocket() {
-        try (ServerSocket serverSocket = new ServerSocket(8080)) {
+        try (ServerSocket serverSocket = server.getServerSocket()) {
             log("Server is running on port 8080...");
-
             while (true) {
                 Socket clientSocket = serverSocket.accept();
+                dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
+                dataOutputStream.writeUTF(RequestType.COMMAND.toString());
                 log("New client connected: " + clientSocket.getInetAddress().getHostAddress());
 
                 // Thêm client vào danh sách
@@ -96,7 +90,10 @@ public class CommandController {
             DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream());
 
             // Gửi khóa công khai RSA cho Client
-            output.writeUTF(Base64.getEncoder().encodeToString(rsaPublicKey.getEncoded()));
+            String RSAPublicKey = Base64.getEncoder().encodeToString(rsaPublicKey.getEncoded());
+            System.out.println(RSAPublicKey);
+            output.writeUTF(RSAPublicKey);
+            log("Public Key Sent");
 
             // Nhận khóa AES đã mã hóa từ Client
             String encryptedAesKey = input.readUTF();

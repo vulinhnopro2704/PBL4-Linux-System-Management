@@ -8,17 +8,15 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class TCPClient implements INetworkClient {
-    private static final String SERVER_ADDRESS = "localhost";
-    private static final int SERVER_PORT = 9999;
     private final Gson gson = new Gson();
     private final ISystemInfoCollector systemInfoCollector;
     private Socket socket;
     private PrintWriter out;
 
-    public TCPClient(ISystemInfoCollector systemInfoCollector) {
-        this.systemInfoCollector = systemInfoCollector;
+    public TCPClient(String serverAddress, int serverPort) {
+        systemInfoCollector = new SystemInfoCollector();
         try {
-            this.socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
+            this.socket = new Socket(serverAddress, serverPort);
             this.out = new PrintWriter(socket.getOutputStream(), true);
         } catch (Exception e) {
             e.printStackTrace();

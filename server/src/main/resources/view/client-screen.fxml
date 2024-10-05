@@ -11,7 +11,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane onMouseClicked="#viewchange" prefHeight="719.0" prefWidth="1312.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.MainController">
+<AnchorPane prefHeight="719.0" prefWidth="1312.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.ScreenCaptureController">
    <AnchorPane prefHeight="200.0" prefWidth="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
           <fx:include source="../component/side-bar.fxml" />
@@ -67,10 +67,5 @@
                 </Line>
             </children>
         </FlowPane>
-   <Pane layoutX="396.0" layoutY="147.0" prefHeight="344.0" prefWidth="848.0" styleClass="blue-background" AnchorPane.bottomAnchor="228.0" AnchorPane.leftAnchor="396.0" AnchorPane.rightAnchor="68.0" />
-   <AnchorPane layoutX="395.0" layoutY="509.0" prefHeight="177.0" prefWidth="848.0" AnchorPane.bottomAnchor="33.0" AnchorPane.leftAnchor="395.0" AnchorPane.rightAnchor="69.0">
-      <children>
-          <fx:include fx:id="panelPortInclude" source="../component/panel-port.fxml" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-      </children>
-   </AnchorPane>
+   <Pane fx:id="screenPane" layoutX="363.0" layoutY="129.0" prefHeight="510.0" prefWidth="876.0" styleClass="blue-background" AnchorPane.bottomAnchor="80.0" AnchorPane.leftAnchor="363.0" AnchorPane.rightAnchor="73.0" AnchorPane.topAnchor="129.0" />
 </AnchorPane>

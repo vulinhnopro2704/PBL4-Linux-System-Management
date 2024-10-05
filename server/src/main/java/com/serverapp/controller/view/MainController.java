@@ -5,11 +5,13 @@ import java.util.List;
 
 import com.serverapp.controller.component.ClientCardController;
 import com.serverapp.controller.component.PanelPortController;
+import com.serverapp.enums.RequestType;
 import com.serverapp.model.ClientCard;
 import com.serverapp.model.Redis;
 
-import com.serverapp.util.ITCPServer;
-import com.serverapp.util.implement.TCPServer;
+import com.serverapp.util.ISystemMonitoring;
+import com.serverapp.util.implement.CurrentType;
+import com.serverapp.util.implement.SystemMonitoring;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.application.Platform;
@@ -40,7 +42,7 @@ public class MainController {
     private AnchorPane panelPortInclude;
 
     private PanelPortController panelPortController;
-    private ITCPServer server;
+    private ISystemMonitoring server;
 
     // Khởi tạo controller
     @FXML
@@ -58,9 +60,9 @@ public class MainController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/panel-port.fxml"));
             AnchorPane panelPortRoot = loader.load(); // Lấy root từ panel-port.fxml
 
+            CurrentType.getInstance().setType(RequestType.SYSTEM_INFO);
             // Initialize and start the TCP server
-            server = new TCPServer();
-            server.setPort(9999);
+            server = new SystemMonitoring();
             server.setMainController(this);
             server.start();
 
@@ -97,12 +99,17 @@ public class MainController {
     // Hàm để load trang mới
     private void loadPage(String fxmlFile) {
         try {
+            stop();
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
             Parent root = loader.load();
 
             // Lấy stage hiện tại và thay đổi scene
             Stage stage = (Stage) btnGeneral.getScene().getWindow();
             stage.setScene(new Scene(root));
+
+            // Explicitly set the current controller to null
+            FXMLLoader currentLoader = new FXMLLoader(getClass().getResource("/view/main-view.fxml"));
+            currentLoader.setController(null);
         } catch (IOException e) {
             e.printStackTrace();
         }
