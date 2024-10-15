@@ -7,15 +7,13 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="mainLayout" prefHeight="719.0" prefWidth="1312.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.AppController">
-    <!-- sidebar) -->
-    <left>
-        <AnchorPane id="sideBar" fx:id="sideBar" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="300.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:id="mainLayout" prefHeight="719.0" prefWidth="1312.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.AppController">
+    <!-- (sidebar) -->
+        <AnchorPane id="sideBar" fx:id="sideBar" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="300.0" styleClass="dark-background" stylesheets="@../styles/styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
             <effect>
                 <DropShadow />
             </effect>
@@ -127,12 +125,9 @@
                 </FlowPane>
             </children>
         </AnchorPane>
-    </left>
 
     <!-- Vùng nội dung thay đổi (Detail, Process, File, etc.) -->
-    <center>
-        <AnchorPane fx:id="contentArea" prefHeight="719.0" prefWidth="925.0">
+        <AnchorPane fx:id="contentArea" styleClass="card-backgroud-color" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <!-- Thay đổi nội dung ở đây -->
         </AnchorPane>
-    </center>
-</BorderPane>
+</AnchorPane>

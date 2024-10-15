@@ -12,15 +12,15 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="900.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="942.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <ImageView fitHeight="139.0" fitWidth="232.0" layoutX="77.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="642.8859710693359" AnchorPane.topAnchor="37.0">
+        <ImageView fitHeight="139.0" fitWidth="232.0" layoutX="77.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="85.0" AnchorPane.topAnchor="37.0">
             <image>
                 <Image url="@../images/computer-icon.png" />
             </image>
         </ImageView>
-        <Line endX="-100.0" endY="124.60000610351562" layoutX="436.0" layoutY="58.0" startX="-100.0" stroke="WHITE" strokeWidth="3.0" AnchorPane.rightAnchor="561.5" AnchorPane.topAnchor="52.5" />
-        <Line endX="738.7999267578125" endY="67.60000610351562" layoutX="140.0" layoutY="157.0" startX="-109.19998168945312" startY="67.60000610351562" stroke="WHITE" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" />
+        <Line endX="-100.0" endY="124.60000610351562" layoutX="436.0" layoutY="58.0" startX="-100.0" stroke="WHITE" strokeWidth="3.0" AnchorPane.rightAnchor="575.0" AnchorPane.topAnchor="52.5" />
+        <Line endX="750.0" endY="67.0" layoutX="150.0" layoutY="157.0" startX="-109.19998168945312" startY="67.0" stroke="WHITE" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="228.0" />
         <FlowPane layoutX="366.0" layoutY="30.0" prefHeight="200.0" prefWidth="490.0" vgap="10.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
             <children>
                 <FlowPane hgap="20.0" prefHeight="28.0" prefWidth="400.0">
