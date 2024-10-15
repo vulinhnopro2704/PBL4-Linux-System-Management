@@ -7,24 +7,32 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="719.0" prefWidth="1312.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.AppController">
+<BorderPane fx:id="mainLayout" prefHeight="719.0" prefWidth="1312.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.AppController">
     <!-- sidebar) -->
-        <AnchorPane id="sideBar" fx:id="sideBar" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="300.0" styleClass="dark-background" stylesheets="@../styles/styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+    <left>
+        <AnchorPane id="sideBar" fx:id="sideBar" minHeight="-Infinity" minWidth="-Infinity" prefHeight="719.0" prefWidth="300.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
             <effect>
                 <DropShadow />
             </effect>
+            <children>
                 <ImageView id="PBL4Logo" fx:id="PBL4Logo" fitHeight="35.0" fitWidth="126.0" layoutX="32.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="45.0">
+                    <image>
                         <Image url="@../images/logo-pbl-4.png" />
+                    </image>
                 </ImageView>
                 <FlowPane hgap="20.0" layoutX="32.0" layoutY="109.0" prefHeight="200.0" prefWidth="300.0" vgap="10.0" AnchorPane.leftAnchor="0.0">
+                    <children>
                         <Button id="btnSystemMonitoring" fx:id="btnSystemMonitoring" mnemonicParsing="false" onMouseClicked="#handleSystemMonitoring" prefHeight="35.0" prefWidth="265.0" styleClass="normal-button" stylesheets="@../styles/styles.css" text="  System monitoring">
                             <graphic>
                                 <ImageView id="icon-home" fitHeight="16.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
                                         <Image url="@../images/home-icon.png" />
+                                    </image>
                                 </ImageView>
                             </graphic>
                             <font>
@@ -37,7 +45,9 @@
                         <Button id="btnCommandPrompt" fx:id="btnCommandPrompt" mnemonicParsing="false" onMouseClicked="#handleCommandPrompt" prefHeight="35.0" prefWidth="265.0" styleClass="normal-button" stylesheets="@../styles/styles.css" text="  Command Prompt">
                             <graphic>
                                 <ImageView id="icon-user" fitHeight="16.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
                                         <Image url="@../images/cmd-prompt.png" />
+                                    </image>
                                 </ImageView>
                             </graphic>
                             <font>
@@ -50,7 +60,9 @@
                         <Button id="btnFileAndDirectory" fx:id="btnFileAndDirectory" mnemonicParsing="false" onMouseClicked="#handleFileAndDirectory" prefHeight="35.0" prefWidth="265.0" styleClass="normal-button" stylesheets="@../styles/styles.css" text="   File &amp; Directory">
                             <graphic>
                                 <ImageView id="icon-file" fitHeight="16.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
                                         <Image url="@../images/file-icon.png" />
+                                    </image>
                                 </ImageView>
                             </graphic>
                             <font>
@@ -63,7 +75,9 @@
                         <Button id="btnInstallAndUpdate" fx:id="btnInstallAndUpdate" mnemonicParsing="false" onMouseClicked="#handleInstallAndUpdate" prefHeight="35.0" prefWidth="265.0" styleClass="normal-button" stylesheets="@../styles/styles.css" text="   Install &amp; Update">
                             <graphic>
                                 <ImageView id="icon-install-update" fitHeight="16.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
                                         <Image url="@../images/app-icon.png" />
+                                    </image>
                                 </ImageView>
                             </graphic>
                             <font>
@@ -76,7 +90,9 @@
                         <Button id="btnSecurityManagement" fx:id="btnSecurityManagement" mnemonicParsing="false" onMouseClicked="#handleSecurityManagement" prefHeight="35.0" prefWidth="265.0" styleClass="normal-button" stylesheets="@../styles/styles.css" text="   Security Management">
                             <graphic>
                                 <ImageView id="icon-security" fitHeight="16.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
                                         <Image url="@../images/security-icon.png" />
+                                    </image>
                                 </ImageView>
                             </graphic>
                             <font>
@@ -95,7 +111,9 @@
                       <Button id="btnSetting" fx:id="btnSetting" mnemonicParsing="false" onMouseClicked="#handleSetting" prefHeight="35.0" prefWidth="265.0" styleClass="normal-button" stylesheets="@../styles/styles.css" text="   Setting">
                           <graphic>
                               <ImageView id="icon-setting" fx:id="iconSetting" fitHeight="16.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                                  <image>
                                       <Image url="@../images/setting-icon.png" />
+                                  </image>
                               </ImageView>
                           </graphic>
                           <font>
@@ -105,11 +123,16 @@
                         <Insets left="35.0" />
                      </FlowPane.margin>
                       </Button>
+                    </children>
                 </FlowPane>
+            </children>
         </AnchorPane>
+    </left>
 
     <!-- Vùng nội dung thay đổi (Detail, Process, File, etc.) -->
-        <AnchorPane fx:id="contentArea" prefHeight="719.0" prefWidth="925.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <center>
+        <AnchorPane fx:id="contentArea" prefHeight="719.0" prefWidth="925.0">
             <!-- Thay đổi nội dung ở đây -->
         </AnchorPane>
-</AnchorPane>
+    </center>
+</BorderPane>
