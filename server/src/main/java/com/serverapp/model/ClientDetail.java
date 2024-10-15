@@ -1,12 +1,10 @@
 package com.serverapp.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Getter;    
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
-import java.util.List;
 
 @Getter
 @Setter
@@ -18,5 +16,4 @@ public class ClientDetail extends ClientCard {
     private Long ram;
     private Long usedDisk;
     private Long totalDisk;
-    private List<ClientProcess> processDetails;
 }
