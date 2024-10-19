@@ -30,8 +30,6 @@ public class MainSystemController {
     @FXML
     private void initialize() {
         addPanelPort();
-        addClientCard("Host Name", "IP Address", "MAC Address", "OS Version", false);
-        addClientCard("Host Name", "IP Address", "MAC Address", "OS Version", false);
         CurrentType.getInstance().setType(RequestType.SYSTEM_INFO);
         systemMonitoring = new SystemMonitoring();
         systemMonitoring.setMainSystemController(this);
@@ -86,9 +84,9 @@ public class MainSystemController {
     }
 
     public void clearClientCards() {
-//        Platform.runLater(() -> {
-//            clientCardContainer.getChildren().clear();
-//        });
+        Platform.runLater(() -> {
+            clientCardContainer.getChildren().clear();
+        });
     }
 
     public void updateUI(){
