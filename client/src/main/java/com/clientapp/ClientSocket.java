@@ -6,19 +6,23 @@ import lombok.Setter;
 import java.io.*;
 import java.net.Socket;
 
+@Getter
+@Setter
 public class ClientSocket {
     private Socket socket;
     private String serverIp = "localhost";
     private int serverPort = 8080;
-    @Getter
-    @Setter
     private String aesKey;
+    private InputStream inputStream;
+    private OutputStream outputStream;
 
     private static ClientSocket _INSTANCE;
 
     private ClientSocket() {
         try {
             socket = new Socket(serverIp, serverPort);
+            inputStream = socket.getInputStream();
+            outputStream = socket.getOutputStream();
         } catch (IOException e) {
             e.printStackTrace();
         }

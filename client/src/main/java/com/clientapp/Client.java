@@ -12,17 +12,13 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 public class Client {
-    private Socket clientSocket;
-    private String serverIp = "localhost";
-    private int serverPort = 8080;
-
     public static void main(String[] args) throws IOException {
         try {
             String request;
-            BufferedReader in = new BufferedReader(new InputStreamReader(ClientSocket.getInstance().getClientSocket().getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(ClientSocket.getInstance().getInputStream()));
             while (true) {
                 request = in.readLine();
-                if (request.isEmpty()) continue;
+                if (request == null || request.isEmpty()) continue;
                 RequestType requestType = RequestType.valueOf(request);
                 System.out.println(requestType);
                 switch (requestType) {

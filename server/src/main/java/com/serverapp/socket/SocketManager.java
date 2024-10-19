@@ -11,17 +11,17 @@ import java.security.PublicKey;
 import java.util.HashMap;
 
 public class SocketManager {
-    private static SocketManager instance;
+    private static SocketManager _INSTANCE;
     private HashMap<String, Socket> socketMap;  // Key: Địa chỉ IP, Value: Socket
     private PublicKey rsaPublicKey;
     private PrivateKey rsaPrivateKey;
 
     // Phương thức để lấy thể hiện duy nhất của Singleton
     public static synchronized SocketManager getInstance() {
-        if (instance == null) {
-            instance = new SocketManager();
+        if (_INSTANCE == null) {
+            _INSTANCE = new SocketManager();
         }
-        return instance;
+        return _INSTANCE;
     }
 
     // Private constructor để ngăn chặn việc khởi tạo từ bên ngoài
