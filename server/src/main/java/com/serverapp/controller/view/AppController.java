@@ -6,10 +6,13 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import lombok.Setter;
+
 import java.io.IOException;
 
 public class AppController {
     private static AppController _INSTANCE;
+    private MainController mainController;
 
     public static AppController getInstance() {
         if (_INSTANCE == null) {
@@ -47,11 +50,8 @@ public class AppController {
     @FXML
     private Button btnSetting;
 
+    @Setter
     private String fxmlPath;
-
-    public void setFxmlPath(String fxmlPath) {
-        this.fxmlPath = fxmlPath;
-    }
 
     // Reset button styles to default
     private void resetButtonStyles() {

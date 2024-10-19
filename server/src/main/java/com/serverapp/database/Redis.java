@@ -1,7 +1,10 @@
-package com.serverapp.model;
+package com.serverapp.database;
 
-import lombok.Getter;
+import com.serverapp.model.ClientCard;
+import com.serverapp.model.ClientCredentials;
+import com.serverapp.model.ClientDetail;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -88,8 +91,15 @@ public class Redis {
         });
     }
 
-    // Save Client's AES Key and OutputStream
     private Map<String, ClientCredentials> clientSocketData = new HashMap<>();
+
+    public List<String> getAllIpClientCredential() {
+        List<String> list = new ArrayList<String>();
+        clientSocketData.forEach((String s, ClientCredentials a) -> {
+            list.add(s);
+        });
+        return list;
+    }
 
     public ClientCredentials getClientCredential(String clientAddress) {
         return clientSocketData.get(clientAddress);

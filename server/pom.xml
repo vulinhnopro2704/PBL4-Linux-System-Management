@@ -165,7 +165,7 @@
                 <configuration>
                     <archive>
                         <manifestEntries>
-                            <Main-Class>com.serverapp.Main</Main-Class>
+                            <Main-Class>com.serverapp.Server</Main-Class>
                         </manifestEntries>
                     </archive>
                 </configuration>
@@ -179,7 +179,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>com.serverapp.server/com.serverapp.Main</mainClass>
+                            <mainClass>com.serverapp.server/com.serverapp.Server</mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
                             <jlinkImageName>app</jlinkImageName>
