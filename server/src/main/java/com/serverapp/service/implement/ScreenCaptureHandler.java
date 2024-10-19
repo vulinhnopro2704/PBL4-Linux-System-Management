@@ -1,4 +1,4 @@
-package com.serverapp.util.implement;
+package com.serverapp.service.implement;
 
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -8,8 +8,7 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import com.serverapp.controller.view.ClientScreenController;
-import com.serverapp.controller.view.ClientScreenController;
-import com.serverapp.util.IScreenCaptureHandler;
+import com.serverapp.service.IScreenCaptureHandler;
 
 public class ScreenCaptureHandler implements IScreenCaptureHandler {
     private Socket clientSocket;

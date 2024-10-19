@@ -1,18 +1,15 @@
 package com.serverapp.controller.view;
 
 import com.serverapp.enums.RequestType;
+import com.serverapp.helper.EnCodeDecoder;
 import com.serverapp.model.ClientCredentials;
-import com.serverapp.model.Redis;
-import com.serverapp.util.implement.TCPServer;
+import com.serverapp.database.Redis;
+import com.serverapp.socket.TCPServer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import lombok.SneakyThrows;
+import javafx.scene.control.*;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -22,6 +19,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.security.*;
 import java.util.Base64;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -29,28 +27,24 @@ public class MainCommandController {
 
     @FXML
     private ListView<CheckBox> clientListView;
+
     @FXML
-    private TextField commandField;
+    private TextArea txtAreaCommand;
+
     @FXML
-    private TextArea logArea;
+    private TableView<CheckBox> tableClient;
+
+    @FXML
+    private TextArea txtAreaTerminalLogs;
+
 
     private TCPServer server;
     private ObservableList<CheckBox> clientList = FXCollections.observableArrayList();
     private ExecutorService executor = Executors.newCachedThreadPool();
-    private PublicKey rsaPublicKey;
-    private PrivateKey rsaPrivateKey;
-
-    private DataOutputStream dataOutputStream;
 
     @FXML
     public void initialize() {
-        // Khởi tạo cặp khóa RSA
         try {
-            KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-            keyGen.initialize(2048);
-            KeyPair pair = keyGen.generateKeyPair();
-            rsaPublicKey = pair.getPublic();
-            rsaPrivateKey = pair.getPrivate();
             server = TCPServer.getInstance();
         } catch (Exception e) {
             e.printStackTrace();
@@ -64,18 +58,15 @@ public class MainCommandController {
             log("Server is running on port 8080...");
             while (true) {
                 Socket clientSocket = serverSocket.accept();
-                dataOutputStream = new DataOutputStream(clientSocket.getOutputStream());
-                dataOutputStream.writeUTF(RequestType.COMMAND.toString());
                 log("New client connected: " + clientSocket.getInetAddress().getHostAddress());
-
-                // Thêm client vào danh sách
+                // Add the client to the list in the GUI
                 Platform.runLater(() -> {
                     CheckBox clientCheckBox = new CheckBox(clientSocket.getInetAddress().getHostAddress());
                     clientList.add(clientCheckBox);
                     clientListView.setItems(clientList);
                 });
 
-                // Xử lý client trên luồng riêng
+                // Handle client in a separate thread
                 executor.submit(() -> handleClient(clientSocket));
             }
         } catch (IOException e) {
@@ -84,40 +75,43 @@ public class MainCommandController {
     }
 
     private void handleClient(Socket clientSocket) {
-        try {
-            DataInputStream input = new DataInputStream(clientSocket.getInputStream());
-            DataOutputStream output = new DataOutputStream(clientSocket.getOutputStream());
-
-            // Gửi khóa công khai RSA cho Client
-            String RSAPublicKey = Base64.getEncoder().encodeToString(rsaPublicKey.getEncoded());
-            System.out.println(RSAPublicKey);
-            output.writeUTF(RSAPublicKey);
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()))) {
+            // Send COMMAND request to client
+            writer.write(RequestType.COMMAND + "\n");
+            writer.flush();
+            // Send RSA public key to client
+            String RSAPublicKey = Base64.getEncoder().encodeToString(EnCodeDecoder.getInstance().getRsaPublicKey().getEncoded());
+            writer.write(RSAPublicKey + "\n");
+            writer.flush();
             log("Public Key Sent");
 
-            // Nhận khóa AES đã mã hóa từ Client
-            String encryptedAesKey = input.readUTF();
-            SecretKey aesKey = decryptAESKey(encryptedAesKey);
+            // Receive encrypted AES key from the client
+            String encryptedAesKey = reader.readLine();
+            SecretKey aesKey = EnCodeDecoder.getInstance().decryptAESKey(encryptedAesKey);
 
-            // Lưu trữ output stream và AES key để sử dụng sau này khi cần gửi lệnh
-            Redis.getInstance().putClientCredential(clientSocket.getInetAddress().getHostAddress(), new ClientCredentials(output, input, aesKey));
+            // Store output stream and AES key for later use
+            String ip = clientSocket.getInetAddress().getHostAddress();
+            Redis.getInstance().putClientCredential(ip, new ClientCredentials(writer, reader, aesKey));
 
-            // Lắng nghe phản hồi từ client trong một luồng riêng
-            executor.submit(() -> listenForResponse(clientSocket.getInetAddress().getHostAddress(), input, aesKey));
+            // Listen for responses from the client in a separate thread
+            executor.submit(() -> listenForResponse(clientSocket.getInetAddress().getHostAddress(), reader, aesKey));
 
             log("Client is ready: " + clientSocket.getInetAddress().getHostAddress());
         } catch (Exception e) {
-            log("Client disconnected: " + clientSocket.getInetAddress().getHostAddress());
+            log("Client disconnected: " + clientSocket.getInetAddress().getHostAddress() + " - " + e.getMessage());
         }
     }
 
-    private void listenForResponse(String clientAddress, DataInputStream input, SecretKey aesKey) {
+    private void listenForResponse(String clientAddress, BufferedReader reader, SecretKey aesKey) {
         try {
             while (true) {
-                // Nhận phản hồi được mã hóa từ client
-                String encryptedResponse = input.readUTF();
-                // Giải mã phản hồi
-                String response = decryptResponse(encryptedResponse, aesKey);
-                log("Response from client (" + clientAddress + "): " + response);
+                // Receive encrypted response from client
+                String encryptedResponse = reader.readLine();
+                if (encryptedResponse != null) {
+                    String response = EnCodeDecoder.getInstance().decryptResponse(encryptedResponse, aesKey);
+                    log("Response from client (" + clientAddress + "): " + response);
+                }
             }
         } catch (IOException e) {
             log("Lost connection to client: " + clientAddress);
@@ -126,11 +120,12 @@ public class MainCommandController {
         }
     }
 
-
     @FXML
     private void sendCommand() {
-        String command = commandField.getText();
+        String command = txtAreaCommand.getText();
         if (command.isEmpty()) return;
+
+        Redis.getInstance().getAllIpClientCredential().forEach(System.out::println);
 
         for (CheckBox clientCheckBox : clientList) {
             if (clientCheckBox.isSelected()) {
@@ -139,11 +134,12 @@ public class MainCommandController {
 
                 // Lấy dữ liệu client từ Map
                 ClientCredentials clientData = Redis.getInstance().getClientCredential(clientAddress);
+
                 if (clientData != null) {
                     try {
                         // Mã hóa và gửi lệnh
-                        String encryptedCommand = encryptCommand(command, clientData.aesKey);
-                        clientData.outputStream.writeUTF(encryptedCommand);
+                        String encryptedCommand = EnCodeDecoder.getInstance().encryptCommand(command, clientData.aesKey);
+                        clientData.bufferedWriter.write(encryptedCommand);
                     } catch (Exception e) {
                         log("Failed to send command to " + clientAddress);
                     }
@@ -152,29 +148,7 @@ public class MainCommandController {
         }
     }
 
-    private String encryptCommand(String command, SecretKey aesKey) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.ENCRYPT_MODE, aesKey);
-        byte[] encrypted = cipher.doFinal(command.getBytes());
-        return Base64.getEncoder().encodeToString(encrypted);
-    }
-
-    private String decryptResponse(String encryptedResponse, SecretKey aesKey) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.DECRYPT_MODE, aesKey);
-        byte[] decodedBytes = Base64.getDecoder().decode(encryptedResponse);
-        return new String(cipher.doFinal(decodedBytes));
-    }
-
-    private SecretKey decryptAESKey(String encryptedKey) throws Exception {
-        Cipher cipher = Cipher.getInstance("RSA");
-        cipher.init(Cipher.DECRYPT_MODE, rsaPrivateKey);
-        byte[] decodedKey = Base64.getDecoder().decode(encryptedKey);
-        byte[] aesKey = cipher.doFinal(decodedKey);
-        return new SecretKeySpec(aesKey, "AES");
-    }
-
     private void log(String message) {
-        Platform.runLater(() -> logArea.appendText(message + "\n"));
+        Platform.runLater(() -> txtAreaTerminalLogs.appendText(message + "\n"));
     }
 }

@@ -13,6 +13,7 @@ module com.clientapp {
     requires com.fasterxml.jackson.databind;
     requires com.google.gson;
     requires javafx.swing;
+    requires static lombok;
 
     opens com.clientapp to javafx.fxml;
     exports com.clientapp;

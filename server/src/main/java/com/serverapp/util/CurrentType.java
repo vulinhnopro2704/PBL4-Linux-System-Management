@@ -1,4 +1,4 @@
-package com.serverapp.util.implement;
+package com.serverapp.util;
 
 import com.serverapp.enums.RequestType;
 
@@ -21,7 +21,7 @@ public class CurrentType {
         return type;
     }
 
-    public void setType(RequestType type) {
+    public synchronized void setType(RequestType type) {
         this.type = type;
     }
 }

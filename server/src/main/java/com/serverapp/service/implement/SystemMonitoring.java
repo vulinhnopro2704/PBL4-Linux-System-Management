@@ -1,8 +1,9 @@
-package com.serverapp.util.implement;
+package com.serverapp.service.implement;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -12,11 +13,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.serverapp.controller.view.MainController;
+import com.serverapp.enums.RequestType;
+import com.serverapp.socket.TCPServer;
+import com.serverapp.util.CurrentType;
+import com.serverapp.util.NetworkInfoCollector;
 import com.serverapp.model.ClientCard;
 import com.serverapp.model.ClientDetail;
-import com.serverapp.model.Redis;
-import com.serverapp.util.INetworkInfoCollector;
-import com.serverapp.util.ISystemMonitoring;
+import com.serverapp.database.Redis;
+import com.serverapp.service.ISystemMonitoring;
 
 public class SystemMonitoring implements ISystemMonitoring {
     private MainController mainController;
@@ -61,7 +65,7 @@ public class SystemMonitoring implements ISystemMonitoring {
             networkScannerPool.submit(() -> {
                 long startTime = System.currentTimeMillis();
 
-                INetworkInfoCollector networkInfoCollector = new NetworkInfoCollector();
+                NetworkInfoCollector networkInfoCollector = new NetworkInfoCollector();
                 List<ClientCard> list = networkInfoCollector.getAllClientCardsInLAN();
                 Redis.getInstance().putAllClientCard(list);
                 mainController.updateUI();
@@ -73,25 +77,24 @@ public class SystemMonitoring implements ISystemMonitoring {
                 logMessage("Execution time in milliseconds: " + elapsedTime);
             });
 
-//            while (running) {
-//                try {
-//                    ServerSocket serverSocket = server.getServerSocket();
-//                    Socket clientSocket = serverSocket.accept();
-//                    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-//                    out.println(RequestType.SYSTEM_INFO);
-//
-//                    logMessage("New client connected: " + clientSocket.getInetAddress().getHostAddress());
-//
-//                    // Create a new thread to handle the client
-//                    clientHandlerPool.submit(() -> handleClient(clientSocket));
-//
-//                } catch (IOException e) {
-//                    if (running) {
-//                        logMessage("Error accepting client connection: " + e.getMessage());
-//                    }
-//                    break;
-//                }
-//            }
+            while (running) {
+                try {
+                    Socket clientSocket = server.getServerSocket().accept();
+                    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
+                    out.println(RequestType.SYSTEM_INFO);
+
+                    logMessage("New client connected: " + clientSocket.getInetAddress().getHostAddress());
+
+                    // Create a new thread to handle the client
+                    clientHandlerPool.submit(() -> handleClient(clientSocket));
+
+                } catch (IOException e) {
+                    if (running) {
+                        logMessage("Error accepting client connection: " + e.getMessage());
+                    }
+                    break;
+                }
+            }
         } catch (IOException e) {
             logMessage("Error starting server: " + e.getMessage());
         }
@@ -102,7 +105,18 @@ public class SystemMonitoring implements ISystemMonitoring {
                 BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         ) {
             String inputLine;
-            while ((inputLine = in.readLine()) != null) {
+            while (CurrentType.getInstance().getType() == RequestType.SYSTEM_INFO) {
+                inputLine = in.readLine();
+                try {
+                    RequestType requestType = RequestType.valueOf(inputLine);
+                    if (requestType != RequestType.SYSTEM_INFO) {
+                        close();
+                        break;
+                    }
+                } catch (IllegalArgumentException e) {
+                    // It's not a RequestType, so it must be the JSON data
+                }
+
                 logMessage("Received JSON from client: " + inputLine);
                 System.out.println(inputLine);
                 // Parse the received JSON using Gson
@@ -149,4 +163,12 @@ public class SystemMonitoring implements ISystemMonitoring {
             System.out.println(message);
         }
     }
+
+    void close() {
+        running = false;
+        clientHandlerPool.shutdown();
+        networkScannerPool.shutdown();
+    }
+
+
 }

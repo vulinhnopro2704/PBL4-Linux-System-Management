@@ -1,4 +1,4 @@
-package com.serverapp.util.implement;
+package com.serverapp.util;
 
 import java.io.IOException;
 import java.net.InetAddress;
@@ -8,12 +8,11 @@ import java.util.List;
 import java.util.concurrent.*;
 
 import com.serverapp.model.ClientCard;
-import com.serverapp.util.INetworkInfoCollector;
 import oshi.SystemInfo;
 import oshi.hardware.HardwareAbstractionLayer;
 import oshi.hardware.NetworkIF;
 
-public class NetworkInfoCollector implements INetworkInfoCollector {
+public class NetworkInfoCollector {
     public List<ClientCard> getAllClientCardsInLAN() {
         List<ClientCard> clientCards = new ArrayList<>();
         String subnet = getWifiSubnet();

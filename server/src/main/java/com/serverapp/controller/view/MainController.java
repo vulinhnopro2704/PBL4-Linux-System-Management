@@ -7,11 +7,11 @@ import com.serverapp.controller.component.ClientCardController;
 import com.serverapp.controller.component.PanelPortController;
 import com.serverapp.enums.RequestType;
 import com.serverapp.model.ClientCard;
-import com.serverapp.model.Redis;
+import com.serverapp.database.Redis;
 
-import com.serverapp.util.ISystemMonitoring;
-import com.serverapp.util.implement.CurrentType;
-import com.serverapp.util.implement.SystemMonitoring;
+import com.serverapp.service.ISystemMonitoring;
+import com.serverapp.util.CurrentType;
+import com.serverapp.service.implement.SystemMonitoring;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import javafx.application.Platform;
