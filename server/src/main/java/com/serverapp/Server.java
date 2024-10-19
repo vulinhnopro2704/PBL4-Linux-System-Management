@@ -21,10 +21,6 @@ public class Server extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
 
-//        ServerSocket serverSocket = TCPServer.getInstance().getServerSocket();
-//        while (true) {
-//            Socket clientSocket = serverSocket.accept();
-//        }
     }
 
     @Override
