@@ -1,4 +1,4 @@
-package com.serverapp.util.implement;
+package com.serverapp.service.implement;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -7,7 +7,8 @@ import java.net.Socket;
 
 import com.serverapp.controller.view.ClientScreenController;
 import com.serverapp.enums.RequestType;
-import com.serverapp.util.IScreenCaptureServer;
+import com.serverapp.service.IScreenCaptureServer;
+import com.serverapp.socket.TCPServer;
 
 public class ScreenCaptureServer implements IScreenCaptureServer {
     private ServerSocket serverSocket;

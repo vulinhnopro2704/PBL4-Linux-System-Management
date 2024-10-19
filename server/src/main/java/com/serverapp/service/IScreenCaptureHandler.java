@@ -1,4 +1,4 @@
-package com.serverapp.util;
+package com.serverapp.service;
 
 public interface IScreenCaptureHandler extends Runnable {
 }

@@ -1,6 +1,7 @@
-package com.clientapp.util.implement;
+package com.clientapp.service.implement;
 
-import com.clientapp.util.IScreenCaptureClient;
+import com.clientapp.ClientSocket;
+import com.clientapp.service.IScreenCaptureClient;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -8,24 +9,11 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Socket;
 
 public class ScreenCaptureClient implements IScreenCaptureClient {
-    private String serverAddress;
-    private int serverPort;
-    private Socket socket;
-    private DataOutputStream out;
     private static final int CHUNK_SIZE = 1024 * 64; // 64KB
 
-    public ScreenCaptureClient(String serverAddress, int serverPort) {
-        this.serverAddress = serverAddress;
-        this.serverPort = serverPort;
-        try {
-            this.socket = new Socket(serverAddress, serverPort);
-            this.out = new DataOutputStream(socket.getOutputStream());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public ScreenCaptureClient() {
     }
 
     public void start() throws IOException {
@@ -51,6 +39,7 @@ public class ScreenCaptureClient implements IScreenCaptureClient {
             byte[] imageBytes = baos.toByteArray();
 
             int totalChunks = (int) Math.ceil((double) imageBytes.length / CHUNK_SIZE);
+            DataOutputStream out = new DataOutputStream(ClientSocket.getInstance().getClientSocket().getOutputStream());
             out.writeInt(totalChunks);
 
             for (int i = 0; i < totalChunks; i++) {
@@ -69,15 +58,6 @@ public class ScreenCaptureClient implements IScreenCaptureClient {
 
     @Override
     public void closeConnection() {
-        try {
-            if (out != null) {
-                out.close();
-            }
-            if (socket != null) {
-                socket.close();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
     }
 }
