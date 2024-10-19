@@ -1,10 +1,11 @@
 package com.serverapp.service;
 
-import com.serverapp.controller.view.MainController;
+import com.serverapp.controller.view.MainSystemController;
+import com.serverapp.controller.view.MainSystemController;
 
 public interface ISystemMonitoring {
     void start();
     void stop();
     void setPort(int port);
-    void setMainController(MainController mainController);
+    void setMainSystemController(MainSystemController mainSystemController);
 }

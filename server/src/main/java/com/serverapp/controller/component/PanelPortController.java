@@ -2,7 +2,6 @@ package com.serverapp.controller.component;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
-import javafx.scene.layout.AnchorPane;
 
 public class PanelPortController {
     @FXML

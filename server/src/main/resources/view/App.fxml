@@ -25,7 +25,7 @@
                 </ImageView>
                 <FlowPane hgap="20.0" layoutX="32.0" layoutY="109.0" prefHeight="200.0" prefWidth="300.0" vgap="10.0" AnchorPane.leftAnchor="0.0">
                     <children>
-                        <Button id="btnSystemMonitoring" fx:id="btnSystemMonitoring" mnemonicParsing="false" onMouseClicked="#handleSystemMonitoring" prefHeight="35.0" prefWidth="265.0" styleClass="normal-button" stylesheets="@../styles/styles.css" text="  System monitoring">
+                        <Button id="btnSystemMonitoring" fx:id="btnSystemMonitoring" mnemonicParsing="false" onMouseClicked="#handleSystemMonitoring" prefHeight="35.0" prefWidth="265.0" styleClass="normal-button" stylesheets="@../styles/styles.css" text="System monitoring">
                             <graphic>
                                 <ImageView id="icon-home" fitHeight="16.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                                     <image>

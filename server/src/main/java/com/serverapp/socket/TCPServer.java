@@ -1,8 +1,13 @@
 package com.serverapp.socket;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 
+@Getter
+@Setter
 public class TCPServer {
     private int serverPort = 8080;
 
@@ -21,20 +26,6 @@ public class TCPServer {
         }
         return _instance;
     }
-
-    public ServerSocket getServerSocket() {
-        return serverSocket;
-    }
-
-    public boolean getRunning() {
-        return isRunning;
-    }
-
-    public int getServerPort() {
-        return serverPort;
-    }
-
-
 
     public void stop() throws IOException {
         isRunning = false;
