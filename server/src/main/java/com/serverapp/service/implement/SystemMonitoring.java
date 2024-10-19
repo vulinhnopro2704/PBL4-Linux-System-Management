@@ -5,14 +5,18 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import com.serverapp.controller.view.MainController;
+import com.serverapp.controller.view.MainSystemController;
+import com.serverapp.controller.view.MainSystemController;
 import com.serverapp.enums.RequestType;
 import com.serverapp.socket.TCPServer;
 import com.serverapp.util.CurrentType;
@@ -23,27 +27,23 @@ import com.serverapp.database.Redis;
 import com.serverapp.service.ISystemMonitoring;
 
 public class SystemMonitoring implements ISystemMonitoring {
-    private MainController mainController;
+    private MainSystemController mainSystemController;
     private boolean running;
 
     private ExecutorService clientHandlerPool;
     private ExecutorService networkScannerPool;
+    private ExecutorService mainSystemControllerPool;
 
     public SystemMonitoring() {
-        clientHandlerPool = Executors.newFixedThreadPool(10); // Create a thread pool for client handling
-        networkScannerPool = Executors.newSingleThreadExecutor(); // Single thread for network scanning
-        start();
+        clientHandlerPool = Executors.newFixedThreadPool(10);
+        networkScannerPool = Executors.newSingleThreadExecutor();
+        mainSystemControllerPool = Executors.newSingleThreadExecutor();
     }
 
     @Override
     public void start() {
         running = true;
-        new Thread(this::runServer).start();
-    }
-
-    @Override
-    public void stop() {
-
+        mainSystemControllerPool.submit(() -> runServer());
     }
 
     @Override
@@ -52,8 +52,8 @@ public class SystemMonitoring implements ISystemMonitoring {
     }
 
     @Override
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
+    public void setMainSystemController(MainSystemController mainSystemController) {
+        this.mainSystemController = mainSystemController;
     }
 
     private void runServer() {
@@ -68,7 +68,7 @@ public class SystemMonitoring implements ISystemMonitoring {
                 NetworkInfoCollector networkInfoCollector = new NetworkInfoCollector();
                 List<ClientCard> list = networkInfoCollector.getAllClientCardsInLAN();
                 Redis.getInstance().putAllClientCard(list);
-                mainController.updateUI();
+                mainSystemController.updateUI();
 
                 long endTime = System.currentTimeMillis();
                 // Calculate the elapsed time
@@ -77,11 +77,17 @@ public class SystemMonitoring implements ISystemMonitoring {
                 logMessage("Execution time in milliseconds: " + elapsedTime);
             });
 
-            while (running) {
+            while (running && CurrentType.getInstance().getType() == RequestType.SYSTEM_INFO) {
                 try {
                     Socket clientSocket = server.getServerSocket().accept();
+                    clientSocket.setSoTimeout(30000);  // Timeout after 30 seconds of inactivity
                     PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                    out.println(RequestType.SYSTEM_INFO);
+
+                    if (CurrentType.getInstance().getType() != RequestType.SYSTEM_INFO)
+                        break;
+                    else {
+                        out.println(CurrentType.getInstance().getType());
+                    }
 
                     logMessage("New client connected: " + clientSocket.getInetAddress().getHostAddress());
 
@@ -107,14 +113,9 @@ public class SystemMonitoring implements ISystemMonitoring {
             String inputLine;
             while (CurrentType.getInstance().getType() == RequestType.SYSTEM_INFO) {
                 inputLine = in.readLine();
-                try {
-                    RequestType requestType = RequestType.valueOf(inputLine);
-                    if (requestType != RequestType.SYSTEM_INFO) {
-                        close();
-                        break;
-                    }
-                } catch (IllegalArgumentException e) {
-                    // It's not a RequestType, so it must be the JSON data
+
+                if (inputLine == null || inputLine.isEmpty()) {
+                    continue;
                 }
 
                 logMessage("Received JSON from client: " + inputLine);
@@ -124,7 +125,7 @@ public class SystemMonitoring implements ISystemMonitoring {
                 JsonObject jsonObject = gson.fromJson(inputLine, JsonObject.class);
 
                 Redis.getInstance().putClientDetail(
-                        String.join(":",
+                        String.join(
                             clientSocket.getInetAddress().toString()
                         ),
                         new ClientDetail().builder()
@@ -141,7 +142,7 @@ public class SystemMonitoring implements ISystemMonitoring {
                 );
 
                 // Update the UI with the received information
-                mainController.updateUI();
+                mainSystemController.updateUI();
             }
         } catch (JsonSyntaxException e) {
             logMessage("Error parsing JSON: " + e.getMessage());
@@ -157,18 +158,33 @@ public class SystemMonitoring implements ISystemMonitoring {
     }
 
     private void logMessage(String message) {
-        if (mainController != null) {
-             mainController.appendLog(message);
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        String logEntry = "[" + timestamp + "] " + message;
+        if (mainSystemController != null) {
+            mainSystemController.appendLog(logEntry);
         } else {
-            System.out.println(message);
+            System.out.println(logEntry);
         }
     }
 
-    void close() {
+
+    @Override
+    public void stop() {
+        try {
+            logMessage("Stopping server (function Stop in SystemMonitoring)...");
+            System.out.println("Stopping server (function Stop in SystemMonitoring)...");
+            clientHandlerPool.shutdown();  // Initiates an orderly shutdown
+            networkScannerPool.shutdown();
+            if (!clientHandlerPool.awaitTermination(60, TimeUnit.SECONDS)) {
+                clientHandlerPool.shutdownNow();  // Forces shutdown if not completed within 60 seconds
+            }
+            if (!networkScannerPool.awaitTermination(60, TimeUnit.SECONDS)) {
+                networkScannerPool.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            clientHandlerPool.shutdownNow();
+            networkScannerPool.shutdownNow();
+        }
         running = false;
-        clientHandlerPool.shutdown();
-        networkScannerPool.shutdown();
     }
-
-
 }

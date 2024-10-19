@@ -151,4 +151,13 @@ public class MainCommandController {
     private void log(String message) {
         Platform.runLater(() -> txtAreaTerminalLogs.appendText(message + "\n"));
     }
+
+    void close() {
+        executor.shutdown();
+        try {
+            server.getServerSocket().close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

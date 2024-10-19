@@ -14,5 +14,7 @@
          </padding>
         </FlowPane>
     </ScrollPane>
-    <AnchorPane fx:id="panelPortInclude" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"> </AnchorPane>
+    <AnchorPane fx:id="panelPortInclude" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        
+    </AnchorPane>
 </AnchorPane>

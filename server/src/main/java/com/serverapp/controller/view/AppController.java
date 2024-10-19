@@ -12,7 +12,7 @@ import java.io.IOException;
 
 public class AppController {
     private static AppController _INSTANCE;
-    private MainController mainController;
+    private MainSystemController mainSystemController;
 
     public static AppController getInstance() {
         if (_INSTANCE == null) {
@@ -115,8 +115,10 @@ public class AppController {
     public void loadPage(String fxmlPath) {
         if (fxmlPath != null) {
             try {
+                System.out.println(fxmlPath);
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
                 Parent root = loader.load();
+                mainSystemController = loader.getController();
                 contentArea.getChildren().clear();
                 contentArea.getChildren().add(root);
             } catch (IOException e) {
