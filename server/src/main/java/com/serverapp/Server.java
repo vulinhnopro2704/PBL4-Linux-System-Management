@@ -1,12 +1,17 @@
 package com.serverapp;
 
+import com.serverapp.socket.TCPServer;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class Server extends Application {
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/App.fxml"));
@@ -15,6 +20,11 @@ public class Main extends Application {
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.show();
+
+//        ServerSocket serverSocket = TCPServer.getInstance().getServerSocket();
+//        while (true) {
+//            Socket clientSocket = serverSocket.accept();
+//        }
     }
 
     @Override

@@ -1,26 +1,20 @@
-package com.clientapp.util.implement;
+package com.clientapp.service.implement;
 
-import com.clientapp.util.INetworkClient;
+import com.clientapp.service.ISystemInformation;
 import com.clientapp.util.ISystemInfoCollector;
+import com.clientapp.util.implement.SystemInfoCollector;
 import com.google.gson.Gson;
 
+import java.io.BufferedWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 
-public class TCPClient implements INetworkClient {
+public class SystemInfomation implements ISystemInformation {
     private final Gson gson = new Gson();
     private final ISystemInfoCollector systemInfoCollector;
-    private Socket socket;
-    private PrintWriter out;
 
-    public TCPClient(String serverAddress, int serverPort) {
+    public SystemInfomation() {
         systemInfoCollector = new SystemInfoCollector();
-        try {
-            this.socket = new Socket(serverAddress, serverPort);
-            this.out = new PrintWriter(socket.getOutputStream(), true);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     // Send system information to test connect with server via TCP
@@ -31,9 +25,11 @@ public class TCPClient implements INetworkClient {
 
             // Check Information
             System.out.println(jsonClientDetail);
-
-            out.println(jsonClientDetail);
+            BufferedWriter out = new BufferedWriter(new PrintWriter(new Socket("localhost", 8080).getOutputStream()));
+            out.write(jsonClientDetail);
+            out.flush();
             System.out.println("System info sent to server.");
+            out.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -41,15 +37,5 @@ public class TCPClient implements INetworkClient {
 
     // Close the socket connection
     public void closeConnection() {
-        try {
-            if (out != null) {
-                out.close();
-            }
-            if (socket != null) {
-                socket.close();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }

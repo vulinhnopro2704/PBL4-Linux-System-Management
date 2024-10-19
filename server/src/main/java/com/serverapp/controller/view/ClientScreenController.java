@@ -1,16 +1,14 @@
 package com.serverapp.controller.view;
 
 import com.serverapp.enums.RequestType;
-import com.serverapp.util.implement.CurrentType;
-import com.serverapp.util.implement.ScreenCaptureServer;
+import com.serverapp.util.CurrentType;
+import com.serverapp.service.implement.ScreenCaptureServer;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 import javax.swing.*;
