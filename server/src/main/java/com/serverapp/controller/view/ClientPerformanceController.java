@@ -1,5 +1,6 @@
 package com.serverapp.controller.view;
 
+import com.serverapp.controller.IController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -9,7 +10,7 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class ClientPerformanceController {
+public class ClientPerformanceController implements IController {
 
     @FXML
     private Label btnGeneral;
@@ -30,10 +31,16 @@ public class ClientPerformanceController {
     private AnchorPane panelPortInclude;
 
     @FXML
-    private void initialize() {
+    public void initialize() {
         addPanelPort();
         addClientChart();
     }
+
+    @Override
+    public void stop() {
+        System.out.println("ClientPerformanceController stop");
+    }
+
     @FXML
     public void viewchange() {
         btnGeneral.setOnMouseClicked(event -> loadPage("/view/client-general.fxml"));

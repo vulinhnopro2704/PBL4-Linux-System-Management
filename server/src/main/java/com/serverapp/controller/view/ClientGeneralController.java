@@ -1,5 +1,6 @@
 package com.serverapp.controller.view;
 
+import com.serverapp.controller.IController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -7,7 +8,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
-public class ClientGeneralController {
+public class ClientGeneralController implements IController {
 
     @FXML
     private Label btnGeneral;
@@ -28,10 +29,16 @@ public class ClientGeneralController {
     private AnchorPane panelPortInclude;
 
     @FXML
-    private void initialize() {
+     public void initialize() {
         addPanelPort();
         addClientDetail();
     }
+
+    @Override
+    public void stop() {
+
+    }
+
     @FXML
     public void viewchange() {
         btnGeneral.setOnMouseClicked(event -> loadPage("/view/client-general.fxml"));

@@ -1,19 +1,22 @@
 package com.serverapp.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.crypto.SecretKey;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
+import java.io.*;
+import java.net.Socket;
 
+@Getter
+@Setter
 public class ClientCredentials {
-    public BufferedWriter bufferedWriter;
-    public BufferedReader bufferedReader;
-    public SecretKey aesKey;
+    private final InputStream inputStream;
+    private final OutputStream outputStream;
+    private final SecretKey aesKey;
 
-    public ClientCredentials(BufferedWriter bufferedWriter, BufferedReader bufferedReader, SecretKey aesKey) {
-        this.bufferedWriter = bufferedWriter;
-        this.bufferedReader = bufferedReader;
+    public ClientCredentials(InputStream inputStream, OutputStream outputStream, SecretKey aesKey) {
+        this.inputStream = inputStream;
+        this.outputStream = outputStream;
         this.aesKey = aesKey;
     }
 }

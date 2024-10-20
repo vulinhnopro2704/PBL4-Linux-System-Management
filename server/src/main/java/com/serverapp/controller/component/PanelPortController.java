@@ -3,6 +3,9 @@ package com.serverapp.controller.component;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class PanelPortController {
     @FXML
     private TextArea logContent;
@@ -14,6 +17,8 @@ public class PanelPortController {
 
     // Method to update the log content
     public void updateLogContent(String log) {
-        logContent.appendText(log + "\n");
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        String logEntry = "[" + timestamp + "] " + log;
+        logContent.appendText(logEntry + "\n");
     }
 }
