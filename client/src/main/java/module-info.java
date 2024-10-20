@@ -18,5 +18,8 @@ module com.clientapp {
     opens com.clientapp to javafx.fxml;
     exports com.clientapp;
     exports com.clientapp.model;
+    exports com.clientapp.util;
+    exports com.clientapp.enums;
+    exports com.clientapp.service;
     opens com.clientapp.model to com.google.gson;
 }

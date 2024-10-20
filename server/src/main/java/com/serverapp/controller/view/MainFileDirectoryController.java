@@ -1,12 +1,13 @@
 package com.serverapp.controller.view;
 
+import com.serverapp.controller.IController;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 import java.awt.*;
 
-public class MainFileDirectoryController {
+public class MainFileDirectoryController implements IController {
     @FXML private ImageView btnUpfile;
 
     @FXML
@@ -19,5 +20,15 @@ public class MainFileDirectoryController {
             String path = dialog.getDirectory() + file;
             System.out.println(path);
         }
+    }
+
+    @Override
+    public void initialize() {
+
+    }
+
+    @Override
+    public void stop() {
+
     }
 }

@@ -30,9 +30,9 @@ public class SystemMonitoring implements ISystemMonitoring {
     private MainSystemController mainSystemController;
     private boolean running;
 
-    private ExecutorService clientHandlerPool;
-    private ExecutorService networkScannerPool;
-    private ExecutorService mainSystemControllerPool;
+    private final ExecutorService clientHandlerPool;
+    private final ExecutorService networkScannerPool;
+    private final ExecutorService mainSystemControllerPool;
 
     public SystemMonitoring() {
         clientHandlerPool = Executors.newFixedThreadPool(10);
@@ -43,7 +43,7 @@ public class SystemMonitoring implements ISystemMonitoring {
     @Override
     public void start() {
         running = true;
-        mainSystemControllerPool.submit(() -> runServer());
+        mainSystemControllerPool.submit(this::runServer);
     }
 
     @Override
@@ -158,33 +158,42 @@ public class SystemMonitoring implements ISystemMonitoring {
     }
 
     private void logMessage(String message) {
-        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-        String logEntry = "[" + timestamp + "] " + message;
         if (mainSystemController != null) {
-            mainSystemController.appendLog(logEntry);
+            mainSystemController.appendLog(message);
         } else {
-            System.out.println(logEntry);
+            System.out.println(message);
         }
     }
 
 
     @Override
     public void stop() {
+        logMessage("Stopping server (function Stop in SystemMonitoring)...");
+        System.out.println("Stopping server (function Stop in SystemMonitoring)...");
+
+        running = false;  // Set running to false to stop the server loop
+
+        clientHandlerPool.shutdown();  // Initiates an orderly shutdown
+        networkScannerPool.shutdown();
+
         try {
-            logMessage("Stopping server (function Stop in SystemMonitoring)...");
-            System.out.println("Stopping server (function Stop in SystemMonitoring)...");
-            clientHandlerPool.shutdown();  // Initiates an orderly shutdown
-            networkScannerPool.shutdown();
-            if (!clientHandlerPool.awaitTermination(60, TimeUnit.SECONDS)) {
-                clientHandlerPool.shutdownNow();  // Forces shutdown if not completed within 60 seconds
+            if (!clientHandlerPool.awaitTermination(30, TimeUnit.MILLISECONDS)) {
+                clientHandlerPool.shutdownNow();  // Forces shutdown if not completed within 30 seconds
+                if (!clientHandlerPool.awaitTermination(30, TimeUnit.MILLISECONDS)) {
+                    System.err.println("ClientHandlerPool did not terminate");
+                }
             }
-            if (!networkScannerPool.awaitTermination(60, TimeUnit.SECONDS)) {
+
+            if (!networkScannerPool.awaitTermination(30, TimeUnit.MILLISECONDS)) {
                 networkScannerPool.shutdownNow();
+                if (!networkScannerPool.awaitTermination(30, TimeUnit.MILLISECONDS)) {
+                    System.err.println("NetworkScannerPool did not terminate");
+                }
             }
         } catch (InterruptedException e) {
             clientHandlerPool.shutdownNow();
             networkScannerPool.shutdownNow();
+            Thread.currentThread().interrupt();  // Preserve interrupt status
         }
-        running = false;
     }
 }

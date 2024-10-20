@@ -1,5 +1,6 @@
 package com.serverapp.controller.view;
 
+import com.serverapp.controller.IController;
 import com.serverapp.controller.component.ClientCardController;
 import com.serverapp.controller.component.PanelPortController;
 import com.serverapp.database.Redis;
@@ -16,7 +17,7 @@ import javafx.scene.layout.FlowPane;
 import java.io.IOException;
 import java.util.List;
 
-public class MainSystemController {
+public class MainSystemController implements IController {
 
     @FXML
     private FlowPane clientCardContainer;
@@ -28,7 +29,7 @@ public class MainSystemController {
     private ISystemMonitoring systemMonitoring;
 
     @FXML
-    private void initialize() {
+    public void initialize() {
         addPanelPort();
         CurrentType.getInstance().setType(RequestType.SYSTEM_INFO);
         systemMonitoring = new SystemMonitoring();
@@ -104,7 +105,10 @@ public class MainSystemController {
         });
     }
 
-    private void stop(){
-        systemMonitoring.stop();
+    @Override
+    public void stop(){
+        if (systemMonitoring != null) {
+            systemMonitoring.stop();
+        }
     }
 }

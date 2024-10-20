@@ -1,29 +1,38 @@
 package com.serverapp.controller.view;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Base64;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
+
+import javax.crypto.SecretKey;
+
+import com.serverapp.controller.IController;
+import com.serverapp.database.Redis;
 import com.serverapp.enums.RequestType;
 import com.serverapp.helper.EnCodeDecoder;
 import com.serverapp.model.ClientCredentials;
-import com.serverapp.database.Redis;
 import com.serverapp.socket.TCPServer;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 
-import javax.crypto.Cipher;
-import javax.crypto.SecretKey;
-import javax.crypto.spec.SecretKeySpec;
-import java.io.*;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.security.*;
-import java.util.Base64;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import static com.serverapp.util.AlertHelper.showAlert;
 
-public class MainCommandController {
+public class MainCommandController implements IController {
 
     @FXML
     private ListView<CheckBox> clientListView;
@@ -36,6 +45,8 @@ public class MainCommandController {
 
     @FXML
     private TextArea txtAreaTerminalLogs;
+
+    private boolean isWaitingForResponse = false;
 
 
     private TCPServer server;
@@ -51,6 +62,11 @@ public class MainCommandController {
         }
         // Khởi động server socket
         executor.submit(this::startServerSocket);
+    }
+
+    @Override
+    public void stop() {
+        close();
     }
 
     private void startServerSocket() {
@@ -75,11 +91,14 @@ public class MainCommandController {
     }
 
     private void handleClient(Socket clientSocket) {
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()))) {
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+            
             // Send COMMAND request to client
             writer.write(RequestType.COMMAND + "\n");
             writer.flush();
+            
             // Send RSA public key to client
             String RSAPublicKey = Base64.getEncoder().encodeToString(EnCodeDecoder.getInstance().getRsaPublicKey().getEncoded());
             writer.write(RSAPublicKey + "\n");
@@ -88,69 +107,110 @@ public class MainCommandController {
 
             // Receive encrypted AES key from the client
             String encryptedAesKey = reader.readLine();
-            SecretKey aesKey = EnCodeDecoder.getInstance().decryptAESKey(encryptedAesKey);
+            if (encryptedAesKey != null) {
+                SecretKey aesKey = EnCodeDecoder.getInstance().decryptAESKey(encryptedAesKey);
 
-            // Store output stream and AES key for later use
-            String ip = clientSocket.getInetAddress().getHostAddress();
-            Redis.getInstance().putClientCredential(ip, new ClientCredentials(writer, reader, aesKey));
+                // Store output stream and AES key for later use
+                String ip = clientSocket.getInetAddress().getHostAddress();
+                Redis.getInstance().putClientCredential(ip, new ClientCredentials(clientSocket.getInputStream(), clientSocket.getOutputStream(), aesKey));
 
-            // Listen for responses from the client in a separate thread
-            executor.submit(() -> listenForResponse(clientSocket.getInetAddress().getHostAddress(), reader, aesKey));
+                // Listen for responses from the client in a separate thread
+                executor.submit(() -> listenForResponse(clientSocket, aesKey));
 
-            log("Client is ready: " + clientSocket.getInetAddress().getHostAddress());
+                log("Client is ready: " + clientSocket.getInetAddress().getHostAddress());
+            } else {
+                log("Failed to receive AES key from client: " + clientSocket.getInetAddress().getHostAddress());
+            }
         } catch (Exception e) {
-            log("Client disconnected: " + clientSocket.getInetAddress().getHostAddress() + " - " + e.getMessage());
+            log("(Handle Client) Client disconnected: " + clientSocket.getInetAddress().getHostAddress() + " - " + e.getMessage());
         }
     }
 
-    private void listenForResponse(String clientAddress, BufferedReader reader, SecretKey aesKey) {
+    private void listenForResponse(Socket clientSocket, SecretKey aesKey) {
         try {
-            while (true) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            while (!clientSocket.isClosed()) {
                 // Receive encrypted response from client
                 String encryptedResponse = reader.readLine();
                 if (encryptedResponse != null) {
                     String response = EnCodeDecoder.getInstance().decryptResponse(encryptedResponse, aesKey);
-                    log("Response from client (" + clientAddress + "): " + response);
+                    log("Response from client (" + clientSocket.getInetAddress().getHostAddress() + "): " + response);
+                    isWaitingForResponse = false;
+                } else {
+                    log("Client closed connection: " + clientSocket.getInetAddress().getHostAddress());
+                    break;
                 }
             }
         } catch (IOException e) {
-            log("Lost connection to client: " + clientAddress);
+            if (clientSocket.isClosed()) {
+                log("(Listen for Response) Client disconnected: " + clientSocket.getInetAddress().getHostAddress());
+            } else {
+                log("Lost connection to client: " + clientSocket.getInetAddress().getHostAddress());
+                e.printStackTrace();
+            }
         } catch (Exception e) {
-            log("Error receiving response from client: " + clientAddress + " - " + e.getMessage());
+            log("Error receiving response from client: " + clientSocket.getInetAddress().getHostAddress() + " - " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
     @FXML
     private void sendCommand() {
+        if (isWaitingForResponse) {
+            log("Waiting for response from client. Please wait...");
+            showAlert(Alert.AlertType.CONFIRMATION, "Waiting for response", "Please wait", "Waiting for response from client. Please wait...");
+            return;
+        }
         String command = txtAreaCommand.getText();
         if (command.isEmpty()) return;
+        List<CheckBox> checkedClients = clientList.stream()
+                .filter(CheckBox::isSelected)
+                .collect(Collectors.toList());
+
+        if (checkedClients.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "No client selected", "Please select at least one client", "Please select at least one client to send the command to.");
+            return;
+        }
 
         Redis.getInstance().getAllIpClientCredential().forEach(System.out::println);
 
         for (CheckBox clientCheckBox : clientList) {
             if (clientCheckBox.isSelected()) {
                 String clientAddress = clientCheckBox.getText();
-                log("Sending command to " + clientAddress);
 
                 // Lấy dữ liệu client từ Map
                 ClientCredentials clientData = Redis.getInstance().getClientCredential(clientAddress);
 
+
                 if (clientData != null) {
                     try {
                         // Mã hóa và gửi lệnh
-                        String encryptedCommand = EnCodeDecoder.getInstance().encryptCommand(command, clientData.aesKey);
-                        clientData.bufferedWriter.write(encryptedCommand);
+                        log("Sending command to " + clientAddress);
+                        String encryptedCommand = EnCodeDecoder.getInstance().encryptCommand(command, clientData.getAesKey());
+                        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientData.getOutputStream()));
+                        writer.write(encryptedCommand + "\n");
+                        writer.flush();
+                        log("Sent command to " + clientAddress + " Waiting for response...");
+                        isWaitingForResponse = true;
                     } catch (Exception e) {
                         log("Failed to send command to " + clientAddress);
+                        log(e.getMessage());
+                        e.printStackTrace();
                     }
+                }
+                else {
+                    log("Client not found: " + clientAddress);
                 }
             }
         }
     }
 
     private void log(String message) {
-        Platform.runLater(() -> txtAreaTerminalLogs.appendText(message + "\n"));
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        String logEntry = "[" + timestamp + "] " + message;
+        Platform.runLater(() -> txtAreaTerminalLogs.appendText(logEntry + "\n"));
     }
+
 
     void close() {
         executor.shutdown();
