@@ -24,8 +24,8 @@ public class NetworkInfoCollector {
             try {
                 InetAddress address = InetAddress.getByName(ip);
                 String hostName = address.getHostName();
-                String macAddress = "MAC Address Unknown"; // MAC Address can be obtained with ARP, external tool or library
-                String osVersion = "OS Version Unknown"; // OS Version is difficult to get remotely without special tools
+                String macAddress = "Unknown"; // MAC Address can be obtained with ARP, external tool or library
+                String osVersion = "Unknow"; // OS Version is difficult to get remotely without special tools
 
                 ClientCard clientCard = ClientCard.builder()
                         .hostName(hostName)
@@ -85,32 +85,23 @@ public class NetworkInfoCollector {
         return activeHosts;
     }
 
-    private class NetworkScanTask implements Callable<List<String>> {
-        private final String subnet;
-        private final int start;
-        private final int end;
-
-        public NetworkScanTask(String subnet, int start, int end) {
-            this.subnet = subnet;
-            this.start = start;
-            this.end = end;
-        }
+    private record NetworkScanTask(String subnet, int start, int end) implements Callable<List<String>> {
 
         @Override
-        public List<String> call() {
-            List<String> activeHosts = new ArrayList<>();
-            for (int i = start; i <= end; i++) {
-                String host = subnet + "." + i;
-                try {
-                    InetAddress address = InetAddress.getByName(host);
-                    if (address.isReachable(200)) {
-                        activeHosts.add(host);
+            public List<String> call() {
+                List<String> activeHosts = new ArrayList<>();
+                for (int i = start; i <= end; i++) {
+                    String host = subnet + "." + i;
+                    try {
+                        InetAddress address = InetAddress.getByName(host);
+                        if (address.isReachable(200)) {
+                            activeHosts.add(host);
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
+                return activeHosts;
             }
-            return activeHosts;
         }
-    }
 }

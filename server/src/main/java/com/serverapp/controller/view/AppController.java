@@ -1,5 +1,7 @@
 package com.serverapp.controller.view;
 
+import com.serverapp.controller.IController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -10,9 +12,9 @@ import lombok.Setter;
 
 import java.io.IOException;
 
-public class AppController {
+public class AppController implements IController {
     private static AppController _INSTANCE;
-    private MainSystemController mainSystemController;
+    private IController currentController;
 
     public static AppController getInstance() {
         if (_INSTANCE == null) {
@@ -116,14 +118,25 @@ public class AppController {
         if (fxmlPath != null) {
             try {
                 System.out.println(fxmlPath);
+                if (currentController != null) {
+                    currentController.stop();
+                }
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
                 Parent root = loader.load();
-                mainSystemController = loader.getController();
+                currentController = loader.getController();
+
                 contentArea.getChildren().clear();
                 contentArea.getChildren().add(root);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void stop() {
+        System.out.println("AppController stop");
+        _INSTANCE = null;
+        Platform.exit();
     }
 }
