@@ -25,9 +25,9 @@
                 </ImageView>
                 <FlowPane hgap="20.0" layoutX="32.0" layoutY="109.0" prefHeight="200.0" prefWidth="300.0" vgap="10.0" AnchorPane.leftAnchor="0.0">
                     <children>
-                        <Button id="btnSystemMonitoring" fx:id="btnSystemMonitoring" mnemonicParsing="false" onMouseClicked="#handleSystemMonitoring" prefHeight="35.0" prefWidth="265.0" styleClass="normal-button" stylesheets="@../styles/styles.css" text="System monitoring">
+                        <Button id="btnSystemMonitoring" fx:id="btnSystemMonitoring" mnemonicParsing="false" onMouseClicked="#handleSystemMonitoring" prefHeight="35.0" prefWidth="265.0" styleClass="normal-button" stylesheets="@../styles/styles.css" text="   System monitoring">
                             <graphic>
-                                <ImageView id="icon-home" fitHeight="16.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
+                                <ImageView id="icon-home" fitHeight="16.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
                                         <Image url="@../images/home-icon.png" />
                                     </image>
@@ -40,7 +40,7 @@
                         <Insets left="35.0" />
                      </FlowPane.margin>
                         </Button>
-                        <Button id="btnCommandPrompt" fx:id="btnCommandPrompt" mnemonicParsing="false" onMouseClicked="#handleCommandPrompt" prefHeight="35.0" prefWidth="265.0" styleClass="normal-button" stylesheets="@../styles/styles.css" text="  Command Prompt">
+                        <Button id="btnCommandPrompt" fx:id="btnCommandPrompt" mnemonicParsing="false" onMouseClicked="#handleCommandPrompt" prefHeight="35.0" prefWidth="265.0" styleClass="normal-button" stylesheets="@../styles/styles.css" text="   Command Prompt">
                             <graphic>
                                 <ImageView id="icon-user" fitHeight="16.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -55,7 +55,7 @@
                         <Insets left="35.0" />
                      </FlowPane.margin>
                         </Button>
-                        <Button id="btnFileAndDirectory" fx:id="btnFileAndDirectory" mnemonicParsing="false" onMouseClicked="#handleFileAndDirectory" prefHeight="35.0" prefWidth="265.0" styleClass="normal-button" stylesheets="@../styles/styles.css" text="   File &amp; Directory">
+                        <Button id="btnFileAndDirectory" fx:id="btnFileAndDirectory" mnemonicParsing="false" onMouseClicked="#handleFileAndDirectory" prefHeight="35.0" prefWidth="265.0" styleClass="normal-button" stylesheets="@../styles/styles.css" text="    File &amp; Directory">
                             <graphic>
                                 <ImageView id="icon-file" fitHeight="16.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -127,7 +127,7 @@
         </AnchorPane>
 
     <!-- Vùng nội dung thay đổi (Detail, Process, File, etc.) -->
-        <AnchorPane fx:id="contentArea" styleClass="card-backgroud-color" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <AnchorPane fx:id="contentArea" cacheShape="false" layoutX="300.0" style="-fx-background-color: red;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="300.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <!-- Thay đổi nội dung ở đây -->
         </AnchorPane>
 </AnchorPane>

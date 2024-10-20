@@ -1,4 +1,15 @@
 package com.serverapp.controller.view;
 
-public class MainInstallController {
+import com.serverapp.controller.IController;
+
+public class MainInstallController implements IController {
+    @Override
+    public void initialize() {
+
+    }
+
+    @Override
+    public void stop() {
+
+    }
 }

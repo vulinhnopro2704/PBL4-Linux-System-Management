@@ -1,5 +1,6 @@
 package com.serverapp.controller.view;
 
+import com.serverapp.controller.IController;
 import com.serverapp.enums.RequestType;
 import com.serverapp.util.CurrentType;
 import com.serverapp.service.implement.ScreenCaptureServer;
@@ -15,7 +16,7 @@ import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
-public class ClientScreenController {
+public class ClientScreenController implements IController {
 
     @FXML
     private Label btnGeneral;
@@ -59,6 +60,11 @@ public class ClientScreenController {
         imageView.fitWidthProperty().bind(screenPane.widthProperty());
         imageView.fitHeightProperty().bind(screenPane.heightProperty());
         screenPane.getChildren().add(imageView);
+    }
+
+    @Override
+    public void stop() {
+
     }
 
     public void updateScreenCapture(ImageIcon imageIcon) {

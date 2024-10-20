@@ -1,5 +1,6 @@
 package com.serverapp.controller.view;
 
+import com.serverapp.controller.IController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -7,7 +8,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
-public class ClientProcessController {
+public class ClientProcessController implements IController {
 
     @FXML
     private Label btnGeneral;
@@ -28,9 +29,14 @@ public class ClientProcessController {
     private AnchorPane panelPortInclude;
 
     @FXML
-    private void initialize() {
+    public void initialize() {
         addPanelPort();
         addClientProcessTable();
+    }
+
+    @Override
+    public void stop() {
+
     }
 
     @FXML
