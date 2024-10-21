@@ -1,23 +1,30 @@
 package com.serverapp.service.implement;
 
 import java.awt.image.BufferedImage;
-import java.io.*;
-import java.net.Socket;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import com.serverapp.controller.view.ClientScreenController;
+import com.serverapp.enums.RequestType;
+import com.serverapp.model.ClientCredentials;
 import com.serverapp.service.IScreenCaptureHandler;
+import com.serverapp.util.CurrentType;
 
 public class ScreenCaptureHandler implements IScreenCaptureHandler {
-    private Socket clientSocket;
+    private ClientCredentials clientCredentials;
     private ClientScreenController screenCaptureController;
     private int totalChunks;
     private int receivedChunks;
 
-    public ScreenCaptureHandler(Socket clientSocket, ClientScreenController screenCaptureController) {
-        this.clientSocket = clientSocket;
+    public ScreenCaptureHandler(ClientCredentials clientCredentials, ClientScreenController screenCaptureController) {
+        this.clientCredentials = clientCredentials;
         this.screenCaptureController = screenCaptureController;
         this.totalChunks = 0;
         this.receivedChunks = 0;
@@ -26,12 +33,16 @@ public class ScreenCaptureHandler implements IScreenCaptureHandler {
     @Override
     public void run() {
         try (
-                DataInputStream in = new DataInputStream(clientSocket.getInputStream());
-                PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true)
+                DataInputStream in = new DataInputStream(clientCredentials.getInputStream());
+                PrintWriter out = new PrintWriter(clientCredentials.getOutputStream(), true)
         ) {
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             while (true) {
                 try {
+                    if (CurrentType.getInstance().getType() != RequestType.SCREEN_CAPTURE) {
+                        break; // Exit the loop if the request type is not SCREEN_CAPTURE
+                    }
+
                     if (totalChunks == 0) {
                         totalChunks = in.readInt();
                     }
@@ -83,14 +94,7 @@ public class ScreenCaptureHandler implements IScreenCaptureHandler {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            // Ensure resources are released when finished
-            try {
-                if (clientSocket != null && !clientSocket.isClosed()) {
-                    clientSocket.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
         }
     }
 

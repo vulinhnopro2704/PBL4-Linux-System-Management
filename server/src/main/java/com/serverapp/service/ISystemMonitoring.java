@@ -8,4 +8,5 @@ public interface ISystemMonitoring {
     void stop();
     void setPort(int port);
     void setMainSystemController(MainSystemController mainSystemController);
+    void setUpConnection();
 }

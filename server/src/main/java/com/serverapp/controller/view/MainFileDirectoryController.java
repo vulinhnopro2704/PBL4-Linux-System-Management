@@ -28,6 +28,11 @@ public class MainFileDirectoryController implements IController {
     }
 
     @Override
+    public void update() {
+
+    }
+
+    @Override
     public void stop() {
 
     }

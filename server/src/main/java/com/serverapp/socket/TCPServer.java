@@ -16,7 +16,7 @@ public class TCPServer {
     private boolean isRunning = false;
 
     private TCPServer() throws IOException {
-        serverSocket = new ServerSocket(serverPort);
+//        serverSocket = new ServerSocket(serverPort);
         isRunning = true;
     }
 

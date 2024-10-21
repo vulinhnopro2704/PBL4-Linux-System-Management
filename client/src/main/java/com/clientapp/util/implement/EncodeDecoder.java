@@ -1,13 +1,14 @@
 package com.clientapp.util.implement;
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
+
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 
 public class EncodeDecoder {
     public static String encryptResponse(String response, SecretKey aesKey) throws Exception {
@@ -25,11 +26,12 @@ public class EncodeDecoder {
     }
 
     public static String encryptAESKey(SecretKey aesKey, PublicKey rsaPublicKey) throws Exception {
-        Cipher cipher = Cipher.getInstance("RSA");
+        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding"); // Ensure correct padding
         cipher.init(Cipher.ENCRYPT_MODE, rsaPublicKey);
         byte[] encryptedKey = cipher.doFinal(aesKey.getEncoded());
         return Base64.getEncoder().encodeToString(encryptedKey);
     }
+
 
     public static PublicKey getPublicKeyFromString(String key) throws Exception {
         byte[] byteKey = Base64.getDecoder().decode(key);

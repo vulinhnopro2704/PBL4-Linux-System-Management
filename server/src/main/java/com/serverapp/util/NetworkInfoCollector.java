@@ -94,7 +94,7 @@ public class NetworkInfoCollector {
                     String host = subnet + "." + i;
                     try {
                         InetAddress address = InetAddress.getByName(host);
-                        if (address.isReachable(200)) {
+                        if (address.isReachable(500)) {
                             activeHosts.add(host);
                         }
                     } catch (IOException e) {
