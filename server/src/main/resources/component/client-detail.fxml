@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="942.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="298.0" prefWidth="942.0" style="-fx-background-radius: 10px; -fx-border-radius: 10px;" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.component.ClientDetailController">
     <children>
         <ImageView fitHeight="139.0" fitWidth="232.0" layoutX="77.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="85.0" AnchorPane.topAnchor="37.0">
             <image>
@@ -30,7 +30,7 @@
                                 <Font name="Montserrat Medium" size="16.0" />
                             </font>
                         </Label>
-                        <Label id="lbIpAddress" prefHeight="22.0" prefWidth="194.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="DESKTOP-GU8TUS" textFill="WHITE">
+                        <Label id="lbIpAddress" fx:id="txtHostname" prefHeight="22.0" prefWidth="194.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="DESKTOP-GU8TUS" textFill="WHITE">
                             <font>
                                 <Font name="Montserrat Medium" size="16.0" />
                             </font>
@@ -44,7 +44,7 @@
                                 <Font name="Montserrat Medium" size="16.0" />
                             </font>
                         </Label>
-                        <Label id="lbIpAddress" prefHeight="22.0" prefWidth="194.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="00-0C-29-34-E9-B1" textFill="WHITE">
+                        <Label id="lbIpAddress" fx:id="txtMacAddress" prefHeight="22.0" prefWidth="194.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="00-0C-29-34-E9-B1" textFill="WHITE">
                             <font>
                                 <Font name="Montserrat Medium" size="16.0" />
                             </font>
@@ -58,7 +58,7 @@
                                 <Font name="Montserrat Medium" size="16.0" />
                             </font>
                         </Label>
-                        <Label id="lbIpAddress" prefHeight="22.0" prefWidth="194.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="192.168.232.156" textFill="WHITE">
+                        <Label id="lbIpAddress" fx:id="txtIpAddress" prefHeight="22.0" prefWidth="194.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="192.168.232.156" textFill="WHITE">
                             <font>
                                 <Font name="Montserrat Medium" size="16.0" />
                             </font>
@@ -72,7 +72,7 @@
                                 <Font name="Montserrat Medium" size="16.0" />
                             </font>
                         </Label>
-                        <Label id="lbIpAddress" prefHeight="22.0" prefWidth="194.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="Intel(R) Core(TM) i7-124000H CPU @ 2.70Hz" textFill="WHITE">
+                        <Label id="lbIpAddress" fx:id="txtCpuModel" prefHeight="22.0" prefWidth="194.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="Intel(R) Core(TM) i7-124000H CPU @ 2.70Hz" textFill="WHITE">
                             <font>
                                 <Font name="Montserrat Medium" size="16.0" />
                             </font>
@@ -86,7 +86,7 @@
                                 <Font name="Montserrat Medium" size="16.0" />
                             </font>
                         </Label>
-                        <Label id="lbIpAddress" prefHeight="22.0" prefWidth="194.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="Ubuntu Linux 24.02 LTS" textFill="WHITE">
+                        <Label id="lbIpAddress" fx:id="txtOsVersion" prefHeight="22.0" prefWidth="194.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="Ubuntu Linux 24.02 LTS" textFill="WHITE">
                             <font>
                                 <Font name="Montserrat Medium" size="16.0" />
                             </font>
@@ -101,25 +101,25 @@
                     <font>
                         <Font name="Montserrat Medium" size="16.0" />
                     </font>
-               <FlowPane.margin>
-                  <Insets left="42.0" top="5.0" />
-               </FlowPane.margin>
+                    <FlowPane.margin>
+                        <Insets left="42.0" top="5.0" />
+                    </FlowPane.margin>
                 </Label>
-                <Label id="lbIpAddress" prefHeight="26.0" prefWidth="74.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="8GB" textFill="WHITE">
+                <Label id="lbIpAddress" fx:id="txtRam" prefHeight="26.0" prefWidth="74.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="8GB" textFill="WHITE">
                     <font>
                         <Font name="Montserrat Medium" size="16.0" />
                     </font>
-               <FlowPane.margin>
-                  <Insets left="10.0" top="5.0" />
-               </FlowPane.margin>
+                    <FlowPane.margin>
+                        <Insets left="10.0" top="5.0" />
+                    </FlowPane.margin>
                 </Label>
                 <Label prefHeight="26.0" prefWidth="128.0" text="Used / Total disk" textFill="WHITE">
                     <font>
                         <Font name="Montserrat Medium" size="16.0" />
                     </font>
-               <FlowPane.margin>
-                  <Insets left="10.0" top="5.0" />
-               </FlowPane.margin>
+                    <FlowPane.margin>
+                        <Insets left="10.0" top="5.0" />
+                    </FlowPane.margin>
                 </Label>
                 <AnchorPane prefHeight="20.0" prefWidth="350.0" style="-fx-background-radius: 10px;" stylesheets="@../styles/styles.css">
                     <children>
@@ -129,17 +129,17 @@
                             </children>
                         </AnchorPane>
                     </children>
-               <FlowPane.margin>
-                  <Insets left="10.0" top="2.0" />
-               </FlowPane.margin>
+                    <FlowPane.margin>
+                        <Insets left="10.0" top="2.0" />
+                    </FlowPane.margin>
                 </AnchorPane>
-                <Label id="lbIpAddress" prefHeight="26.0" prefWidth="96.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="500/512 GB" textFill="WHITE">
+                <Label id="lbIpAddress" fx:id="txtDisk" prefHeight="26.0" prefWidth="96.0" styleClass="blue-text" stylesheets="@../styles/styles.css" text="500/512 GB" textFill="WHITE">
                     <font>
                         <Font name="Montserrat Medium" size="16.0" />
                     </font>
-               <FlowPane.margin>
-                  <Insets left="10.0" top="5.0" />
-               </FlowPane.margin>
+                    <FlowPane.margin>
+                        <Insets left="10.0" top="5.0" />
+                    </FlowPane.margin>
                 </Label>
             </children>
         </FlowPane>

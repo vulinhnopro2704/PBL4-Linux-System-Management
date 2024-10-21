@@ -1,15 +1,15 @@
 package com.clientapp;
 
 import com.clientapp.enums.RequestType;
+import com.clientapp.service.ISetupConnection;
 import com.clientapp.service.implement.ClientCommand;
 import com.clientapp.service.implement.ScreenCaptureClient;
+import com.clientapp.service.implement.SetupConnection;
 import com.clientapp.service.implement.SystemInfomation;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.Socket;
 
 public class Client {
     public static void main(String[] args) throws IOException {
@@ -22,6 +22,12 @@ public class Client {
                 RequestType requestType = RequestType.valueOf(request);
                 System.out.println(requestType);
                 switch (requestType) {
+                    case CONNECTION:
+                        // Handle first connection request
+                        ISetupConnection setupConnection = new SetupConnection();
+                        setupConnection.start();
+                        break;
+
                     case SCREEN_CAPTURE:
                         // Handle screen capture request
                         ScreenCaptureClient screenCaptureClient = new ScreenCaptureClient();

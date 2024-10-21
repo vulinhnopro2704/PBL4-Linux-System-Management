@@ -7,4 +7,5 @@ public enum RequestType {
     COMMAND,
     PERFORMANCE_INFO,
     FILE_TRANSFER,
+    CONNECTION
 }

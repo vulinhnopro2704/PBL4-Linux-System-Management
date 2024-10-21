@@ -18,6 +18,7 @@ import com.google.gson.JsonSyntaxException;
 import com.serverapp.controller.view.MainSystemController;
 import com.serverapp.controller.view.MainSystemController;
 import com.serverapp.enums.RequestType;
+import com.serverapp.socket.SocketManager;
 import com.serverapp.socket.TCPServer;
 import com.serverapp.util.CurrentType;
 import com.serverapp.util.NetworkInfoCollector;
@@ -25,6 +26,7 @@ import com.serverapp.model.ClientCard;
 import com.serverapp.model.ClientDetail;
 import com.serverapp.database.Redis;
 import com.serverapp.service.ISystemMonitoring;
+import javafx.application.Platform;
 
 public class SystemMonitoring implements ISystemMonitoring {
     private MainSystemController mainSystemController;
@@ -38,31 +40,7 @@ public class SystemMonitoring implements ISystemMonitoring {
         clientHandlerPool = Executors.newFixedThreadPool(10);
         networkScannerPool = Executors.newSingleThreadExecutor();
         mainSystemControllerPool = Executors.newSingleThreadExecutor();
-    }
-
-    @Override
-    public void start() {
-        running = true;
-        mainSystemControllerPool.submit(this::runServer);
-    }
-
-    @Override
-    public void setPort(int port) {
-
-    }
-
-    @Override
-    public void setMainSystemController(MainSystemController mainSystemController) {
-        this.mainSystemController = mainSystemController;
-    }
-
-    private void runServer() {
-        try {
-            TCPServer server = TCPServer.getInstance();
-            logMessage("Server started on port " + "8080" + ". Waiting for connections...");
-
-            // Start network scanning in a separate thread
-            networkScannerPool.submit(() -> {
+        networkScannerPool.submit(() -> {
                 long startTime = System.currentTimeMillis();
 
                 NetworkInfoCollector networkInfoCollector = new NetworkInfoCollector();
@@ -76,40 +54,44 @@ public class SystemMonitoring implements ISystemMonitoring {
                 // Print the elapsed time
                 logMessage("Execution time in milliseconds: " + elapsedTime);
             });
-
-            while (running && CurrentType.getInstance().getType() == RequestType.SYSTEM_INFO) {
-                try {
-                    Socket clientSocket = server.getServerSocket().accept();
-                    clientSocket.setSoTimeout(30000);  // Timeout after 30 seconds of inactivity
-                    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-
-                    if (CurrentType.getInstance().getType() != RequestType.SYSTEM_INFO)
-                        break;
-                    else {
-                        out.println(CurrentType.getInstance().getType());
-                    }
-
-                    logMessage("New client connected: " + clientSocket.getInetAddress().getHostAddress());
-
-                    // Create a new thread to handle the client
-                    clientHandlerPool.submit(() -> handleClient(clientSocket));
-
-                } catch (IOException e) {
-                    if (running) {
-                        logMessage("Error accepting client connection: " + e.getMessage());
-                    }
-                    break;
-                }
-            }
-        } catch (IOException e) {
-            logMessage("Error starting server: " + e.getMessage());
-        }
     }
 
-    private void handleClient(Socket clientSocket) {
-        try (
-                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        ) {
+    @Override
+    public void start() {
+        running = true;
+        mainSystemControllerPool.submit(this::setUpConnection);
+    }
+
+    @Override
+    public void setPort(int port) {
+
+    }
+
+    @Override
+    public void setMainSystemController(MainSystemController mainSystemController) {
+        this.mainSystemController = mainSystemController;
+    }
+
+    public void setUpConnection() {
+        SocketManager.getInstance().getAllClientCredentials().forEach((ip, clientCredentials) -> {
+            if (!Redis.getInstance().containsIp(ip)) {
+                try {
+                    PrintWriter writer = new PrintWriter(clientCredentials.getOutputStream(), true);
+                    writer.println(CurrentType.getInstance().getType());
+                    clientHandlerPool.submit(() -> handleClient(clientCredentials.getSocket()));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        Platform.runLater(() -> {
+            mainSystemController.updateUI();
+        });
+    }
+
+    private void handleClient(Socket clientSocket){
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
             String inputLine;
             while (CurrentType.getInstance().getType() == RequestType.SYSTEM_INFO) {
                 inputLine = in.readLine();
@@ -125,35 +107,32 @@ public class SystemMonitoring implements ISystemMonitoring {
                 JsonObject jsonObject = gson.fromJson(inputLine, JsonObject.class);
 
                 Redis.getInstance().putClientDetail(
-                        String.join(
-                            clientSocket.getInetAddress().toString()
-                        ),
+                        clientSocket.getInetAddress().getHostAddress(),
                         new ClientDetail().builder()
-                        .hostName(jsonObject.get("hostName").getAsString())
-                        .ipAddress(clientSocket.getInetAddress().toString().substring(1))
-                        .macAddress(jsonObject.get("macAddress").getAsString())
-                        .ram(Long.valueOf(jsonObject.get("ram").toString()))
-                        .cpuModel(jsonObject.get("cpuModel").toString())
-                        .osVersion(jsonObject.get("osVersion").getAsString())
-                        .isConnect(true)
-                        .usedDisk(jsonObject.get("usedDisk").getAsLong())
-                        .totalDisk(jsonObject.get("totalDisk").getAsLong())
-                        .build()
+                                .hostName(jsonObject.get("hostName").getAsString())
+                                .ipAddress(clientSocket.getInetAddress().toString().substring(1))
+                                .macAddress(jsonObject.get("macAddress").getAsString())
+                                .ram(Long.valueOf(jsonObject.get("ram").toString()))
+                                .cpuModel(jsonObject.get("cpuModel").toString())
+                                .osVersion(jsonObject.get("osVersion").getAsString())
+                                .isConnect(true)
+                                .usedDisk(jsonObject.get("usedDisk").getAsLong())
+                                .totalDisk(jsonObject.get("totalDisk").getAsLong())
+                                .build()
                 );
+
+                Redis.getInstance().getMapClientDetailView().forEach((key, value) -> {
+                    System.out.println(key + " : " + value);
+                });
 
                 // Update the UI with the received information
                 mainSystemController.updateUI();
+                break;
             }
         } catch (JsonSyntaxException e) {
             logMessage("Error parsing JSON: " + e.getMessage());
         } catch (IOException e) {
             logMessage("Error handling client: " + e.getMessage());
-        } finally {
-            try {
-                clientSocket.close();
-            } catch (IOException e) {
-                logMessage("Error closing client socket: " + e.getMessage());
-            }
         }
     }
 

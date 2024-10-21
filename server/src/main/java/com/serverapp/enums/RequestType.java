@@ -5,5 +5,6 @@ public enum RequestType {
     SYSTEM_INFO,
     PROCESS_LIST,
     COMMAND,
-    PERFORMANCE_INFO
+    PERFORMANCE_INFO,
+    CONNECTION
 }
