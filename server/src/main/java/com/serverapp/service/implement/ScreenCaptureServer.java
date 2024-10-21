@@ -2,43 +2,48 @@ package com.serverapp.service.implement;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import com.serverapp.controller.view.AppController;
 import com.serverapp.controller.view.ClientScreenController;
 import com.serverapp.enums.RequestType;
+import com.serverapp.model.ClientCredentials;
 import com.serverapp.service.IScreenCaptureServer;
-import com.serverapp.socket.TCPServer;
+import com.serverapp.socket.SocketManager;
 
 public class ScreenCaptureServer implements IScreenCaptureServer {
-    private ServerSocket serverSocket;
     private ClientScreenController screenCaptureController;
+    private ExecutorService clientHandlerPool;
+
 
     public ScreenCaptureServer(ClientScreenController screenCaptureController) throws IOException {
-        this.serverSocket = TCPServer.getInstance().getServerSocket();
         this.screenCaptureController = screenCaptureController;
+        this.clientHandlerPool = Executors.newSingleThreadExecutor();
     }
 
     @Override
-    public void start() {
-        new Thread(() -> {
-            while (true) {
-                try {
-                    Socket clientSocket = serverSocket.accept();
-                    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-                    out.println(RequestType.SCREEN_CAPTURE);
-                    new Thread(new ScreenCaptureHandler(clientSocket, screenCaptureController)).start();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+    public void start() throws IOException {
+        ClientCredentials clientCredentials = SocketManager.getInstance().getClientCredentials(AppController.getInstance().getCurrentClientIp());
+        if (clientCredentials != null) {
+            Socket clientSocket = clientCredentials.getSocket();
+            if (!clientSocket.isClosed()) { // Check if the socket is open
+                PrintWriter out = new PrintWriter(clientCredentials.getOutputStream(), true);
+                out.println(RequestType.SCREEN_CAPTURE);
+                clientHandlerPool.submit(() -> {
+                    new ScreenCaptureHandler(clientCredentials, screenCaptureController).run();
+                });
+            } else {
+                System.out.println("Socket is closed for IP: " + AppController.getInstance().getCurrentClientIp());
             }
-        }).start();
+        } else {
+            System.out.println("Client credentials not found for IP: " + AppController.getInstance().getCurrentClientIp());
+        }
     }
 
     @Override
     public void stop() throws IOException {
-        if (serverSocket != null && !serverSocket.isClosed()) {
-            serverSocket.close();
-        }
+        clientHandlerPool.shutdown();
     }
 }

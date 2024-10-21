@@ -1,10 +1,21 @@
 package com.clientapp;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
+
+import javax.crypto.SecretKey;
+
+import static com.clientapp.util.implement.EncodeDecoder.decryptCommand;
+import static com.clientapp.util.implement.EncodeDecoder.encryptResponse;
+
 import lombok.Getter;
 import lombok.Setter;
-
-import java.io.*;
-import java.net.Socket;
 
 @Getter
 @Setter
@@ -12,7 +23,7 @@ public class ClientSocket {
     private Socket socket;
     private String serverIp = "localhost";
     private int serverPort = 8080;
-    private String aesKey;
+    private SecretKey aesKey;
     private InputStream inputStream;
     private OutputStream outputStream;
 
@@ -45,5 +56,39 @@ public class ClientSocket {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    // Encrypt the message and send it to the server
+    public void sendByBufferWriter(String message) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+            String encryptedMessage = encryptResponse(message, aesKey);
+            writer.write(encryptedMessage + "\n");
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error encrypting message: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Receive the message from the server and decrypt it
+    public String receiveByBufferReader() {
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+            String encryptedCommand = reader.readLine();
+            if (encryptedCommand == null || encryptedCommand.isEmpty()) {
+                System.err.println("Received null or empty command");
+                return "";
+            }
+            return decryptCommand(encryptedCommand, aesKey);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Error decrypting command: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return "";
     }
 }

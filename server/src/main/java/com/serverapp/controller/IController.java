@@ -7,5 +7,6 @@ import java.io.IOException;
 public interface IController {
     @FXML
     void initialize() throws IOException;
+    void update();
     void stop();
 }

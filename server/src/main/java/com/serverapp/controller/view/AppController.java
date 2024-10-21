@@ -1,6 +1,7 @@
 package com.serverapp.controller.view;
 
 import com.serverapp.controller.IController;
+import com.serverapp.socket.SocketManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
@@ -15,6 +17,9 @@ import java.io.IOException;
 public class AppController implements IController {
     private static AppController _INSTANCE;
     private IController currentController;
+    @Getter
+    @Setter
+    private String currentClientIp;
 
     public static AppController getInstance() {
         if (_INSTANCE == null) {
@@ -26,6 +31,7 @@ public class AppController implements IController {
     @FXML
     public void initialize() {
         _INSTANCE = this;
+        SocketManager.getInstance().startListening();
         btnSystemMonitoring.getStyleClass().setAll("active-button");
         setFxmlPath("/view/main-system-view.fxml");
         loadPage(this.fxmlPath);
@@ -130,6 +136,15 @@ public class AppController implements IController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void update() {
+        if (currentController != null) {
+            currentController.update();
+        }
+        else {
+            System.out.println("Current Controller is NULL, can't update");
         }
     }
 

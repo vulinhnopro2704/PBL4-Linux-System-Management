@@ -35,6 +35,23 @@ public class ClientScreenController implements IController {
 
 
     private ImageView imageView;
+    private String currentClientIp;
+
+    @FXML
+    public void initialize() throws IOException {
+        // Initialize and start the screen capture server
+        CurrentType.getInstance().setType(RequestType.SCREEN_CAPTURE);
+        currentClientIp = AppController.getInstance().getCurrentClientIp();
+        ScreenCaptureServer server = new ScreenCaptureServer(this);
+
+        server.start();
+        imageView = new ImageView();
+        imageView.setPreserveRatio(true);
+        imageView.fitWidthProperty().bind(screenPane.widthProperty());
+        imageView.fitHeightProperty().bind(screenPane.heightProperty());
+        screenPane.getChildren().add(imageView);
+    }
+
 
     @FXML
     public void viewchange() {
@@ -48,18 +65,9 @@ public class ClientScreenController implements IController {
         AppController.getInstance().loadPage(fxmlPath);
     }
 
-    @FXML
-    public void initialize() throws IOException {
-        // Initialize and start the screen capture server
-        CurrentType.getInstance().setType(RequestType.SCREEN_CAPTURE);
-        ScreenCaptureServer server = new ScreenCaptureServer(this);
+    @Override
+    public void update() {
 
-        server.start();
-        imageView = new ImageView();
-        imageView.setPreserveRatio(true);
-        imageView.fitWidthProperty().bind(screenPane.widthProperty());
-        imageView.fitHeightProperty().bind(screenPane.heightProperty());
-        screenPane.getChildren().add(imageView);
     }
 
     @Override

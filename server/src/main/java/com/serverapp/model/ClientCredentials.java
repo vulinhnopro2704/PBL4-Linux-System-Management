@@ -10,13 +10,23 @@ import java.net.Socket;
 @Getter
 @Setter
 public class ClientCredentials {
-    private final InputStream inputStream;
-    private final OutputStream outputStream;
+    private final Socket socket;
     private final SecretKey aesKey;
 
-    public ClientCredentials(InputStream inputStream, OutputStream outputStream, SecretKey aesKey) {
-        this.inputStream = inputStream;
-        this.outputStream = outputStream;
+    public ClientCredentials(Socket socket, SecretKey aesKey) {
+        this.socket = socket;
         this.aesKey = aesKey;
+    }
+
+    public InputStream getInputStream() throws IOException {
+        return this.socket.getInputStream();
+    }
+
+    public OutputStream getOutputStream() throws IOException {
+        return this.socket.getOutputStream();
+    }
+
+    public String getHostAddress() {
+        return this.socket.getInetAddress().getHostAddress();
     }
 }

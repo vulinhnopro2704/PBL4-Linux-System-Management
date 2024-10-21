@@ -13,7 +13,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1234.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.MainCommandController">
+<AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" prefHeight="800.0" prefWidth="1234.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.MainCommandController">
    <children>
       <!-- cac may client hien co -->
       <AnchorPane layoutX="34.0" layoutY="100.0" prefHeight="250.0" prefWidth="1009.0" style="-fx-background-radius: 15px; -fx-border-radius: 15px;" styleClass="card-backgroud-color" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="12.0">
