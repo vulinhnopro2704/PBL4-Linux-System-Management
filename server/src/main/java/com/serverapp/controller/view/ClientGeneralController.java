@@ -1,6 +1,10 @@
 package com.serverapp.controller.view;
 
 import com.serverapp.controller.IController;
+import com.serverapp.controller.component.ClientDetailController;
+import com.serverapp.database.Redis;
+import com.serverapp.model.ClientDetail;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -28,10 +32,28 @@ public class ClientGeneralController implements IController {
     @FXML
     private AnchorPane panelPortInclude;
 
+    private ClientDetail clientDetail;
+    private String currentClientIp;
+
     @FXML
      public void initialize() {
         addPanelPort();
-        addClientDetail();
+        currentClientIp = AppController.getInstance().getCurrentClientIp();
+        clientDetail = Redis.getInstance().getClientDetail(currentClientIp);
+        if (clientDetail != null) {
+            System.out.println("Client Detail: " + clientDetail.toString());
+            Platform.runLater(() -> {
+                addClientDetail();
+            });
+        }
+        else  {
+            System.out.println("Client Detail is null");
+        }
+    }
+
+    @Override
+    public void update() {
+
     }
 
     @Override
@@ -66,9 +88,11 @@ public class ClientGeneralController implements IController {
     public void addClientDetail() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/client-detail.fxml"));
-            AnchorPane clientChart = loader.load();
+            AnchorPane clientDetailComponent = loader.load();
+            ClientDetailController clientDetailController = loader.getController();
+            clientDetailController.receiveClientDetail(clientDetail);
 
-            clientDetailInclude.getChildren().add(clientChart);
+            clientDetailInclude.getChildren().add(clientDetailComponent);
         } catch (IOException e) {
             e.printStackTrace();
         }

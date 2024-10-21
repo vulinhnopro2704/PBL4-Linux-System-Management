@@ -8,13 +8,17 @@ import com.serverapp.enums.RequestType;
 import com.serverapp.model.ClientCard;
 import com.serverapp.service.ISystemMonitoring;
 import com.serverapp.service.implement.SystemMonitoring;
+import com.serverapp.socket.SocketManager;
 import com.serverapp.util.CurrentType;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
+
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.List;
 
 public class MainSystemController implements IController {
@@ -35,6 +39,13 @@ public class MainSystemController implements IController {
         systemMonitoring = new SystemMonitoring();
         systemMonitoring.setMainSystemController(this);
         systemMonitoring.start();
+    }
+
+    @Override
+    public void update() {
+        systemMonitoring.setUpConnection();
+        updateUI();
+        System.out.println("Update MainSystemController");
     }
 
     public void addClientCard(String hostName, String ipAddress, String macAddress, String osVersion, Boolean isConnect) {
@@ -78,7 +89,8 @@ public class MainSystemController implements IController {
                             clientCard.getIpAddress(),
                             clientCard.getMacAddress(),
                             clientCard.getOsVersion(),
-                            clientCard.getIsConnect());
+                            clientCard.getIsConnect()
+                    );
                 });
             });
         }

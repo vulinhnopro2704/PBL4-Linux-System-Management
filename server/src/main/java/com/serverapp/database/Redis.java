@@ -1,10 +1,9 @@
 package com.serverapp.database;
 
 import com.serverapp.model.ClientCard;
-import com.serverapp.model.ClientCredentials;
 import com.serverapp.model.ClientDetail;
+import lombok.Getter;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +14,8 @@ public class Redis {
     /**
      * Save Connected Client's information
      */
-    private static Map<String, ClientDetail> mapClientDetailView = new HashMap<String, ClientDetail>();
+    @Getter
+    private Map<String, ClientDetail> mapClientDetailView = new HashMap<String, ClientDetail>();
 
     public static Redis getInstance(){
         if (_instance == null){
@@ -91,21 +91,7 @@ public class Redis {
         });
     }
 
-    private Map<String, ClientCredentials> clientSocketData = new HashMap<>();
-
-    public List<String> getAllIpClientCredential() {
-        List<String> list = new ArrayList<String>();
-        clientSocketData.forEach((String s, ClientCredentials a) -> {
-            list.add(s);
-        });
-        return list;
-    }
-
-    public ClientCredentials getClientCredential(String clientAddress) {
-        return clientSocketData.get(clientAddress);
-    }
-
-    public void putClientCredential(String hostAddress, ClientCredentials clientCredentials) {
-        clientSocketData.put(hostAddress, clientCredentials);
+    public boolean containsIp(String ip){
+        return mapClientDetailView.containsKey(ip);
     }
 }

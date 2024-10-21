@@ -9,6 +9,11 @@ public class MainSecurityController implements IController {
     }
 
     @Override
+    public void update() {
+
+    }
+
+    @Override
     public void stop() {
 
     }

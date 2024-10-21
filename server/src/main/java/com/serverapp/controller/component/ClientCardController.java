@@ -4,7 +4,6 @@ package com.serverapp.controller.component;
 import com.serverapp.controller.view.AppController;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -27,7 +26,7 @@ public class ClientCardController {
     private Circle iconStatus;
 
     @Setter
-    private String fxmlPath;
+    private String fxmlPath = "/view/client-general.fxml";
 
     public void setClientInfo(String hostName, String ipAddress, String macAddress, String osVersion, Boolean isConnect) {
         txtHostName.setText(hostName);
@@ -43,7 +42,8 @@ public class ClientCardController {
 
     @FXML
     private void handleCardClick(javafx.scene.input.MouseEvent event) {
-        setFxmlPath("/view/client-general.fxml");
+        String ipAddress = txtIPAddress.getText();
+        AppController.getInstance().setCurrentClientIp(ipAddress);
         AppController.getInstance().loadPage(this.fxmlPath);
     }
 }

@@ -1,26 +1,29 @@
 package com.serverapp;
 
-import com.serverapp.socket.TCPServer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.net.ServerSocket;
-import java.net.Socket;
-
 public class Server extends Application {
+    private static final Logger LOGGER = Logger.getLogger(Server.class.getName());
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/main-command-view.fxml"));
-        Parent root = loader.load();
+    public void start(Stage primaryStage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/App.fxml"));
+            Parent root = loader.load();
 
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.show();
-
+            Scene scene = new Scene(root);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+        } catch (Exception e) {
+            LOGGER.log(Level.SEVERE, "Failed to load FXML file", e);
+        }
     }
 
     @Override
