@@ -6,6 +6,7 @@ import com.clientapp.service.implement.ClientCommand;
 import com.clientapp.service.implement.ScreenCaptureClient;
 import com.clientapp.service.implement.SetupConnection;
 import com.clientapp.service.implement.SystemInfomation;
+import com.clientapp.socket.ClientSocket;
 
 import java.io.BufferedReader;
 import java.io.IOException;

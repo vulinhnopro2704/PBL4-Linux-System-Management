@@ -1,12 +1,7 @@
 package com.serverapp.service.implement;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.EOFException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -22,22 +17,22 @@ public class ScreenCaptureHandler implements IScreenCaptureHandler {
     private ClientScreenController screenCaptureController;
     private int totalChunks;
     private int receivedChunks;
+    private boolean isRunning = true;
 
     public ScreenCaptureHandler(ClientCredentials clientCredentials, ClientScreenController screenCaptureController) {
         this.clientCredentials = clientCredentials;
         this.screenCaptureController = screenCaptureController;
         this.totalChunks = 0;
         this.receivedChunks = 0;
+
     }
 
     @Override
     public void run() {
-        try (
-                DataInputStream in = new DataInputStream(clientCredentials.getInputStream());
-                PrintWriter out = new PrintWriter(clientCredentials.getOutputStream(), true)
-        ) {
+        try {
+            DataInputStream in = new DataInputStream(clientCredentials.getInputStream());
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-            while (true) {
+            while (isRunning) {
                 try {
                     if (CurrentType.getInstance().getType() != RequestType.SCREEN_CAPTURE) {
                         break; // Exit the loop if the request type is not SCREEN_CAPTURE
@@ -79,13 +74,6 @@ public class ScreenCaptureHandler implements IScreenCaptureHandler {
                         totalChunks = 0;
                         receivedChunks = 0;
                     }
-
-                    // Add a delay between updates
-                    try {
-                        Thread.sleep(50); // Approximately 24 FPS
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt(); // Restore interrupted status
-                    }
                 } catch (EOFException e) {
                     System.out.println("Client disconnected.");
                     break; // Exit the loop if the end of the stream is reached
@@ -100,5 +88,10 @@ public class ScreenCaptureHandler implements IScreenCaptureHandler {
 
     private boolean isImageComplete() {
         return receivedChunks == totalChunks;
+    }
+    public void stop() throws IOException {
+        isRunning = false;
+        PrintWriter out = new PrintWriter(clientCredentials.getOutputStream(), true);
+        out.println(RequestType.EXIT_SCREEN_CAPTURE);
     }
 }

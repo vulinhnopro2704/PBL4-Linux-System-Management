@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -16,10 +14,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.serverapp.controller.view.MainSystemController;
-import com.serverapp.controller.view.MainSystemController;
 import com.serverapp.enums.RequestType;
 import com.serverapp.socket.SocketManager;
-import com.serverapp.socket.TCPServer;
 import com.serverapp.util.CurrentType;
 import com.serverapp.util.NetworkInfoCollector;
 import com.serverapp.model.ClientCard;
@@ -91,20 +87,14 @@ public class SystemMonitoring implements ISystemMonitoring {
 
     private void handleClient(Socket clientSocket){
         try {
-            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-            String inputLine;
             while (CurrentType.getInstance().getType() == RequestType.SYSTEM_INFO) {
-                inputLine = in.readLine();
+                String response =  SocketManager.getInstance().receiveDecryptedMessage(clientSocket.getInetAddress().getHostAddress());
 
-                if (inputLine == null || inputLine.isEmpty()) {
-                    continue;
-                }
-
-                logMessage("Received JSON from client: " + inputLine);
-                System.out.println(inputLine);
+                logMessage("Received JSON from client: " + response);
+                System.out.println(response);
                 // Parse the received JSON using Gson
                 Gson gson = new Gson();
-                JsonObject jsonObject = gson.fromJson(inputLine, JsonObject.class);
+                JsonObject jsonObject = gson.fromJson(response, JsonObject.class);
 
                 Redis.getInstance().putClientDetail(
                         clientSocket.getInetAddress().getHostAddress(),
@@ -133,6 +123,8 @@ public class SystemMonitoring implements ISystemMonitoring {
             logMessage("Error parsing JSON: " + e.getMessage());
         } catch (IOException e) {
             logMessage("Error handling client: " + e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -153,7 +145,7 @@ public class SystemMonitoring implements ISystemMonitoring {
         running = false;  // Set running to false to stop the server loop
 
         clientHandlerPool.shutdown();  // Initiates an orderly shutdown
-        networkScannerPool.shutdown();
+//        networkScannerPool.shutdown();
 
         try {
             if (!clientHandlerPool.awaitTermination(30, TimeUnit.MILLISECONDS)) {
