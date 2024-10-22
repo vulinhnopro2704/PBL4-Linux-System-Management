@@ -8,7 +8,7 @@ import java.security.PublicKey;
 
 import javax.crypto.SecretKey;
 
-import com.clientapp.ClientSocket;
+import com.clientapp.socket.ClientSocket;
 import com.clientapp.service.ISetupConnection;
 import static com.clientapp.util.implement.EncodeDecoder.encryptAESKey;
 import static com.clientapp.util.implement.EncodeDecoder.generateAESKey;

@@ -1,30 +1,41 @@
 package com.clientapp.service.implement;
 
-import com.clientapp.ClientSocket;
+import com.clientapp.enums.RequestType;
+import com.clientapp.socket.ClientSocket;
 import com.clientapp.service.IScreenCaptureClient;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ScreenCaptureClient implements IScreenCaptureClient {
     private static final int CHUNK_SIZE = 1024 * 64; // 64KB
+    private Boolean isRunning = true;
+    BufferedReader in;
 
     public ScreenCaptureClient() {
+        in = new BufferedReader(new InputStreamReader(ClientSocket.getInstance().getInputStream()));
     }
 
     public void start() throws IOException {
-        while (true) {
+        new Thread(() -> {
             try {
-                captureAndSendScreen();
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                closeConnection();
+                String request = in.readLine();
+                if (request != null && !request.trim().isEmpty()) {
+                    if (RequestType.valueOf(request) == RequestType.EXIT_SCREEN_CAPTURE) {
+                        isRunning = false;
+                        System.out.println("Exit Screen Capture Completed");
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
+        }).start();
+        while (isRunning) {
+            captureAndSendScreen();
         }
     }
 
@@ -43,6 +54,7 @@ public class ScreenCaptureClient implements IScreenCaptureClient {
             out.writeInt(totalChunks);
 
             for (int i = 0; i < totalChunks; i++) {
+                if (!isRunning) break;
                 int start = i * CHUNK_SIZE;
                 int length = Math.min(imageBytes.length - start, CHUNK_SIZE);
                 out.writeInt(length);

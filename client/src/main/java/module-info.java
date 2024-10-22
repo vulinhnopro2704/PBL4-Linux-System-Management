@@ -22,4 +22,6 @@ module com.clientapp {
     exports com.clientapp.enums;
     exports com.clientapp.service;
     opens com.clientapp.model to com.google.gson;
+    exports com.clientapp.socket;
+    opens com.clientapp.socket to javafx.fxml;
 }

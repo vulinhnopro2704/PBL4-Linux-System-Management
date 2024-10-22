@@ -15,6 +15,7 @@ import javafx.scene.layout.Pane;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 public class ClientScreenController implements IController {
 
@@ -36,15 +37,17 @@ public class ClientScreenController implements IController {
 
     private ImageView imageView;
     private String currentClientIp;
+    ScreenCaptureServer screenCaptureServer;
 
     @FXML
     public void initialize() throws IOException {
+        System.out.println("Client Screen Controller run");
         // Initialize and start the screen capture server
         CurrentType.getInstance().setType(RequestType.SCREEN_CAPTURE);
         currentClientIp = AppController.getInstance().getCurrentClientIp();
-        ScreenCaptureServer server = new ScreenCaptureServer(this);
+        screenCaptureServer = new ScreenCaptureServer(this);
 
-        server.start();
+        screenCaptureServer.start();
         imageView = new ImageView();
         imageView.setPreserveRatio(true);
         imageView.fitWidthProperty().bind(screenPane.widthProperty());
@@ -71,8 +74,8 @@ public class ClientScreenController implements IController {
     }
 
     @Override
-    public void stop() {
-
+    public void stop() throws IOException {
+        screenCaptureServer.stop();
     }
 
     public void updateScreenCapture(ImageIcon imageIcon) {
