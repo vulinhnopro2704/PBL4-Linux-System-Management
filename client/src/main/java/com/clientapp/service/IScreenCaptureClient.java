@@ -1,6 +1,6 @@
 package com.clientapp.service;
 
 public interface IScreenCaptureClient {
-    void captureAndSendScreen();
+    void captureAndSendScreen() throws Exception;
     void closeConnection();
 }

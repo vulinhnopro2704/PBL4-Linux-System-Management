@@ -8,8 +8,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class ScreenCaptureClient implements IScreenCaptureClient {
     private static final int CHUNK_SIZE = 1024 * 64; // 64KB
@@ -37,9 +35,17 @@ public class ScreenCaptureClient implements IScreenCaptureClient {
         while (isRunning) {
             captureAndSendScreen();
         }
+        System.out.println("Screen Captured exit while loop");
+        DataOutputStream out = new DataOutputStream(ClientSocket.getInstance().getClientSocket().getOutputStream());
+        try {
+            out.write((RequestType.EXIT_SCREEN_CAPTURE + "\n").getBytes());
+            out.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void captureAndSendScreen() {
+    public void captureAndSendScreen() throws IOException {
         try {
             Rectangle screenRect = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
             Robot robot = new Robot();
@@ -51,6 +57,7 @@ public class ScreenCaptureClient implements IScreenCaptureClient {
 
             int totalChunks = (int) Math.ceil((double) imageBytes.length / CHUNK_SIZE);
             DataOutputStream out = new DataOutputStream(ClientSocket.getInstance().getClientSocket().getOutputStream());
+            if (!isRunning) return;
             out.writeInt(totalChunks);
 
             for (int i = 0; i < totalChunks; i++) {
@@ -70,6 +77,6 @@ public class ScreenCaptureClient implements IScreenCaptureClient {
 
     @Override
     public void closeConnection() {
-
+        isRunning = false;
     }
 }
