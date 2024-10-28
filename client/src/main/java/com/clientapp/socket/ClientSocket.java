@@ -9,6 +9,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Base64;
 
@@ -135,7 +136,7 @@ public class ClientSocket {
         IvParameterSpec ivSpec = new IvParameterSpec(iv);
 
         cipher.init(Cipher.ENCRYPT_MODE, aesKey, ivSpec);
-        byte[] encryptedText = cipher.doFinal(plainText.getBytes("UTF-8"));
+        byte[] encryptedText = cipher.doFinal(plainText.getBytes(StandardCharsets.UTF_8));
 
         byte[] ivAndEncryptedText = ByteBuffer.allocate(iv.length + encryptedText.length)
                 .put(iv)
@@ -161,6 +162,16 @@ public class ClientSocket {
         cipher.init(Cipher.DECRYPT_MODE, aesKey, ivSpec);
 
         byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
-        return new String(decryptedBytes, "UTF-8");
+        return new String(decryptedBytes, StandardCharsets.UTF_8);
+    }
+
+    public void sendExitCommand() {
+        try {
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+            writer.write(RequestType.EXIT_COMMNAD_SCREEN.name() + "\n");
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,8 +1,6 @@
 package com.serverapp.controller.view;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -179,6 +177,7 @@ public class MainCommandController implements IController {
                 throw new RuntimeException(e);
             }
         });
+
         isRunning = false;
         isWaitingForResponse = false;
         executor.shutdown();

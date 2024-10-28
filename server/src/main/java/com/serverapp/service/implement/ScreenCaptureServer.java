@@ -1,5 +1,6 @@
 package com.serverapp.service.implement;
 
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
@@ -51,6 +52,13 @@ public class ScreenCaptureServer implements IScreenCaptureServer {
         if (screenCaptureHandler != null) {
             screenCaptureHandler.stop();
         }
+
+        DataInputStream dataInputStream = new DataInputStream(SocketManager.getInstance().getClientCredentials(AppController.getInstance().getCurrentClientIp()).getInputStream());
+        System.out.println("Available bytes: " + dataInputStream.available());
+        while (dataInputStream.available() > 0) {
+            dataInputStream.read();
+        }
+
         clientHandlerPool.shutdown();
         clientHandlerPool.shutdownNow();
         System.out.println("Screen capture server stopped.");

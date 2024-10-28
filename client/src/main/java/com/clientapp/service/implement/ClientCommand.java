@@ -5,9 +5,7 @@ import com.clientapp.socket.ClientSocket;
 import com.clientapp.service.IClientCommand;
 import javax.crypto.SecretKey;
 
-
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
 import static com.clientapp.util.implement.ShellCommandExecutor.executeShellCommand;
@@ -22,7 +20,6 @@ public class ClientCommand implements IClientCommand {
     public void start() {
         try {
             System.out.println("Connected Successfully");
-            SecretKey aesKey = ClientSocket.getInstance().getAesKey();
             // Receive commands from the server, execute shell commands, and send back results
             System.out.println("Waiting for command...");
             while (isRunning) {
@@ -54,6 +51,15 @@ public class ClientCommand implements IClientCommand {
 
     @Override
     public void stop() {
+        ClientSocket.getInstance().sendExitCommand();
+//        BufferedReader in = new BufferedReader(new InputStreamReader(ClientSocket.getInstance().getInputStream()));
+        try {
+//            while (in.readLine() != null) {
+//                System.out.println("Waiting for server to close connection...");
+//            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         System.out.println("Exit Client Command");
         isRunning = false;
     }
