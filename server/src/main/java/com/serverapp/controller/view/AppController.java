@@ -75,6 +75,7 @@ public class AppController implements IController {
         if (!fxmlPath.equals("/view/main-system-view.fxml")){
             resetButtonStyles();
             btnSystemMonitoring.getStyleClass().setAll("active-button");
+            System.out.println("Navigating to System Monitoring");
             loadPage("/view/main-system-view.fxml");
         }
     }
@@ -84,6 +85,7 @@ public class AppController implements IController {
         if (!fxmlPath.equals("/view/main-command-view.fxml")){
             resetButtonStyles();
             btnCommandPrompt.getStyleClass().setAll("active-button");
+            System.out.println("Navigating to Command Prompt");
             loadPage("/view/main-command-view.fxml");
         }
     }
@@ -93,6 +95,7 @@ public class AppController implements IController {
         if (!fxmlPath.equals("/view/main-filedirectory-view.fxml")){
             resetButtonStyles();
             btnFileAndDirectory.getStyleClass().setAll("active-button");
+            System.out.println("Navigating to File and Directory");
             loadPage("/view/main-filedirectory-view.fxml");
         }
     }
