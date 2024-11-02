@@ -11,6 +11,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import lombok.Setter;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
@@ -34,6 +35,8 @@ public class ClientScreenController implements IController {
     @FXML
     private Pane screenPane;
 
+    @Setter
+    private String fxmlPath = "/view/client-screen.fxml";
 
     private ImageView imageView;
     private String currentClientIp;
@@ -58,10 +61,33 @@ public class ClientScreenController implements IController {
 
     @FXML
     public void viewchange() {
-        btnGeneral.setOnMouseClicked(event -> loadPage("/view/client-general.fxml"));
-        btnProcess.setOnMouseClicked(event -> loadPage("/view/client-process.fxml"));
-        btnPerformance.setOnMouseClicked(event -> loadPage("/view/client-performance.fxml"));
-        btnScreen.setOnMouseClicked(event -> loadPage("/view/client-screen.fxml"));
+        btnGeneral.setOnMouseClicked(event -> {
+            if (fxmlPath != null && !fxmlPath.isEmpty() && !fxmlPath.equals("/view/client-general.fxml")) {
+                setFxmlPath("/view/client-general.fxml");
+                loadPage(fxmlPath);
+            }
+        });
+
+        btnProcess.setOnMouseClicked(event -> {
+            if (fxmlPath != null && !fxmlPath.isEmpty() && !fxmlPath.equals("/view/client-process.fxml")) {
+                setFxmlPath("/view/client-process.fxml");
+                loadPage(fxmlPath);
+            }
+        });
+
+        btnPerformance.setOnMouseClicked(event -> {
+            if (fxmlPath != null && !fxmlPath.isEmpty() && !fxmlPath.equals("/view/client-performance.fxml")) {
+                setFxmlPath("/view/client-performance.fxml");
+                loadPage(fxmlPath);
+            }
+        });
+
+        btnScreen.setOnMouseClicked(event -> {
+            if (fxmlPath != null && !fxmlPath.isEmpty() && !fxmlPath.equals("/view/client-screen.fxml")) {
+                setFxmlPath("/view/client-screen.fxml");
+                loadPage(fxmlPath);
+            }
+        });
     }
 
     private void loadPage(String fxmlPath) {
