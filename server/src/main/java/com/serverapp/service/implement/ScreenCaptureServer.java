@@ -35,7 +35,11 @@ public class ScreenCaptureServer implements IScreenCaptureServer {
                 PrintWriter out = new PrintWriter(clientCredentials.getOutputStream(), true);
                 out.println(RequestType.SCREEN_CAPTURE);
                 clientHandlerPool.submit(() -> {
-                    screenCaptureHandler = new ScreenCaptureHandler(clientCredentials, screenCaptureController);
+                    try {
+                        screenCaptureHandler = new ScreenCaptureHandler(clientCredentials, screenCaptureController);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                     screenCaptureHandler.run();
                 });
             } else {
@@ -52,13 +56,6 @@ public class ScreenCaptureServer implements IScreenCaptureServer {
         if (screenCaptureHandler != null) {
             screenCaptureHandler.stop();
         }
-
-        DataInputStream dataInputStream = new DataInputStream(SocketManager.getInstance().getClientCredentials(AppController.getInstance().getCurrentClientIp()).getInputStream());
-        System.out.println("Available bytes: " + dataInputStream.available());
-        while (dataInputStream.available() > 0) {
-            dataInputStream.read();
-        }
-
         clientHandlerPool.shutdown();
         clientHandlerPool.shutdownNow();
         System.out.println("Screen capture server stopped.");
