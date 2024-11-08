@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
@@ -55,7 +56,7 @@
 
    <!-- Include panel port -->
    <AnchorPane fx:id="panelPortInclude" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"> </AnchorPane>
-   <TabPane fx:id="clientChartIncludeTabPane" layoutX="43.0" layoutY="148.0" prefHeight="582.0" prefWidth="1177.0" tabClosingPolicy="UNAVAILABLE">
+   <TabPane fx:id="clientChartIncludeTabPane" layoutX="43.0" layoutY="148.0" prefHeight="582.0" prefWidth="1177.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="69.60000000000002" AnchorPane.leftAnchor="43.0" AnchorPane.rightAnchor="13.200000000000045" AnchorPane.topAnchor="148.0">
       <tabs>
          <Tab fx:id="performanceTab" text="Performance">
             <content>
@@ -68,5 +69,9 @@
             </content>
          </Tab>
       </tabs>
+      <styleClass>
+         <String fx:value="card-backgroud-color" />
+         <String fx:value="card-border-color" />
+      </styleClass>
    </TabPane>
 </AnchorPane>
