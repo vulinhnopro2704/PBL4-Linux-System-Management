@@ -46,7 +46,7 @@
 .text-area{
 	-fx-font-size: 14px;
 	-fx-font-family: "Arial";
-	-fx-text-fill: #fff;
+	-fx-text-fill: #0093ff;
 	-fx-border-width: 10px;
 	-fx-border-color: #0B1739;
 	-fx-background-color: #081028;
@@ -227,4 +227,102 @@
 	fx-alignment: left;
 	-fx-background-color: transparent;
 	-fx-text-fill: #cb3cff;
+}
+
+
+/* Tab Pane */
+.tab-pane {
+	-fx-background-color: #0a0f23; /* Nền tối cho toàn bộ TabPane */
+	-fx-padding: 10px;
+	-fx-background-radius: 10px;
+}
+
+/* Tab Headers */
+.tab-pane .tab-header-area {
+	-fx-background-color: #0a0f23; /* Nền cho vùng chứa các tab */
+	-fx-background-radius: 10px 10px 0 0;
+	-fx-padding: 0 0 0 0;
+}
+
+/* Các tab khi không được chọn */
+.tab-pane .tab {
+	-fx-background-color: #0a0f23;
+	-fx-text-fill: #5a6782; /* Màu chữ cho tab không chọn */
+	-fx-padding: 8px 15px;
+	-fx-background-radius: 10px 10px 0 0;
+	-fx-border-color: transparent;
+	-fx-border-width: 0 0 2px 0;
+}
+
+/* Tab đang được chọn */
+.tab-pane .tab:selected {
+	-fx-background-color: #00baff; /* Màu nền cho tab được chọn */
+	-fx-text-fill: #ffffff; /* Màu chữ cho tab được chọn */
+	-fx-font-weight: bold;
+	-fx-border-color: transparent;
+	-fx-background-radius: 10px 10px 0 0;
+}
+
+/* Nội dung trong Tab */
+.tab-pane .tab-content-area {
+	-fx-background-color: #0a0f23; /* Nền cho vùng nội dung của TabPane */
+	-fx-padding: 20px;
+	-fx-background-radius: 0 0 10px 10px;
+	-fx-border-width: 1px;
+	-fx-border-color: #1c2a3e; /* Đường viền giữa tab và vùng nội dung */
+}
+
+/* Bo tròn cho nút đóng trên các tab nếu có */
+.tab-pane .tab .tab-close-button {
+	-fx-background-radius: 50%;
+	-fx-background-color: #5a6782;
+}
+.tab-pane .tab .tab-close-button:hover {
+	-fx-background-color: #ff4d4d; /* Màu đỏ khi di chuột qua nút đóng */
+}
+
+.tab-pane {
+	-fx-background-color: #0a0f23; /* Nền cho toàn bộ TabPane */
+	-fx-padding: 10px;
+	-fx-background-radius: 10px;
+}
+
+/* Thanh chứa các tab */
+.tab-pane .tab-header-area {
+	-fx-background-color: #1a2233; /* Màu nền của thanh chứa các tab */
+	-fx-padding: 5px;
+	-fx-background-radius: 10px 10px 0 0;
+}
+
+/* Tab không được chọn */
+.tab-pane .tab {
+	-fx-background-color: transparent; /* Nền trong suốt cho tab không được chọn */
+	-fx-text-fill: #5a6782; /* Màu chữ cho tab không được chọn */
+	-fx-padding: 8px 15px;
+	-fx-background-radius: 10px 10px 0 0;
+}
+
+/* Tab đang chọn */
+.tab-pane .tab:selected {
+	-fx-background-color: #00baff; /* Màu nền cho tab đang chọn */
+	-fx-text-fill: #ffffff; /* Màu chữ cho tab đang chọn */
+	-fx-font-weight: bold;
+	-fx-background-radius: 10px 10px 0 0;
+}
+
+/* Nội dung trong Tab */
+.tab-pane .tab-content-area {
+	-fx-background-color: #0a0f23; /* Nền cho vùng nội dung của TabPane */
+	-fx-padding: 20px;
+	-fx-background-radius: 0 0 10px 10px;
+	-fx-border-color: #1c2a3e; /* Đường viền nhẹ giữa vùng nội dung và thanh tab header */
+}
+
+/* Bo tròn cho nút đóng trên các tab nếu có */
+.tab-pane .tab .tab-close-button {
+	-fx-background-radius: 50%;
+	-fx-background-color: #5a6782;
+}
+.tab-pane .tab .tab-close-button:hover {
+	-fx-background-color: #ff4d4d; /* Màu đỏ khi di chuột qua nút đóng */
 }

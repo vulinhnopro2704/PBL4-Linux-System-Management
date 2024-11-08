@@ -1,22 +1,77 @@
 /* Set the cell text color to white */
 .table-view .table-cell {
-    -fx-text-fill: white;
+    -fx-text-fill: #21C3FC; /* Set the cell text color */
+    -fx-font-size: 16px; /* Set the font size */
+    -fx-font-family: 'Montserrat'; /* Set the font family */
 }
 
-/* Set the column header text color to white */
+/*!* Set the column header text color to white *!*/
 .table-view .column-header .label {
-    -fx-text-fill: white;
+    -fx-font-size: 16px; /* Set the font size */
+    -fx-font-family: 'Montserrat'; /* Set the font family */
+    -fx-font-weight: bold; /* Set the font weight to bold */
+    -fx-text-fill: #21C3FC; /* Set the text color */
+}
+
+/* Remove column header background color */
+.table-view .column-header-background {
+    -fx-background-color: #081028;
+}
+
+/* Remove column header border */
+.table-view .column-header {
+    -fx-border-width: 0; /* Remove the border */
+    -fx-background-color: transparent; /* Set the background color */
+    -fx-text-fill: #21C3FC; /* Set the text color */
 }
 
 .scroll-bar:vertical .track {
-    -fx-background-color: #081028
+    -fx-background-color: transparent; /* Màu của track */
 }
 
 .scroll-bar:vertical .thumb {
-    -fx-background-color: linear-gradient(from 25% 0% to 75% 100%, #CB3CFF 19.86%, #7F25FB 68.34%);; /* Màu của đường track */
-; /* Màu của thanh trượt (thumb) */
+    -fx-background-color: linear-gradient(from 25% 0% to 75% 100%, #CB3CFF 19.86%, #7F25FB 68.34%); /* Màu của đường track */
 }
+
 .scroll-bar:vertical .increment-button,
 .scroll-bar:vertical .decrement-button {
     -fx-background-color: #7F25FB; /* Màu của nút cuộn lên/xuống */
+}
+
+.table-cell {
+    -fx-alignment: center; /* Set the cell alignment to center */
+}
+
+/* Set alternating row colors */
+.table-view .table-row-cell:odd {
+    -fx-background-color: #0B1739; /* Color for odd rows */
+}
+
+.table-view .table-row-cell:even {
+    -fx-background-color: #081028; /* Color for even rows */
+}
+
+/* Set hover effect for rows */
+.table-view .table-row-cell:hover {
+    -fx-background-color: #328BDB; /* Hover color */
+}
+
+/* Set selected row color */
+.table-view .table-row-cell:selected {
+    -fx-background-color: linear-gradient(#328BDB 0%, #207BCF 25%, #1973C9 75%, #0A65BF 100%); /* Selected row color */
+}
+
+/* Remove grid lines */
+.table-view .column-header, .table-view .filler {
+    -fx-border-width: 0;
+}
+
+.table-view .table-row-cell {
+    -fx-border-width: 0;
+    -fx-padding: 5px;
+}
+
+/* Clip overflow content */
+.table-view {
+    -fx-clip: rect(0, 0, 0, 0);
 }

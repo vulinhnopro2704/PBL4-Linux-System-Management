@@ -16,10 +16,6 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
-
-import static com.clientapp.util.implement.EncodeDecoder.decryptCommand;
-import static com.clientapp.util.implement.EncodeDecoder.encryptResponse;
-
 import com.clientapp.enums.RequestType;
 import lombok.Getter;
 import lombok.Setter;
@@ -63,41 +59,6 @@ public class ClientSocket {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    // Encrypt the message and send it to the server
-    public void sendByBufferWriter(String message) {
-        try {
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
-            String encryptedMessage = encryptResponse(message, aesKey);
-            writer.write(encryptedMessage + "\n");
-            writer.flush();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.err.println("Error encrypting message: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
-
-    // Receive the message from the server and decrypt it
-    public String receiveByBufferReader() {
-        try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            String encryptedCommand = reader.readLine().trim();
-            if (encryptedCommand == null || encryptedCommand.isEmpty()) {
-                System.err.println("Received null or empty command");
-                return "";
-            }
-            System.out.println(encryptedCommand);
-            return decryptCommand(encryptedCommand, aesKey);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.err.println("Error decrypting command: " + e.getMessage());
-            e.printStackTrace();
-        }
-        return "";
     }
 
     // Method to send encrypted message
