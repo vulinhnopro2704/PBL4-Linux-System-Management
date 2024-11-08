@@ -39,9 +39,6 @@ public class ClientPerformanceController implements IController {
     private Label btnScreen;
 
     @FXML
-    private AnchorPane clientChartInclude;
-
-    @FXML
     private TabPane clientChartIncludeTabPane;
 
     @FXML

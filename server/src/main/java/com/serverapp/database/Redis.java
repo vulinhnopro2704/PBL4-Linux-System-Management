@@ -20,6 +20,8 @@ public class Redis {
     @Setter
     private List<ClientProcess> clientProcessView = new ArrayList<ClientProcess>();
 
+    private Map<String, String> mapClientConsoleLogs = new HashMap<String, String>();
+
     public static Redis getInstance(){
         if (_instance == null){
             _instance = new Redis();
@@ -112,5 +114,17 @@ public class Redis {
 
     public boolean containsIp(String ip){
         return mapClientDetailView.containsKey(ip);
+    }
+
+    public String getConsoleLogs(String ip) {
+        return mapClientConsoleLogs.get(ip);
+    }
+
+    public void appendConsoleLogs(String ip, String logs) {
+        mapClientConsoleLogs.merge(ip, logs, (a, b) -> a + "\n" + b);
+    }
+
+    public void clearConsoleLogs(String ip) {
+        mapClientConsoleLogs.put(ip, "");
     }
 }
