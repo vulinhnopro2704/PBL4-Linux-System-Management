@@ -1,0 +1,60 @@
+.chart {
+    -fx-background-color: #0a0f23; /* Nền tối */
+    -fx-padding: 20px;
+    -fx-background-insets: 0;
+    -fx-background-radius: 10px;
+}
+
+.chart-legend {
+    -fx-background-color: transparent;
+}
+
+.chart-title {
+    -fx-text-fill: #ffffff; /* Màu chữ tiêu đề trắng */
+    -fx-font-size: 16px;
+}
+
+.chart-legend-item {
+    -fx-text-fill: #ffffff;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.axis {
+    -fx-tick-label-fill: #5a6782; /* Màu chữ trên trục */
+}
+
+.axis-label {
+    -fx-text-fill: #5a6782; /* Màu chữ tiêu đề trục */
+}
+
+.axis .axis-line {
+    -fx-stroke: transparent; /* Ẩn đường trục */
+}
+
+.axis .tick-mark {
+    -fx-stroke: transparent; /* Ẩn tick mark */
+}
+
+.axis .tick-label {
+    -fx-font-size: 12px;
+}
+
+.default-color0.chart-series-line {
+    -fx-stroke: #00baff; /* Màu đường biểu đồ */
+    -fx-stroke-width: 2px;
+}
+
+.default-color0.chart-line-symbol {
+    -fx-background-color: #00baff, white; /* Màu điểm biểu đồ */
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 3px, 1px;
+}
+
+.chart-plot-background .chart-horizontal-grid-lines,
+.chart-plot-background .chart-vertical-grid-lines {
+    -fx-stroke: #1c2a3e; /* Màu các đường lưới */
+    -fx-stroke-width: 1;
+}
