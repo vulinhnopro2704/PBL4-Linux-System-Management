@@ -13,6 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class AppController implements IController {
     private static AppController _INSTANCE;
@@ -120,10 +121,10 @@ public class AppController implements IController {
 
     @FXML
     private void handleSetting(MouseEvent event) {
-        if (!fxmlPath.equals("/view/main-setting-view.fxml")){
+        if (!fxmlPath.equals("/view/malware_detect.fxml.fxml")){
             resetButtonStyles();
             btnSetting.getStyleClass().setAll("active-button");
-            loadPage("/view/main-setting-view.fxml");
+            loadPage("/view/malware_detect.fxml");
         }
     }
 
@@ -131,12 +132,17 @@ public class AppController implements IController {
     public void loadPage(String fxmlPath) {
         if (fxmlPath != null && !fxmlPath.isEmpty() && !fxmlPath.equals(this.fxmlPath)) {
             try {
+                URL fxmlLocation = getClass().getResource(fxmlPath);
+                if (fxmlLocation == null) {
+                    throw new IllegalStateException("FXML file not found: " + fxmlPath);
+                }
                 System.out.println(fxmlPath);
                 setFxmlPath(fxmlPath);
                 if (currentController != null) {
                     currentController.stop();
                 }
-                FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+
+                FXMLLoader loader = new FXMLLoader(fxmlLocation);
                 Parent root = loader.load();
                 currentController = loader.getController();
 

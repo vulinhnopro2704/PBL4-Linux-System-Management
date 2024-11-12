@@ -1,0 +1,61 @@
+/* Style for TextField */
+.text-field {
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+    -fx-text-fill: #0093ff;
+    -fx-border-width: 2px;
+    -fx-border-color: #0B1739;
+    -fx-background-color: #081028;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}
+
+.text-field:focused {
+    -fx-border-color: #cb3cff;
+}
+
+/* Style for Button */
+.button {
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #0093ff;
+    -fx-background-radius: 10px;
+    -fx-border-color: #0B1739;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px 20px;
+}
+
+.button:hover {
+    -fx-background-color: #007acc;
+}
+
+.button:pressed {
+    -fx-background-color: #005f99;
+}
+
+.toggle-button {
+    -fx-font-size: 14px;
+    -fx-font-family: "Arial";
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #0093ff;
+    -fx-background-radius: 10px;
+    -fx-border-color: #0B1739;
+    -fx-border-width: 2px;
+    -fx-border-radius: 10px;
+    -fx-padding: 10px 20px;
+}
+
+.toggle-button:hover {
+    -fx-background-color: #007acc;
+}
+
+.toggle-button:pressed {
+    -fx-background-color: #005f99;
+}
+
+.toggle-button:selected {
+    -fx-background-color: #005f99;
+    -fx-text-fill: #ffffff;
+}

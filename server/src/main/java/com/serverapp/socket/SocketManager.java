@@ -23,6 +23,8 @@ import com.serverapp.util.CurrentType;
 import javafx.application.Platform;
 import lombok.Getter;
 
+import static com.serverapp.util.PushNotification.showInformationNotification;
+
 /**
  * SocketManager là một lớp quản lý tất cả các kết nối từ phía server.
  * Nó xử lý việc gửi và nhận dữ liệu giữa server và client thông qua AES và RSA encryption.
@@ -129,6 +131,7 @@ public class SocketManager {
                     System.out.println("Client is ready: " + clientSocket.getInetAddress().getHostAddress());
                     // Lưu thông tin client và AES key vào HashMap
                     addClientCredentials(ip, new ClientCredentials(clientSocket, aesKey));
+                    showInformationNotification("Client connected", "Client connected: " + ip);
                 } catch (Exception e) {
                     System.out.println("Error decrypting AES key: " + e.getMessage());
                     e.printStackTrace();
@@ -156,6 +159,7 @@ public class SocketManager {
         try {
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientCredentials.getOutputStream()));
             writer.write(CurrentType.getInstance().getType() + "\n");
+            showInformationNotification("Current Request Type", "Sent Current Request Type: " + CurrentType.getInstance().getType());
             writer.flush();
         } catch (IOException e) {
             e.printStackTrace();
