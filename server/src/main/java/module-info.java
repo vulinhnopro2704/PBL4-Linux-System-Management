@@ -9,7 +9,6 @@ module com.serverapp {
     requires net.synedra.validatorfx;
     requires org.kordamp.ikonli.javafx;
     requires org.kordamp.bootstrapfx.core;
-    requires eu.hansolo.tilesfx;
     requires jsch;
     requires java.json;
     requires static lombok;
