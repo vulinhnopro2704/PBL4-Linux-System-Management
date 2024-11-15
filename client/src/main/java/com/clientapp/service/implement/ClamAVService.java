@@ -1,7 +1,11 @@
 package com.clientapp.service.implement;
 
+import com.clientapp.enums.RequestType;
 import com.clientapp.model.ClamAV;
 import com.clientapp.model.ClamAVResponse;
+import com.clientapp.socket.ClientSocket;
+import com.google.gson.Gson;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,9 +13,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClamAVService {
-    public void startScan(ClamAV clamAV) {
+    Thread mainThread;
+
+    public ClamAVResponse startScan(ClamAV clamAV) {
         List<String> command = buildCommand(clamAV);
-        runClamAVScan(command);
+        return runClamAVScan(command);
     }
 
     private List<String> buildCommand(ClamAV clamAV) {
@@ -58,5 +64,47 @@ public class ClamAVService {
             ex.printStackTrace();
         }
         return new ClamAVResponse(message.toString(), suspiciousFiles);
+    }
+
+    public void start() {
+        mainThread = new Thread(() -> {
+            ClientSocket clientSocket = ClientSocket.getInstance();
+            Gson gson = new Gson();
+            while (true) {
+                try {
+                    String line = null;
+                    if (clientSocket.isAvailableToRead()) {
+                        line = clientSocket.receiveDecryptedMessage();
+                    }
+                    if (line == null || line.trim().isEmpty())
+                        continue;
+                    try {
+                        if (RequestType.valueOf(line.trim()) == RequestType.STOP_DETECT_MALWARE) {
+                            break;
+                        }
+                    }
+                    catch (IllegalArgumentException ie) {
+                        ie.printStackTrace();
+                    }
+
+                    ClamAV clamAVObject = gson.fromJson(line, ClamAV.class);
+                    if (clamAVObject != null) {
+                        ClamAVResponse response = startScan(clamAVObject);
+                        String json = gson.toJson(response);
+
+                        clientSocket.sendEncryptedMessage(json);
+                    }
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            stop();
+        });
+        mainThread.start();
+    }
+
+    public void stop() {
+        mainThread.interrupt();
+        System.out.println("Stop detect malware");
     }
 }

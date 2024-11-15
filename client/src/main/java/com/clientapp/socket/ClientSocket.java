@@ -61,6 +61,11 @@ public class ClientSocket {
         }
     }
 
+    public Boolean isAvailableToRead() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        return reader.ready();
+    }
+
     // Method to send encrypted message
     public void sendEncryptedMessage(String message) throws Exception {
         for (RequestType requestType : RequestType.values()) {
