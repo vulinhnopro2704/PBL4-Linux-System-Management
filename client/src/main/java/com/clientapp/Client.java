@@ -2,10 +2,7 @@ package com.clientapp;
 
 import com.clientapp.enums.RequestType;
 import com.clientapp.service.ISetupConnection;
-import com.clientapp.service.implement.ClientCommand;
-import com.clientapp.service.implement.ScreenCaptureClient;
-import com.clientapp.service.implement.SetupConnection;
-import com.clientapp.service.implement.SystemInfomation;
+import com.clientapp.service.implement.*;
 import com.clientapp.socket.ClientSocket;
 
 import java.io.BufferedReader;
@@ -47,6 +44,11 @@ public class Client {
                         //Handle Command request
                         ClientCommand clientCommand = new ClientCommand();
                         clientCommand.start();
+                        break;
+                    case FILE_TRANSFER:
+                        // Handle file transfer request
+                        ReceiveFile receiveFile = new ReceiveFile();
+                        receiveFile.start();
                         break;
                 }
             }

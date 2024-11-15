@@ -12,7 +12,8 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" prefHeight="800.0" prefWidth="1234.0" styleClass="dark-background" stylesheets="@../styles/styles.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.MainFileDirectoryController">
+<?import javafx.scene.control.ListView?>
+<AnchorPane prefHeight="800.0" prefWidth="1234.0" styleClass="dark-background" stylesheets="@../styles/styles.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.MainFileDirectoryController">
    <children>
       <!-- nut upload file -->
       <AnchorPane layoutX="34.0" layoutY="12.0" prefHeight="171.0" prefWidth="1009.0" style="-fx-background-radius: 15;" styleClass="card-backgroud-color" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="12.0">
@@ -22,7 +23,7 @@
          <children>
             <AnchorPane layoutX="15.0" layoutY="17.0" prefHeight="162.0" prefWidth="894.0" style="-fx-border-radius: 15; -fx-border-style: segments(20,10);" styleClass="blue-border" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="15.0">
                <children>
-                  <ImageView fx:id="btnUpfile" fitHeight="55.0" fitWidth="105.0" layoutX="535.0" layoutY="43.0" onMouseClicked="#handleUploadFile" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="535.0" AnchorPane.rightAnchor="535.0">
+                  <ImageView fx:id="btnUpfile" fitHeight="55.0" fitWidth="105.0" layoutX="535.0" layoutY="43.0" onMouseClicked="#sendFile" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="535.0" AnchorPane.rightAnchor="535.0">
                      <image>
                         <Image url="@../images/upload-icon.png" />
                      </image>
@@ -42,10 +43,10 @@
                <children>
                   <TableView layoutX="5.6" layoutY="4.8" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" style="-fx-background-radius: 15px;" styleClass="card-backgroud-color" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <columns>
-                        <TableColumn maxWidth="6000.0" prefWidth="650.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="Filename" />
-                        <TableColumn maxWidth="500.0" prefWidth="170.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="Status" />
-                        <TableColumn maxWidth="500.0" prefWidth="170.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="Size" />
-                        <TableColumn maxWidth="500.0" prefWidth="170.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="Delete" />
+                        <TableColumn fx:id="fileNameCol" maxWidth="6000.0" prefWidth="650.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="Filename" />
+                        <TableColumn fx:id="statusCol" maxWidth="500.0" prefWidth="170.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="Status" />
+                        <TableColumn fx:id="sizeFileCol" maxWidth="500.0" prefWidth="170.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="Size" />
+                        <TableColumn fx:id="deleteFileCol" maxWidth="500.0" prefWidth="170.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="Delete" />
                      </columns>
                      <stylesheets>
                         <URL value="@../styles/styles.css" />
@@ -57,39 +58,42 @@
          </content>
       </ScrollPane>
 
-      <!-- cac may client hien co -->
-      <AnchorPane layoutX="31.2" layoutY="458.0" prefHeight="300.0" prefWidth="1176.0" style="-fx-background-radius: 15px; -fx-border-radius: 15px;" styleClass="card-backgroud-color" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0">
-         <effect>
-            <DropShadow />
-         </effect>
-         <children>
-            <Circle fx:id="iconStatus" fill="#04ef72" layoutX="30.0" layoutY="19.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" styleClass="green-background" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="16.0" />
-            <Label fx:id="labelIpAddress" layoutX="68.0" layoutY="4.0" prefHeight="22.0" prefWidth="146.0" text="Available Desktop" textFill="#04ef72" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="10.0">
-               <font>
-                  <Font name="System Bold" size="15.0" />
-               </font>
-            </Label>
-            <ScrollPane prefHeight="250.0" prefWidth="1013.0" style="-fx-background-radius: 15px;" styleClass="card-backgroud-color" stylesheets="@../styles/scrollpaneStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="50.0">
-               <content>
-                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="1004.0" styleClass="card-backgroud-color">
-                     <children>
-                        <TableView layoutX="5.6" layoutY="4.8" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" style="-fx-background-radius: 15px;" styleClass="card-backgroud-color" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                           <columns>
-                              <TableColumn maxWidth="500.0" prefWidth="75.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" />
-                              <TableColumn maxWidth="6000.0" prefWidth="366.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="Desktop name" />
-                              <TableColumn maxWidth="500.0" prefWidth="280.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="IP Address" />
-                              <TableColumn maxWidth="500.0" prefWidth="280.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="MAC Address" />
-                           </columns>
-                           <stylesheets>
-                              <URL value="@../styles/styles.css" />
-                              <URL value="@../styles/tablestyles.css" />
-                           </stylesheets>
-                        </TableView>
-                     </children>
-                  </AnchorPane>
-               </content>
-            </ScrollPane>
-         </children>
-      </AnchorPane>
+      <ListView fx:id="clientListView" layoutX="806.4" prefHeight="202.0" prefWidth="357.0" style="-fx-background-radius: 10;" stylesheets="@../styles/scrollpaneStyle.css" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="806.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="7.0" />
+
+
+      <!--      &lt;!&ndash; cac may client hien co &ndash;&gt;-->
+<!--      <AnchorPane layoutX="31.2" layoutY="458.0" prefHeight="300.0" prefWidth="1176.0" style="-fx-background-radius: 15px; -fx-border-radius: 15px;" styleClass="card-backgroud-color" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0">-->
+<!--         <effect>-->
+<!--            <DropShadow />-->
+<!--         </effect>-->
+<!--         <children>-->
+<!--            <Circle fx:id="iconStatus" fill="#04ef72" layoutX="30.0" layoutY="19.0" radius="5.0" stroke="BLACK" strokeType="INSIDE" styleClass="green-background" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="16.0" />-->
+<!--            <Label fx:id="labelIpAddress" layoutX="68.0" layoutY="4.0" prefHeight="22.0" prefWidth="146.0" text="Available Desktop" textFill="#04ef72" AnchorPane.leftAnchor="70.0" AnchorPane.topAnchor="10.0">-->
+<!--               <font>-->
+<!--                  <Font name="System Bold" size="15.0" />-->
+<!--               </font>-->
+<!--            </Label>-->
+<!--            <ScrollPane prefHeight="250.0" prefWidth="1013.0" style="-fx-background-radius: 15px;" styleClass="card-backgroud-color" stylesheets="@../styles/scrollpaneStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="80.0" AnchorPane.rightAnchor="80.0" AnchorPane.topAnchor="50.0">-->
+<!--               <content>-->
+<!--                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="250.0" prefWidth="1004.0" styleClass="card-backgroud-color">-->
+<!--                     <children>-->
+<!--                        <TableView fx:id="tableClientView" layoutX="5.6" layoutY="4.8" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" style="-fx-background-radius: 15px;" styleClass="card-backgroud-color" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">-->
+<!--                           <columns>-->
+<!--                              <TableColumn fx:id="clientBoolCol" maxWidth="500.0" prefWidth="75.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" />-->
+<!--                              <TableColumn fx:id="clientNameCol" maxWidth="6000.0" prefWidth="366.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="Desktop name" />-->
+<!--                              <TableColumn fx:id="clientIPCol" maxWidth="500.0" prefWidth="280.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="IP Address" />-->
+<!--                              <TableColumn fx:id="clientMACCol" maxWidth="500.0" prefWidth="280.0" style="-fx-text-fill: #fff;" styleClass="card-backgroud-color" text="MAC Address" />-->
+<!--                           </columns>-->
+<!--                           <stylesheets>-->
+<!--                              <URL value="@../styles/styles.css" />-->
+<!--                              <URL value="@../styles/tablestyles.css" />-->
+<!--                           </stylesheets>-->
+<!--                        </TableView>-->
+<!--                     </children>-->
+<!--                  </AnchorPane>-->
+<!--               </content>-->
+<!--            </ScrollPane>-->
+<!--         </children>-->
+<!--      </AnchorPane>-->
    </children>
 </AnchorPane>

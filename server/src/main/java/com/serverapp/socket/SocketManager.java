@@ -1,12 +1,6 @@
 package com.serverapp.socket;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
@@ -276,6 +270,37 @@ public class SocketManager {
         writer.write(encryptedMessage + "\n");
         writer.flush();
     }
+
+    public void sendEncryptedFile(String filePath, String ipAddress) throws Exception {
+        // Lấy thông tin kết nối từ client credentials
+        ClientCredentials clientCredentials = getClientCredentials(ipAddress);
+
+        // Tạo socket kết nối đến địa chỉ IP và lấy AES key cho mã hóa
+        SecretKey aesKey = clientCredentials.getAesKey();
+        Socket socket = clientCredentials.getSocket();
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        FileInputStream fileInputStream = new FileInputStream(filePath);
+        // Gửi tên file
+        String fileName = new File(filePath).getName();
+        dataOutputStream.writeUTF(fileName);
+        dataOutputStream.flush();
+        // Đọc file vào byte array và mã hóa
+        byte[] fileBytes = new byte[(int) fileInputStream.available()];
+        fileInputStream.read(fileBytes);
+        byte[] encryptedFileBytes = encryptWithAES(fileBytes, aesKey);
+        // Gửi kích thước của file mã hóa
+        dataOutputStream.writeLong(encryptedFileBytes.length);
+        // Gửi nội dung file mã hóa
+        dataOutputStream.write(encryptedFileBytes);
+        dataOutputStream.flush();
+        System.out.println("Encrypted file sent successfully.");
+    }
+    private byte[] encryptWithAES(byte[] data, SecretKey aesKey) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES");
+        cipher.init(Cipher.ENCRYPT_MODE, aesKey);
+        return cipher.doFinal(data);
+    }
+
 
     // Encrypt with AES
     private String encryptWithAES(String plainText, SecretKey aesKey) throws Exception {

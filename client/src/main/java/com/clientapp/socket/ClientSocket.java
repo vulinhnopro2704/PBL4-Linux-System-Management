@@ -1,12 +1,6 @@
 package com.clientapp.socket;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.security.SecureRandom;
@@ -126,6 +120,52 @@ public class ClientSocket {
         return decryptWithAES(encryptedMessage, aesKey);
     }
 
+    public String receiveDecryptedFile() throws Exception {
+        DataOutputStream dataOutputStream = null;
+        DataInputStream dataInputStream = null;
+        // Đọc tên file từ server
+        String fileName = dataInputStream.readUTF();
+
+        // Kiểm tra nếu đây là lệnh hệ thống thay vì file
+        for (RequestType requestType : RequestType.values()) {
+            if (requestType.name().equals(fileName)) {
+                return requestType.name();
+            }
+        }
+
+        // Nhận kích thước và nội dung file mã hóa từ server
+        long encryptedFileSize = dataInputStream.readLong();
+        byte[] encryptedFileBytes = new byte[(int) encryptedFileSize];
+        dataInputStream.readFully(encryptedFileBytes);
+
+        // Giải mã file với AES
+        String decryptedText = decryptFileWithAES(encryptedFileBytes, aesKey);
+
+        System.out.println("Decrypted file content: " + decryptedText);
+        return decryptedText;
+    }
+
+    // Hàm giải mã file AES với dạng byte array
+    private String decryptFileWithAES(byte[] encryptedFileBytes, SecretKey aesKey) throws Exception {
+        ByteBuffer byteBuffer = ByteBuffer.wrap(encryptedFileBytes);
+
+        // Lấy IV (Initialization Vector)
+        byte[] iv = new byte[16];
+        byteBuffer.get(iv);
+        byte[] encryptedBytes = new byte[byteBuffer.remaining()];
+        byteBuffer.get(encryptedBytes);
+
+        // Khởi tạo giải mã với AES và IV
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        IvParameterSpec ivSpec = new IvParameterSpec(iv);
+        cipher.init(Cipher.DECRYPT_MODE, aesKey, ivSpec);
+
+        // Giải mã dữ liệu
+        byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+        return new String(decryptedBytes, "UTF-8");
+    }
+
+
     // Encrypt message with AES
     private String encryptWithAES(String plainText, SecretKey aesKey) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -164,3 +204,4 @@ public class ClientSocket {
         return new String(decryptedBytes, "UTF-8");
     }
 }
+
