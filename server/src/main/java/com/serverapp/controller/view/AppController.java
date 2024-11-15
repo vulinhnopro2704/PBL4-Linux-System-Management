@@ -99,14 +99,6 @@ public class AppController implements IController {
     }
 
     @FXML
-    private void handleInstallAndUpdate(MouseEvent event) {
-        if (!fxmlPath.equals("/view/main-install-view.fxml")){
-            resetButtonStyles();
-            loadPage("/view/main-install-view.fxml");
-        }
-    }
-
-    @FXML
     private void handleSecurityManagement(MouseEvent event) {
         if (!fxmlPath.equals("/view/main-security-view.fxml")){
             resetButtonStyles();
