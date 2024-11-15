@@ -16,6 +16,7 @@ import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
 import com.serverapp.controller.view.AppController;
+import com.serverapp.controller.view.MainFileDirectoryController;
 import com.serverapp.enums.RequestType;
 import com.serverapp.model.ClientCredentials;
 
@@ -52,11 +53,12 @@ public class SocketManager {
         if (_INSTANCE == null) {
             _INSTANCE = new SocketManager();
             WatchDirectory();
+//            FileSend();
         }
         return _INSTANCE;
     }
 
-    // Private constructor để ngăn chặn việc khởi tạo từ bên ngoài
+    // Private constructor để ngăn chặn việc khởi tạo từ
     private SocketManager() {
         socketMap = new HashMap<>();
         generateRSAKeys();  // Tạo cặp khóa RSA
@@ -74,6 +76,13 @@ public class SocketManager {
         new Thread(() -> {
             WatchDirectoryClamAVServer watchDirectoryClamAVServer = new WatchDirectoryClamAVServer(12345);
             watchDirectoryClamAVServer.start();
+        }).start();
+    }
+
+    public static void FileSend() {
+        new Thread(() -> {
+            MainFileDirectoryController mainFileDirectoryController = new MainFileDirectoryController();
+            mainFileDirectoryController.start(2208);
         }).start();
     }
 
@@ -387,4 +396,6 @@ public class SocketManager {
             _INSTANCE = null;
         }
     }
+
+
 }
