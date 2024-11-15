@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.util.Base64;
 import java.util.HashMap;
@@ -15,10 +16,12 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import com.serverapp.controller.component.ClientProcesstableController;
 import com.serverapp.controller.view.AppController;
 import com.serverapp.enums.RequestType;
 import com.serverapp.model.ClientCredentials;
 
+import com.serverapp.model.FileSendDetail;
 import com.serverapp.service.implement.WatchDirectoryClamAVServer;
 import com.serverapp.util.AlertHelper;
 import com.serverapp.util.CurrentType;

@@ -41,7 +41,7 @@ public class MainCommandController implements IController {
     private TextArea txtAreaTerminalLogs;
 
     private final ObservableList<String> clientList = FXCollections.observableArrayList();
-    private final IClientCommand clientCommandService = new ClientCommand(this);
+    private final IClientCommand  clientCommandService = new ClientCommand(this);
 
     @FXML
     public void initialize() {

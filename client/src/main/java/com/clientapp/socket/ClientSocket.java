@@ -102,6 +102,57 @@ public class ClientSocket {
         return decryptWithAES(encryptedMessage, aesKey);
     }
 
+    public String receiveMessage() throws IOException {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+            return reader.readLine();
+        }catch (IOException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void receiveDecryptedFile() throws Exception {
+        String downloadDir = "D:\\FileReceive";
+        try (
+                DataInputStream dataInputStream = new DataInputStream(getInputStream())
+        ) {
+//            // Đảm bảo thư mục lưu trữ tồn tại
+//            File directory = new File(downloadDir);
+//            if (!directory.exists() && !directory.mkdirs()) {
+//                throw new IOException("Failed to create directory: " + downloadDir);
+//            }
+
+            // Nhận tên tệp
+            int nameLength = dataInputStream.readInt();
+            byte[] fileNameBytes = new byte[nameLength];
+            dataInputStream.readFully(fileNameBytes);
+            String fileName = new String(fileNameBytes, StandardCharsets.UTF_8);
+
+            // Tạo file trong thư mục chỉ định
+            File file = new File(downloadDir, fileName);
+            if (file.exists()) {
+                System.out.println("File already exists, renaming to avoid overwrite.");
+                file = new File(downloadDir, System.currentTimeMillis() + "_" + fileName);
+            }
+
+            // Nhận kích thước tệp
+            long fileSize = dataInputStream.readLong();
+
+            try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+                byte[] buffer = new byte[4 * 1024];
+                int bytesRead;
+                while (fileSize > 0 && (bytesRead = dataInputStream.read(buffer, 0, (int) Math.min(buffer.length, fileSize))) != -1) {
+                    fileOutputStream.write(buffer, 0, bytesRead);
+                    fileSize -= bytesRead;
+                }
+            }
+
+            System.out.println("File received: " + file.getAbsolutePath());
+        } catch (IOException e) {
+            System.err.println("Error receiving file: " + e.getMessage());
+        }
+    }
+
     // Encrypt message with AES
     private String encryptWithAES(String plainText, SecretKey aesKey) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -163,4 +214,8 @@ public class ClientSocket {
         }
     }
 
+    public boolean isConnected() {
+        return socket.isConnected();
+    }
 }
+

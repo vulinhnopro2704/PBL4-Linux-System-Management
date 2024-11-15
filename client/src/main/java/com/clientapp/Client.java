@@ -57,6 +57,11 @@ public class Client {
                         ClientCommand clientCommand = new ClientCommand();
                         clientCommand.start();
                         break;
+                    case FILE_TRANSFER:
+                        // Handle file transfer request
+                        ClientReceiveFile clientReceiveFile = new ClientReceiveFile();
+                        clientReceiveFile.start();
+                        break;
                     case DETECT_MALWARE:
                         //Handle Detect Malware request
                         ClamAVService clamAVService = new ClamAVService();
