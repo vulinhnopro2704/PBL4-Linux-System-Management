@@ -327,6 +327,13 @@ public class SocketManager {
         return new String(decryptedBytes, "UTF-8");
     }
 
+    public Boolean isAvailableToRead(String ipAddress) throws IOException {
+        Socket clientSocket = getClientCredentials(ipAddress).getSocket();
+        if (clientSocket == null) return false;
+        BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+        return reader.ready();
+    }
+
     /**
      * Dừng server và đóng kết nối.
      * Chỉ dùng khi kết thúc chương trình
