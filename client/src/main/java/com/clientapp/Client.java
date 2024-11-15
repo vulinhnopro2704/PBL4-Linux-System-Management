@@ -17,6 +17,7 @@ public class Client {
             while (true) {
                 request = in.readLine();
                 if (request == null || request.isEmpty()) continue;
+                System.out.println("receive Request Type: " + request);
                 RequestType requestType = RequestType.valueOf(request);
                 System.out.println(requestType);
                 switch (requestType) {
@@ -59,6 +60,11 @@ public class Client {
                     case SECURITY:
                         ClientSecurity clientSecurity = new ClientSecurity();
                         clientSecurity.start();
+                    case FILE_TRANSFER:
+                        // Handle file transfer request
+                        ClientReceiveFile clientReceiveFile = new ClientReceiveFile(ClientSocket.getInstance().getServerIp(), 2208);
+                        clientReceiveFile.start();
+                        break;
                     case DETECT_MALWARE:
                         //Handle Detect Malware request
                         ClamAVService clamAVService = new ClamAVService();

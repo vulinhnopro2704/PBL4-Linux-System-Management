@@ -1,12 +1,6 @@
 package com.clientapp.socket;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -60,19 +54,6 @@ public class ClientSocket {
             WatchDirectoryClamAVClient watchDirectoryClamAVClient = new WatchDirectoryClamAVClient();
             watchDirectoryClamAVClient.run();
         }).start();
-    }
-
-    public void close() {
-        try {
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Boolean isAvailableToRead() throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        return reader.ready();
     }
 
     // Method to send encrypted message
@@ -173,5 +154,5 @@ public class ClientSocket {
             e.printStackTrace();
         }
     }
-
 }
+
