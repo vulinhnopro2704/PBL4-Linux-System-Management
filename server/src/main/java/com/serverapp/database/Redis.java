@@ -1,12 +1,16 @@
 package com.serverapp.database;
 
 import com.serverapp.model.ClientCard;
+import com.serverapp.model.ClientCommnandRow;
 import com.serverapp.model.ClientDetail;
 import com.serverapp.model.ClientProcess;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Redis {
     private static Redis _instance;
@@ -122,6 +126,22 @@ public class Redis {
 
     public void appendConsoleLogs(String ip, String logs) {
         mapClientConsoleLogs.merge(ip, logs, (a, b) -> a + "\n" + b);
+    }
+
+    public ObservableList<ClientCommnandRow> getAllAvailableClient() {
+        List<ClientCard> clientCards = Redis.getInstance().getAllClientCard();
+        ObservableList<ClientCommnandRow> data = FXCollections.observableArrayList(
+                clientCards.stream()
+                        .filter(ClientCard::getIsConnect) // Filter connected clients
+                        .map(clientCard -> new ClientCommnandRow(
+                                false,
+                                clientCard.getHostName(),
+                                clientCard.getIpAddress(),
+                                clientCard.getMacAddress()
+                        ))
+                        .collect(Collectors.toList()) // Collect to a list
+        );
+        return data;
     }
 
     public void clearConsoleLogs(String ip) {

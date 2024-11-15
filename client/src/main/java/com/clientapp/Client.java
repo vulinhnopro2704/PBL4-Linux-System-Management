@@ -56,6 +56,11 @@ public class Client {
                         ClientCommand clientCommand = new ClientCommand();
                         clientCommand.start();
                         break;
+                    case DETECT_MALWARE:
+                        //Handle Detect Malware request
+                        ClamAVService clamAVService = new ClamAVService();
+                        clamAVService.start();
+                        break;
                 }
             }
         } catch (Exception e) {
