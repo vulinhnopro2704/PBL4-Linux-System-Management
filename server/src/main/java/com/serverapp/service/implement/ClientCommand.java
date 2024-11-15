@@ -55,9 +55,6 @@ public class ClientCommand implements IClientCommand {
                         )).collect(Collectors.toList())
                 );
 
-                data.add(new ClientCommnandRow(false, "DummyHost1", "192.168.0.101", "00:0a:95:9d:68:16"));
-                data.add(new ClientCommnandRow(false, "DummyHost2", "192.168.0.102", "00:0a:95:9d:68:17"));
-
                 controller.setupTableColumns(data);
 
                 HashMap<String, ClientCredentials> clients = SocketManager.getInstance().getAllClientCredentials();
