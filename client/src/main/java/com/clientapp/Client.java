@@ -28,7 +28,7 @@ public class Client {
 
                     case SCREEN_CAPTURE:
                         // Handle screen capture request
-                        ScreenCaptureClient screenCaptureClient = new ScreenCaptureClient();
+                        ClientScreenUDP screenCaptureClient = new ClientScreenUDP("localhost", 9876);
                         screenCaptureClient.start();
                         break;
                     case SYSTEM_INFO:
@@ -44,6 +44,7 @@ public class Client {
                         break;
                     case PERFORMANCE_INFO:
                         //Handle performance info request
+
                         ClientMemoryUsage memoryUsage = new ClientMemoryUsage();
                         memoryUsage.sendMemoryUsage();
                         break;

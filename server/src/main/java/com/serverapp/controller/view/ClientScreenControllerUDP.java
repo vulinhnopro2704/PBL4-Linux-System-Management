@@ -2,9 +2,10 @@ package com.serverapp.controller.view;
 
 import com.serverapp.controller.IController;
 import com.serverapp.enums.RequestType;
+import com.serverapp.service.implement.ScreenCaptureServer;
+import com.serverapp.service.implement.ScreenCaptureServerUDP;
 import com.serverapp.socket.SocketManager;
 import com.serverapp.util.CurrentType;
-import com.serverapp.service.implement.ScreenCaptureServer;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
@@ -17,10 +18,8 @@ import lombok.Setter;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.PrintWriter;
 
-public class ClientScreenController implements IController {
-
+public class ClientScreenControllerUDP implements IController {
     @FXML
     private Label btnGeneral;
 
@@ -41,18 +40,17 @@ public class ClientScreenController implements IController {
 
     private ImageView imageView;
     private String currentClientIp;
-    ScreenCaptureServer screenCaptureServer;
+    ScreenCaptureServerUDP screenCaptureServerUDP;
 
     @FXML
     public void initialize() throws IOException {
-        System.out.println("Client Screen Controller run");
-        // Initialize and start the screen capture server
+        System.out.println("Client Screen Controller UDP run");
         CurrentType.getInstance().setType(RequestType.SCREEN_CAPTURE);
         currentClientIp = AppController.getInstance().getCurrentClientIp();
-//        SocketManager.getInstance().sendCurrentRequestType(currentClientIp);
-        screenCaptureServer = new ScreenCaptureServer(this);
+        SocketManager.getInstance().sendCurrentRequestType(AppController.getInstance().getCurrentClientIp());
+        screenCaptureServerUDP = new ScreenCaptureServerUDP(this);
 
-        screenCaptureServer.start();
+        screenCaptureServerUDP.run();
         imageView = new ImageView();
         imageView.setPreserveRatio(true);
         imageView.fitWidthProperty().bind(screenPane.widthProperty());
@@ -102,8 +100,13 @@ public class ClientScreenController implements IController {
     }
 
     @Override
-    public void stop() throws IOException {
-        screenCaptureServer.stop();
+    public void stop() throws Exception {
+        try {
+            screenCaptureServerUDP.stop();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void updateScreenCapture(ImageIcon imageIcon) {

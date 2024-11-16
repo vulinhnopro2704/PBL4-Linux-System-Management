@@ -274,10 +274,16 @@ public class SocketManager {
         writer.flush();
     }
 
-    public void clearReceiveStream(String ipAddress) throws IOException {
-        DataInputStream dataInputStream = new DataInputStream(getClientCredentials(ipAddress).getInputStream());
-        if (dataInputStream.available() >0){
-            dataInputStream.readFully(new byte[dataInputStream.available()]);
+    private boolean isStreamClosed(DataInputStream stream) {
+        try {
+            stream.mark(1); // Đánh dấu để kiểm tra
+            if (stream.read() == -1) {
+                return true; // Đạt đến cuối luồng
+            }
+            stream.reset(); // Đặt lại nếu không phải cuối
+            return false;
+        } catch (IOException e) {
+            return true; // Xảy ra lỗi nghĩa là luồng đã đóng
         }
     }
 

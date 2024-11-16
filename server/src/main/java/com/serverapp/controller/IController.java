@@ -8,5 +8,5 @@ public interface IController {
     @FXML
     void initialize() throws IOException;
     void update();
-    void stop() throws IOException;
+    void stop() throws Exception;
 }

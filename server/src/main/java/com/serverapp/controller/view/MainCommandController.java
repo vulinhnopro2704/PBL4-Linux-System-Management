@@ -5,6 +5,7 @@ import com.serverapp.database.Redis;
 import com.serverapp.model.ClientCommnandRow;
 import com.serverapp.service.IClientCommand;
 import com.serverapp.service.implement.ClientCommand;
+import com.serverapp.socket.SocketManager;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -44,14 +45,20 @@ public class MainCommandController implements IController {
 
     @FXML
     public void initialize() {
+        setupTableColumns();
         clientCommandService.initialize();
     }
 
     @Override
     public void update() {
+        Platform.runLater(() -> {
+            ObservableList<ClientCommnandRow> data = Redis.getInstance().getAllAvailableClient();
+            tableClient.setItems(data);
+            tableClient.setEditable(true);
+        });
     }
 
-    public void setupTableColumns(ObservableList<ClientCommnandRow> data) {
+    public void setupTableColumns() {
         checkboxColumn.setCellValueFactory(cellData -> cellData.getValue().checkboxProperty());
         checkboxColumn.setCellFactory(CheckBoxTableCell.forTableColumn(checkboxColumn));
         checkboxColumn.setEditable(true);
@@ -69,8 +76,7 @@ public class MainCommandController implements IController {
         macAddressColumn.setResizable(false);
         macAddressColumn.setSortable(false);
 
-        tableClient.setItems(data);
-        tableClient.setEditable(true);
+        update();
     }
 
     public void addClientToList(String ip) {
