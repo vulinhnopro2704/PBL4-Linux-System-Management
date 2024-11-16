@@ -16,5 +16,5 @@ public class ClientCard {
     private String ipAddress;
     private String macAddress;
     private String osVersion;
-    private Boolean isConnect;
+    private Boolean isConnect = false;
 }

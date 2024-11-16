@@ -1,17 +1,16 @@
 package com.serverapp.service.implement;
 
+import com.google.gson.Gson;
 import com.serverapp.controller.view.MainCommandController;
 import com.serverapp.database.Redis;
 import com.serverapp.enums.RequestType;
-import com.serverapp.model.ClientCard;
 import com.serverapp.model.ClientCommnandRow;
 import com.serverapp.model.ClientCredentials;
+import com.serverapp.model.CommandModel;
 import com.serverapp.service.IClientCommand;
 import com.serverapp.socket.SocketManager;
 import com.serverapp.util.CurrentType;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -26,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 import static com.serverapp.util.AlertHelper.showAlert;
 
@@ -45,17 +43,7 @@ public class ClientCommand implements IClientCommand {
             CurrentType.getInstance().setType(RequestType.COMMAND);
             isRunning = true;
             Platform.runLater(() -> {
-                List<ClientCard> clientCards = Redis.getInstance().getAllClientCard();
-                ObservableList<ClientCommnandRow> data = FXCollections.observableArrayList(
-                        clientCards.stream().map(clientCard -> new ClientCommnandRow(
-                                false,
-                                clientCard.getHostName(),
-                                clientCard.getIpAddress(),
-                                clientCard.getMacAddress()
-                        )).collect(Collectors.toList())
-                );
-
-                controller.setupTableColumns(data);
+                controller.setupTableColumns();
 
                 HashMap<String, ClientCredentials> clients = SocketManager.getInstance().getAllClientCredentials();
                 clients.forEach((ip, clientData) -> {
@@ -103,30 +91,59 @@ public class ClientCommand implements IClientCommand {
             return;
         }
 
+        Gson gson = new Gson();
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+
         for (ClientCommnandRow clientRow : checkedClients) {
             String clientAddress = clientRow.getIpAddress();
             controller.log("Sending command to " + clientAddress);
-            SocketManager.getInstance().sendEncryptedMessage(command, clientAddress);
+
+            // Create the CommandModel object
+            CommandModel commandModel = new CommandModel();
+            commandModel.time = timestamp;
+            commandModel.message = command;
+
+            // Serialize CommandModel to JSON
+            String jsonCommand = gson.toJson(commandModel);
+
+            // Send the JSON command
+            SocketManager.getInstance().sendEncryptedMessage(jsonCommand, clientAddress);
+
             controller.log("Sent command to " + clientAddress + " Waiting for response...");
-            isWaitingForResponse = true;
+//            isWaitingForResponse = true;
+            isWaitingForResponse = false;
         }
     }
 
     public void listenForResponse(Socket clientSocket) {
         try {
+            Gson gson = new Gson();
+
             while (isRunning) {
-                String response;
+                String responseJson;
                 if (isRunning)
-                    response = SocketManager.getInstance().receiveDecryptedMessage(clientSocket.getInetAddress().getHostAddress());
+                    responseJson = SocketManager.getInstance().receiveDecryptedMessage(clientSocket.getInetAddress().getHostAddress()).trim();
                 else {
                     break;
                 }
-                if (response == null || response.isEmpty()) {
+
+                if (responseJson == null || responseJson.isEmpty()) {
                     continue;
                 }
-                if (!response.trim().isEmpty()) {
-                    String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-                    String logEntry = "[" + timestamp + "] " + response;
+                CommandModel response = null;
+                try {
+                    // Deserialize JSON response
+                    response = gson.fromJson(responseJson, CommandModel.class);
+                }
+                catch (Exception e) {
+                    System.err.println("Failed to parse command JSON: " + e.getMessage());
+                    e.printStackTrace();
+                    continue;
+                }
+
+                if (response != null && response.message != null && !response.message.trim().isEmpty()) {
+                    String timestamp = response.time != null ? response.time : new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+                    String logEntry = "[" + timestamp + "] " + response.message;
                     Redis.getInstance().appendConsoleLogs(clientSocket.getInetAddress().getHostAddress(), logEntry);
                     controller.updateConsole();
                     isWaitingForResponse = false;
@@ -145,26 +162,38 @@ public class ClientCommand implements IClientCommand {
         }
     }
 
+    public void sendExitCommand(String ipAddress) {
+        try {
+            // Tạo một CommandModel với RequestType.EXIT_COMMNAD_SCREEN
+            CommandModel command = new CommandModel();
+            command.type = RequestType.EXIT_COMMNAD_SCREEN;
+            command.time = String.valueOf(System.currentTimeMillis());
+            command.message = "Server exit command screen";
+
+            // Parse thành JSON
+            String jsonCommand = new Gson().toJson(command);
+
+            // Gửi JSON qua socket
+            SocketManager.getInstance().sendEncryptedMessage(jsonCommand, ipAddress);
+            System.out.println("Sent exit command to client.");
+        } catch (Exception e) {
+            System.err.println("Error while sending exit command: " + e.getMessage());
+        }
+    }
+
     public void close() {
+        isRunning = false;
+        isWaitingForResponse = false;
         System.out.println("Close Client Command Screen");
         HashMap<String, ClientCredentials> clients = SocketManager.getInstance().getAllClientCredentials();
-        clients.forEach((ip, clientData) -> {
-            BufferedWriter writer = null;
+        clients.forEach((ip, _) -> {
             try {
-                writer = new BufferedWriter(new OutputStreamWriter(clientData.getOutputStream()));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            try {
-                writer.write(RequestType.EXIT_COMMNAD_SCREEN + "\n");
-                writer.flush();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                sendExitCommand(ip);
+            } catch (Exception e) {
+                System.err.println("Error while sending exit command: " + e.getMessage());
             }
         });
 
-        isRunning = false;
-        isWaitingForResponse = false;
         executor.shutdown();
         executor.shutdownNow();
         System.out.println("Closed client command screen");

@@ -8,7 +8,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:controller="com.serverapp.controller.view.ClientScreenController"
+<AnchorPane fx:controller="com.serverapp.controller.view.ClientScreenControllerUDP"
             AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0"
             prefHeight="800.0" prefWidth="1234.0" styleClass="dark-background" stylesheets="@../styles/styles.css"
             xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">

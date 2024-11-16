@@ -1,5 +1,6 @@
 package com.clientapp.model;
 
+import com.google.gson.Gson;
 import lombok.Getter;
 
 import java.io.*;
@@ -41,5 +42,14 @@ public class ScreenPacket {
         return new ScreenPacket(totalChunks, chunkIndex, length, data);
     }
 
+    public String toJson() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
+    }
+
+    public static ScreenPacket fromJson(String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, ScreenPacket.class);
+    }
 }
 
