@@ -150,6 +150,9 @@ public class AppController implements IController {
                 contentArea.getChildren().add(root);
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new RuntimeException(e);
             }
         }
     }

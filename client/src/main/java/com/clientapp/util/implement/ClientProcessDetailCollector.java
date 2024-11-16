@@ -53,7 +53,7 @@ public class ClientProcessDetailCollector implements IClientProcessDetailCollect
             double ramUsageMB = ramUsageBytes / (1024.0 * 1024.0);  // Chuyển từ byte sang MB
             detail.setRAMusage(String.format("%.1f MB", ramUsageMB));
 
-            if (ramUsageMB > 10)
+            if (ramUsageMB > 20)
                 processDetails.add(detail);
         }
         return processDetails;

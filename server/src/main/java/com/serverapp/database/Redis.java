@@ -110,6 +110,7 @@ public class Redis {
                             .ipAddress(clientCard.getIpAddress())
                             .macAddress(clientCard.getMacAddress())
                             .osVersion(clientCard.getOsVersion())
+                            .isConnect(clientCard.getIsConnect() != null && clientCard.getIsConnect())
                             .build()
             );
         });
@@ -132,17 +133,18 @@ public class Redis {
         List<ClientCard> clientCards = Redis.getInstance().getAllClientCard();
         ObservableList<ClientCommnandRow> data = FXCollections.observableArrayList(
                 clientCards.stream()
-                        .filter(ClientCard::getIsConnect) // Filter connected clients
+                        .filter(clientCard -> clientCard != null && Boolean.TRUE.equals(clientCard.getIsConnect()))
                         .map(clientCard -> new ClientCommnandRow(
                                 false,
                                 clientCard.getHostName(),
                                 clientCard.getIpAddress(),
                                 clientCard.getMacAddress()
                         ))
-                        .collect(Collectors.toList()) // Collect to a list
+                        .collect(Collectors.toList())
         );
         return data;
     }
+
 
     public void clearConsoleLogs(String ip) {
         mapClientConsoleLogs.put(ip, "");

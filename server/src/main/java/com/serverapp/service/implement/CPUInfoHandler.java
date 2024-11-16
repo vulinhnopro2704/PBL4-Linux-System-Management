@@ -46,7 +46,6 @@ public class CPUInfoHandler implements ICPUinfoHandler {
 
     public void stop() throws IOException {
         isRunning = false;
-        SocketManager.getInstance().clearReceiveStream(AppController.getInstance().getCurrentClientIp());
         PrintWriter out = new PrintWriter(clientCredentials.getOutputStream(), true);
         out.println(RequestType.EXIT_CPU_INFO);
     }
