@@ -89,7 +89,7 @@ public class ClientSocket {
     }
 
     // Encrypt message with AES
-    private String encryptWithAES(String plainText, SecretKey aesKey) throws Exception {
+    public String encryptWithAES(String plainText, SecretKey aesKey) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         byte[] iv = new byte[16];
         SecureRandom random = new SecureRandom();
