@@ -56,6 +56,9 @@ public class Client {
                         ClientCommand clientCommand = new ClientCommand();
                         clientCommand.start();
                         break;
+                    case SECURITY:
+                        ClientSecurity clientSecurity = new ClientSecurity();
+                        clientSecurity.start();
                     case DETECT_MALWARE:
                         //Handle Detect Malware request
                         ClamAVService clamAVService = new ClamAVService();

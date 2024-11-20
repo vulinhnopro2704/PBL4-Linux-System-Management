@@ -306,6 +306,29 @@ public class SocketManager {
         writer.flush();
     }
 
+    public void sendMessage(String message, String ipAddress) throws Exception {
+        // Lấy thông tin client từ địa chỉ IP
+        ClientCredentials clientCredentials = getClientCredentials(ipAddress);
+
+        // Tạo BufferedWriter để ghi dữ liệu ra OutputStream của client
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(clientCredentials.getOutputStream()));
+
+        // Gửi tin nhắn mà không mã hóa
+        System.out.println("Message: " + message);
+        writer.write(message + "\n"); // Thêm ký tự xuống dòng để đảm bảo client đọc đủ tin nhắn
+        writer.flush(); // Đẩy dữ liệu ra ngay lập tức
+    }
+
+
+
+
+    public void clearReceiveStream(String ipAddress) throws IOException {
+        DataInputStream dataInputStream = new DataInputStream(getClientCredentials(ipAddress).getInputStream());
+        if (dataInputStream.available() >0){
+            dataInputStream.readFully(new byte[dataInputStream.available()]);
+        }
+    }
+
     // Encrypt with AES
     private String encryptWithAES(String plainText, SecretKey aesKey) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");

@@ -103,7 +103,7 @@ public class ClientSocket {
     }
 
     // Encrypt message with AES
-    private String encryptWithAES(String plainText, SecretKey aesKey) throws Exception {
+    public String encryptWithAES(String plainText, SecretKey aesKey) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         byte[] iv = new byte[16];
         SecureRandom random = new SecureRandom();
@@ -149,6 +149,17 @@ public class ClientSocket {
             e.printStackTrace();
         }
     }
+
+    public void sendExitSecurity() {
+        try {
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+            writer.write(RequestType.EXIT_SECURITY_SCREEN.name() + "\n");
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     //Ham gui khong ma hoa
     // Send message without encryption for testing purposes

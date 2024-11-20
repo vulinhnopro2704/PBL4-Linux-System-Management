@@ -68,7 +68,6 @@ public class ClientProcessInfomation
                 String jsonDetails = gson.toJson(clientProcessDetailCollector.collectProcessDetails()); // Chuyển processDetails thành JSON
                 if (isRunning) {
                     ClientSocket.getInstance().sendEncryptedMessage(jsonDetails);
-                    System.out.println("Process Sent: " + jsonDetails);
                 } else {
                     break;
                 }
@@ -104,4 +103,5 @@ public class ClientProcessInfomation
             System.out.println("Failed to kill process " + pid);
         }
     }
+
 }
