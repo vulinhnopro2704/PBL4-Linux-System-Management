@@ -5,6 +5,7 @@ import com.serverapp.controller.view.ClientProcessController;
 import com.serverapp.database.Redis;
 import com.serverapp.model.ClientDetail;
 import com.serverapp.model.ClientProcess;
+import com.serverapp.socket.SocketManager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
@@ -53,31 +54,6 @@ public class ProcessTableController {
     // Sử dụng observableProcessList toàn cục để theo dõi tiến trình
     private ObservableList<ClientProcess> observableProcessList = FXCollections.observableArrayList();
 
-    // Hàm kết thúc tiến trình dựa trên PID
-    public static void killProcess(int pid) {
-        String os = System.getProperty("os.name").toLowerCase();
-        String killCommand;
-
-        if (os.contains("win")) {
-            killCommand = "taskkill /F /PID " + pid;  // Lệnh cho Windows
-        } else {
-            killCommand = "kill -9 " + pid;  // Lệnh cho Linux
-        }
-
-        try {
-            ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/c", killCommand);
-            if (!os.contains("win")) {
-                processBuilder = new ProcessBuilder("bash", "-c", killCommand);
-            }
-
-            Process process = processBuilder.start();
-            process.waitFor();
-            System.out.println("Process " + pid + " has been killed on " + os);
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            System.out.println("Failed to kill process " + pid);
-        }
-    }
 
     // Hàm xử lý sự kiện chuột
     public void clickHandler(MouseEvent event) {
@@ -114,7 +90,11 @@ public class ProcessTableController {
                 if (selectedProcess != null) {
                     int pid = Integer.parseInt(selectedProcess.getProcessID());
                     System.out.println("Killing process with PID: " + pid);
-                    killProcess(pid);
+                    try {
+                        SocketManager.getInstance().sendEncryptedMessage(selectedProcess.getProcessID(),AppController.getInstance().getCurrentClientIp());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                     observableProcessList.remove(selectedProcess);
                     tableView.refresh();
                 }
