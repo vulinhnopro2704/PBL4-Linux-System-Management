@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.serverapp.controller.view.BlacklistController">
+    <children>
+        <!-- Title label -->
+        <Label text="Danh sách IP bị chặn" layoutX="14" layoutY="14" />
+
+        <!-- ListView to display blocked IPs -->
+        <ListView fx:id="blacklistListView" layoutX="14" layoutY="40" prefWidth="300" prefHeight="200" />
+
+        <!-- Add button -->
+        <Button fx:id="addButton" text="Thêm" layoutX="14" layoutY="250" onAction="#handleAdd" />
+
+        <!-- Remove button -->
+        <Button fx:id="removeButton" text="Xóa" layoutX="80" layoutY="250" onAction="#handleRemove" />
+
+        <!-- Exit button -->
+        <Button fx:id="exitButton" text="Thoát" layoutX="150" layoutY="250" onAction="#handleExit" />
+
+    </children>
+</AnchorPane>
