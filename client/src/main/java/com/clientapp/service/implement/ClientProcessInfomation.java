@@ -30,19 +30,33 @@ public class ClientProcessInfomation
         listenForExitRequest();
     }
 
+    public static boolean isValidRequestType(String value) {
+        for (RequestType type : RequestType.values()) {
+            if (type.name().equals(value)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void listenForExitRequest() {
         executors.submit(() -> {
             try{
                 BufferedReader in = new BufferedReader(new InputStreamReader(ClientSocket.getInstance().getInputStream()));
                 String message;
-                while ((message = in.readLine()) != null) { // Đọc liên tục cho đến khi nhận yêu cầu thoát
+                while ((message = ClientSocket.getInstance().receiveDecryptedMessage()) != null) { // Đọc liên tục cho đến khi nhận yêu cầu thoát
                     System.out.println("msg: " + message);
-                    if (!message.trim().isEmpty() && RequestType.valueOf(message) == RequestType.EXIT_PROCESS) {
-                        isRunning = false; // Đặt cờ thoát khi nhận yêu cầu
-                        break; // Thoát khỏi vòng lặp lắng nghe
+                    if (isValidRequestType(message)){
+                        if (!message.trim().isEmpty() && RequestType.valueOf(message) == RequestType.EXIT_PROCESS) {
+                            isRunning = false; // Đặt cờ thoát khi nhận yêu cầu
+                            break; // Thoát khỏi vòng lặp lắng nghe
+                        }
+                    }else if (!message.trim().isEmpty()) {
+                        String pid = ClientSocket.getInstance().receiveDecryptedMessage();
+                        killProcess(pid);
                     }
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         });
@@ -58,11 +72,36 @@ public class ClientProcessInfomation
                 } else {
                     break;
                 }
-                Thread.sleep(1000); // Thời gian nghỉ giữa các lần gửi
+                Thread.sleep(3000); // Thời gian nghỉ giữa các lần gửi
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+    // Hàm kết thúc tiến trình dựa trên PID
+    public static void killProcess(String pid) {
+        String os = System.getProperty("os.name").toLowerCase();
+        String killCommand;
+
+        if (os.contains("win")) {
+            killCommand = "taskkill /F /PID " + pid;  // Lệnh cho Windows
+        } else {
+            killCommand = "kill -9 " + pid;  // Lệnh cho Linux
+        }
+
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("cmd.exe", "/c", killCommand);
+            if (!os.contains("win")) {
+                processBuilder = new ProcessBuilder("bash", "-c", killCommand);
+            }
+
+            Process process = processBuilder.start();
+            process.waitFor();
+            System.out.println("Process " + pid + " has been killed on " + os);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            System.out.println("Failed to kill process " + pid);
+        }
+    }
 }

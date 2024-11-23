@@ -37,8 +37,8 @@ public class ProcessDetailHandler implements IProcessDetailHandler {
                 if (CurrentType.getInstance().getType() != RequestType.PROCESS_LIST){
                     break;
                 }
+                //Nhan thong tin process tu client
                 String out = SocketManager.getInstance().receiveDecryptedMessage(AppController.getInstance().getCurrentClientIp());
-
                 // Parse chuỗi JSON thành danh sách các đối tượng ClientProcess
                 Gson gson = new Gson();
                 Type clientProcessListType = new TypeToken<List<ClientProcess>>(){}.getType();

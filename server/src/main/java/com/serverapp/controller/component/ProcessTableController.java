@@ -5,6 +5,7 @@ import com.serverapp.controller.view.ClientProcessController;
 import com.serverapp.database.Redis;
 import com.serverapp.model.ClientDetail;
 import com.serverapp.model.ClientProcess;
+import com.serverapp.socket.SocketManager;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
@@ -114,7 +115,11 @@ public class ProcessTableController {
                 if (selectedProcess != null) {
                     int pid = Integer.parseInt(selectedProcess.getProcessID());
                     System.out.println("Killing process with PID: " + pid);
-                    killProcess(pid);
+                    try {
+                        SocketManager.getInstance().sendEncryptedMessage(Integer.toString(pid),AppController.getInstance().getCurrentClientIp());
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                     observableProcessList.remove(selectedProcess);
                     tableView.refresh();
                 }
@@ -152,6 +157,4 @@ public class ProcessTableController {
                     clientProcess.getProcessName().toLowerCase().contains(lowerCaseKeyword);
         });
     }
-
-
 }
