@@ -49,6 +49,7 @@ public class ClientMemoryUsage {
             while (isRunning) {
                 String json = gson.toJson(memoryUsageCollector.getMemoryUsage());
                 if (isRunning) {
+                    System.out.println(json);
                     ClientSocket.getInstance().sendEncryptedMessage(json);
                 } else
                     break;
