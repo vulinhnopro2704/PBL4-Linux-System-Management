@@ -66,16 +66,18 @@ public class ClamAVService {
         return new ClamAVResponse(message.toString(), suspiciousFiles);
     }
 
+    
+
     public void start() {
-        mainThread = new Thread(() -> {
+        System.out.println("Start detect malware");
             ClientSocket clientSocket = ClientSocket.getInstance();
             Gson gson = new Gson();
             while (true) {
                 try {
+                    System.out.println("While loop");
                     String line = null;
-                    if (clientSocket.isAvailableToRead()) {
-                        line = clientSocket.receiveDecryptedMessage();
-                    }
+                    line = clientSocket.receiveDecryptedMessage();
+                    System.out.println("Received from Socket: " + line);
                     if (line == null || line.trim().isEmpty())
                         continue;
                     try {
@@ -86,21 +88,19 @@ public class ClamAVService {
                     catch (IllegalArgumentException ie) {
                         ie.printStackTrace();
                     }
-
+                    System.out.println("Received: " + line);
                     ClamAV clamAVObject = gson.fromJson(line, ClamAV.class);
                     if (clamAVObject != null) {
                         ClamAVResponse response = startScan(clamAVObject);
                         String json = gson.toJson(response);
-
+                        System.out.println("Sending: " + json);
                         clientSocket.sendEncryptedMessage(json);
+                        break;
                     }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }
-            stop();
-        });
-        mainThread.start();
     }
 
     public void stop() {

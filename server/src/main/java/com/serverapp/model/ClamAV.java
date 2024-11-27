@@ -19,4 +19,5 @@ public class ClamAV {
     public Boolean scanArchiveCheck;
     public Boolean scanPdfCheck;
     public Boolean scanOle2Check;
+    public String logFileField;
 }
