@@ -34,18 +34,16 @@ public class Redis {
     }
 
     /**
-     Add Client to Map with:
-     @param clientDetail Client data get via socket
-     - Key is ip address, example: 192.168.1.234
-     - Value is ClientDetail
-     @return
-     - Null if no client have the same ip address and port (if key is address)
-     - Previous ClientDetail if this address+port already has value before (replace value)
+     * Add Client to Map with:
+     *
+     * @param clientDetail Client data get via socket
+     *                     - Key is ip address, example: 192.168.1.234
+     *                     - Value is ClientDetail
      */
-    public ClientDetail putClientDetail(String key, ClientDetail clientDetail){
-        if (mapClientDetailView.get(key) == null)
-            return mapClientDetailView.put(key, clientDetail);
-        return null;
+    public void putClientDetail(String key, ClientDetail clientDetail){
+        if (mapClientDetailView.get(key) == null) {
+            mapClientDetailView.put(key, clientDetail);
+        }
     }
 
     /**
