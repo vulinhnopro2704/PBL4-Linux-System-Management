@@ -2,11 +2,14 @@ package com.serverapp.controller.view;
 
 import com.serverapp.controller.IController;
 import com.serverapp.database.Redis;
+import com.serverapp.enums.RequestType;
 import com.serverapp.model.ClamAV;
 import com.serverapp.model.ClientCard;
 import com.serverapp.model.ClientCommnandRow;
 import com.serverapp.model.ClientDetail;
 import com.serverapp.service.implement.DetectMalware;
+import com.serverapp.socket.SocketManager;
+import com.serverapp.util.CurrentType;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -41,6 +44,7 @@ public class ClamAVController implements IController {
         chooseDirectoryButton.setOnAction(e -> chooseDirectory());
         scanButton.setOnAction(e -> startScan());
         realtimeScanToggle.setOnAction(e -> toggleRealtimeScan());
+        CurrentType.getInstance().setType(RequestType.DETECT_MALWARE);
         setupTableColumns();
     }
 
@@ -96,13 +100,14 @@ public class ClamAVController implements IController {
                     .removeCheck(removeCheck.isSelected())
                     .copyCheck(copyCheck.isSelected())
                     .infectedOnlyCheck(infectedOnlyCheck.isSelected())
-                    .copyCheck(copyCheck.isSelected())
                     .copyDirField(copyDirField.getText())
                     .scanArchiveCheck(scanArchiveCheck.isSelected())
                     .moveDirField(moveDirField.getText())
                     .scanMailCheck(scanMailCheck.isSelected())
                     .scanOle2Check(scanOle2Check.isSelected())
                     .scanPdfCheck(scanPdfCheck.isSelected())
+                    .verboseCheck(verboseCheck.isSelected())
+                    .logFileField(logFileField.getText())
                     .build();
             List<String> checkedClient = clientTable.getItems().stream()
                     .filter(row -> row.checkboxProperty().get()) // Filter rows where the checkbox is checked
