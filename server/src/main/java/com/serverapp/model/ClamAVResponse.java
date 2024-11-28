@@ -1,4 +1,4 @@
-package com.clientapp.model;
+package com.serverapp.model;
 
 import java.util.List;
 

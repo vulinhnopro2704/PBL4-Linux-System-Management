@@ -147,4 +147,31 @@ public class Redis {
     public void clearConsoleLogs(String ip) {
         mapClientConsoleLogs.put(ip, "");
     }
+
+
+    /**
+     * For Detect Malware
+     * */
+
+    private Map<String, String> clientMalwareResponse = new HashMap<>();
+
+    // Append Malware Response to Map
+    public void appendMalwareResponse(String ip, String response) {
+        String currentResponse = clientMalwareResponse.get(ip);
+        if (currentResponse == null) {
+            clientMalwareResponse.put(ip, response);
+        } else {
+            clientMalwareResponse.put(ip, currentResponse + "\n" + response);
+        }
+    }
+
+    // Get Malware Response from Map
+    public String getMalwareResponse(String ip) {
+        return clientMalwareResponse.get(ip);
+    }
+
+    // Clear Malware Response from Map
+    public void clearMalwareResponse(String ip) {
+        clientMalwareResponse.put(ip, "");
+    }
 }

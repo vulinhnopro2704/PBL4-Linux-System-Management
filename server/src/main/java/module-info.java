@@ -17,6 +17,7 @@ module com.serverapp {
     requires javafx.swing;
     requires java.logging;
     requires jdk.management;
+    requires jdk.jfr;
 
     opens com.serverapp to javafx.fxml;
     exports com.serverapp;

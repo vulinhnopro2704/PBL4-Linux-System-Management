@@ -24,7 +24,7 @@ import lombok.Setter;
 @Setter
 public class ClientSocket {
     private Socket socket;
-    private String serverIp = "192.168.1.184";
+    private String serverIp = "localhost";
     private int serverPort = 8080;
     private SecretKey aesKey;
     private InputStream inputStream;
