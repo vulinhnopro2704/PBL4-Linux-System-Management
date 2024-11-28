@@ -34,8 +34,6 @@ public class AppController implements IController {
     @FXML
     private Button btnFileAndDirectory;
 
-    @FXML
-    private Button btnInstallAndUpdate;
 
     @FXML
     private Button btnSecurityManagement;
@@ -66,7 +64,6 @@ public class AppController implements IController {
         btnSystemMonitoring.getStyleClass().setAll("normal-button");
         btnCommandPrompt.getStyleClass().setAll("normal-button");
         btnFileAndDirectory.getStyleClass().setAll("normal-button");
-        btnInstallAndUpdate.getStyleClass().setAll("normal-button");
         btnSecurityManagement.getStyleClass().setAll("normal-button");
         btnSetting.getStyleClass().setAll("normal-button");
     }
@@ -105,7 +102,6 @@ public class AppController implements IController {
     private void handleInstallAndUpdate(MouseEvent event) {
         if (!fxmlPath.equals("/view/main-install-view.fxml")){
             resetButtonStyles();
-            btnInstallAndUpdate.getStyleClass().setAll("active-button");
             loadPage("/view/main-install-view.fxml");
         }
     }
