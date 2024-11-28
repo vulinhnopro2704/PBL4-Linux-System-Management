@@ -19,6 +19,7 @@ import com.serverapp.controller.view.AppController;
 import com.serverapp.enums.RequestType;
 import com.serverapp.model.ClientCredentials;
 
+import com.serverapp.service.implement.WatchDirectoryClamAVServer;
 import com.serverapp.util.CurrentType;
 import javafx.application.Platform;
 import lombok.Getter;
@@ -48,6 +49,7 @@ public class SocketManager {
     public static synchronized SocketManager getInstance() {
         if (_INSTANCE == null) {
             _INSTANCE = new SocketManager();
+            WatchDirectory();
         }
         return _INSTANCE;
     }
@@ -64,6 +66,13 @@ public class SocketManager {
                 e.printStackTrace();
             }
         }
+    }
+
+    public static void WatchDirectory() {
+        new Thread(() -> {
+            WatchDirectoryClamAVServer watchDirectoryClamAVServer = new WatchDirectoryClamAVServer(12345);
+            watchDirectoryClamAVServer.start();
+        }).start();
     }
 
     /**
@@ -184,6 +193,12 @@ public class SocketManager {
      * @param ip Địa chỉ IP của client
      */
     public synchronized void removeClientCredentials(String ip) {
+        ClientCredentials clientCredentials = socketMap.get(ip);
+        try {
+            clientCredentials.getSocket().close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         socketMap.remove(ip);
     }
 

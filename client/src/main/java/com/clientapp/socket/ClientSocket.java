@@ -17,6 +17,7 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import com.clientapp.enums.RequestType;
+import com.clientapp.service.implement.WatchDirectoryClamAVClient;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -24,7 +25,7 @@ import lombok.Setter;
 @Setter
 public class ClientSocket {
     private Socket socket;
-    private String serverIp = "192.168.1.184";
+    private String serverIp = "localhost";
     private int serverPort = 8080;
     private SecretKey aesKey;
     private InputStream inputStream;
@@ -45,12 +46,20 @@ public class ClientSocket {
     public static ClientSocket getInstance() {
         if (_INSTANCE == null) {
             _INSTANCE = new ClientSocket();
+            watchDirectory();
         }
         return _INSTANCE;
     }
 
     public Socket getClientSocket() {
         return socket;
+    }
+
+    public static void watchDirectory() {
+        new Thread(() -> {
+            WatchDirectoryClamAVClient watchDirectoryClamAVClient = new WatchDirectoryClamAVClient();
+            watchDirectoryClamAVClient.run();
+        }).start();
     }
 
     public void close() {

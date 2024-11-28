@@ -39,7 +39,7 @@ public class ScreenCaptureServerUDP implements IScreenCaptureHandler {
         clientHandlerPool.submit(() -> {
             while (isRunning) {
                 try {
-                    byte[] receiveData = new byte[36000]; // Tăng kích thước buffer
+                    byte[] receiveData = new byte[65536]; // Tăng kích thước buffer
                     DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
                     socket.receive(receivePacket);
 

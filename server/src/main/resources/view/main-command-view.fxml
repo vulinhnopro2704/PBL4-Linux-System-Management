@@ -21,12 +21,12 @@
             <DropShadow />
          </effect>
          <children>
-            <TableView fx:id="tableClient" layoutX="38.0" layoutY="63.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="1125.0" style="-fx-background-radius: 15; -fx-border-radius: 15;" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="31.0" AnchorPane.topAnchor="63.0">
+            <TableView fx:id="tableClient" layoutX="38.0" layoutY="63.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="220.0" prefWidth="1125.0" style="-fx-background-radius: 15; -fx-border-radius: 15;" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="38.0" AnchorPane.rightAnchor="31.0" AnchorPane.topAnchor="63.0">
                <columns>
                   <TableColumn fx:id="checkboxColumn" resizable="false" sortable="false" text=" " />
-                  <TableColumn fx:id="desktopNameColumn" prefWidth="289.0" sortable="false" text="Desktop Name" />
+                  <TableColumn fx:id="desktopNameColumn" prefWidth="289.0" resizable="false" sortable="false" text="Desktop Name" />
                   <TableColumn fx:id="ipAddressColumn" editable="false" minWidth="0.0" prefWidth="384.0" resizable="false" sortable="false" text="IP Address" />
-                  <TableColumn fx:id="macAddressColumn" minWidth="0.0" prefWidth="368.0" sortable="false" text="MAC Address" />
+                  <TableColumn fx:id="macAddressColumn" minWidth="0.0" prefWidth="368.0" resizable="false" sortable="false" text="MAC Address" />
                </columns>
                <stylesheets>
                   <URL value="@../styles/tablestyles.css" />
@@ -50,19 +50,22 @@
       </AnchorPane>
 
       <!--command-->
-      <TextArea fx:id="txtAreaCommand" layoutY="326.0" prefHeight="202.0" prefWidth="1084.0" AnchorPane.bottomAnchor="272.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="326.0">
+      <!--command-->
+      <AnchorPane layoutY="326.0" prefHeight="99.0" prefWidth="1194.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="326.0">
          <effect>
             <DropShadow />
          </effect>
-      </TextArea>
+         <TextArea fx:id="txtAreaCommand" prefHeight="99.0" prefWidth="1194.0" />
+         <Label layoutX="5.0" layoutY="5.0" text="\$" textFill="gray" />
+      </AnchorPane>
 
       <!-- Terminal Logs -->
-      <AnchorPane layoutX="34.0" layoutY="260.0" prefHeight="203.0" prefWidth="1184.0" style="-fx-background-radius: 15px; -fx-border-radius: 15px;" styleClass="card-backgroud-color" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="20.0">
+      <AnchorPane layoutX="23.0" layoutY="478.0" prefHeight="333.0" prefWidth="1184.0" style="-fx-background-radius: 15px; -fx-border-radius: 15px;" styleClass="card-backgroud-color" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="27.0" AnchorPane.topAnchor="478.0">
          <effect>
             <DropShadow />
          </effect>
          <children>
-            <TextArea fx:id="txtAreaTerminalLogs" layoutX="14.0" layoutY="10.0" prefHeight="170.0" prefWidth="775.0" style="-fx-border-color: #081028; -fx-border-width: 0;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="399.0" AnchorPane.topAnchor="40.0" />
+            <TextArea fx:id="txtAreaTerminalLogs" layoutX="14.0" layoutY="10.0" prefHeight="273.0" prefWidth="854.0" style="-fx-border-color: #081028; -fx-border-width: 0;" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="320.0" AnchorPane.topAnchor="40.0" />
 
             <!-- shell command -->
             <Label fx:id="labelIpAddress1" alignment="CENTER" prefHeight="22.0" prefWidth="178.0" text="Terminal Logs" textAlignment="CENTER" textFill="WHITE" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="8.0">
@@ -72,10 +75,10 @@
             </Label>
 
             <!-- danh sách client -->
-            <ListView fx:id="clientListView" layoutX="806.4" prefHeight="202.0" prefWidth="278.0" style="-fx-background-radius: 10;" stylesheets="@../styles/scrollpaneStyle.css" AnchorPane.bottomAnchor="11.0" AnchorPane.leftAnchor="806.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="7.0" />
+            <ListView fx:id="clientListView" layoutX="840.0" prefHeight="315.0" prefWidth="278.0" style="-fx-background-radius: 10;" stylesheets="@../styles/scrollpaneStyle.css" AnchorPane.bottomAnchor="11.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="7.0" />
          </children>
       </AnchorPane>
-      <Button fx:id="btnSend" layoutX="920.0" layoutY="560.0" mnemonicParsing="false" onMouseClicked="#sendCommand" prefHeight="28.0" prefWidth="190.0" style="-fx-text-fill: #fff;" styleClass="gradient-background" text="Send" AnchorPane.bottomAnchor="236.0" AnchorPane.leftAnchor="920.0" AnchorPane.rightAnchor="20.0">
+      <Button fx:id="btnSend" layoutX="918.0" layoutY="436.0" mnemonicParsing="false" onMouseClicked="#sendCommand" prefHeight="28.0" prefWidth="190.0" style="-fx-text-fill: #fff;" styleClass="gradient-background" text="Send" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="436.0">
          <font>
             <Font name="Montserrat Bold" size="14.0" />
          </font>

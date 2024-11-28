@@ -79,6 +79,12 @@
             <version>21.0.17</version>
             <scope>runtime</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/fi.solita.clamav/clamav-client -->
+        <dependency>
+            <groupId>fi.solita.clamav</groupId>
+            <artifactId>clamav-client</artifactId>
+            <version>1.0.1</version>
+        </dependency>
         <!-- https://mvnrepository.com/artifact/eu.hansolo/toolboxfx -->
         <dependency>
             <groupId>eu.hansolo</groupId>
