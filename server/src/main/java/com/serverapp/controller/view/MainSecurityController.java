@@ -5,17 +5,22 @@ import com.serverapp.database.Redis;
 import com.serverapp.model.ClientFirewallRow;
 import com.serverapp.service.IClientSecurity;
 import com.serverapp.service.implement.ClientSecurity;
-import com.serverapp.socket.SocketManager;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -72,7 +77,7 @@ public class MainSecurityController implements IController {
 
         // Gán sự kiện cho các button
         blackListButton.setOnAction(event -> showBlackListClients());
-        whiteListButton.setOnAction(event -> showWhiteListClients());
+        whiteListButton.setOnAction(event -> showWhitelist());
     }
 
     @Override
@@ -147,27 +152,49 @@ public class MainSecurityController implements IController {
         Platform.runLater(() -> txtAreaTerminalLogs.setText(consoleLogs));
     }
 
+    @FXML
     private void showBlackListClients() {
-        Platform.runLater(() -> {
-            txtAreaTerminalLogs.clear();
-            txtAreaTerminalLogs.appendText("Danh sách các client bị chặn:\n");
-            blackListedClients.forEach(client -> txtAreaTerminalLogs.appendText(client + "\n"));
-        });
+        try {
+            // Tạo cửa sổ mới (Stage) và thiết lập controller
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/black-list.fxml")); // Đảm bảo đường dẫn đúng với file FXML của bạn
+            Parent root = loader.load();
+            BlacklistController controller = loader.getController();
+            Stage stage = new Stage();
+            controller.setStage(stage); // Gán Stage cho controller
+
+            // Hiển thị cửa sổ
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void showWhiteListClients() {
-        Platform.runLater(() -> {
-            txtAreaTerminalLogs.clear();
-            txtAreaTerminalLogs.appendText("Danh sách các client được truy cập:\n");
-            whiteListedClients.forEach(client -> txtAreaTerminalLogs.appendText(client + "\n"));
-        });
+
+    @FXML
+    private void showWhitelist() {
+        try {
+            // Tạo cửa sổ mới (Stage) và thiết lập controller
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/component/white-list.fxml"));
+            Parent root = loader.load();
+            WhitelistController controller = loader.getController();
+            Stage stage = new Stage();
+            controller.setStage(stage); // Gán Stage cho controller
+
+            // Hiển thị cửa sổ
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void stop() {
         clientSecurityService.close();
     }
-
 
     @FXML
     public void sendCommand(ClientFirewallRow clientFirewallRow) throws Exception {
