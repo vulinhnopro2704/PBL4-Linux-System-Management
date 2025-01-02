@@ -13,7 +13,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 
 import java.io.BufferedWriter;
@@ -84,7 +83,7 @@ public class ClientSecurity implements IClientSecurity {
     }
 
     @Override
-    public void sendCommand(String command, TableView<ClientFirewallRow> tableClient, TextArea txtAreaTerminalLogs) throws Exception {
+    public void sendCommand(String command, ClientFirewallRow clientFirewallRow, TextArea txtAreaTerminalLogs) throws Exception {
         if (!isRunning) {
             System.out.println("Client Command has stopped");
             return;
@@ -98,22 +97,11 @@ public class ClientSecurity implements IClientSecurity {
 
         if (command.isEmpty()) return;
 
-        List<ClientFirewallRow> checkedClients = tableClient.getItems().stream()
-                .filter(ClientFirewallRow::isCheckbox)
-                .toList();
-
-        if (checkedClients.isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "No client selected", "Please select at least one client", "Please select at least one client to send the command to.");
-            return;
-        }
-
-        for (ClientFirewallRow clientRow : checkedClients) {
-            String clientAddress = clientRow.getIpAddress();
-            controller.log("Sending command to " + clientAddress);
-            SocketManager.getInstance().sendEncryptedMessage(command, clientAddress);
-            controller.log("Sent command to " + clientAddress + " Waiting for response...");
-            isWaitingForResponse = true;
-        }
+        String clientAddress = clientFirewallRow.getIpAddress();
+        controller.log("Sending command to " + clientAddress);
+        SocketManager.getInstance().sendEncryptedMessage(command, clientAddress);
+        controller.log("Sent command to " + clientAddress + " Waiting for response...");
+        isWaitingForResponse = true;
     }
 
     public void listenForResponse(Socket clientSocket) {
@@ -150,7 +138,7 @@ public class ClientSecurity implements IClientSecurity {
     }
 
     public void close() {
-        System.out.println("Close Client Command Screen");
+        System.out.println("Close Client Security Screen");
         HashMap<String, ClientCredentials> clients = SocketManager.getInstance().getAllClientCredentials();
         clients.forEach((ip, clientData) -> {
             BufferedWriter writer = null;
@@ -160,7 +148,7 @@ public class ClientSecurity implements IClientSecurity {
                 throw new RuntimeException(e);
             }
             try {
-                writer.write(RequestType.EXIT_COMMNAD_SCREEN + "\n");
+                writer.write(RequestType.EXIT_SECURITY_SCREEN + "\n");
                 writer.flush();
             } catch (IOException e) {
                 throw new RuntimeException(e);

@@ -57,7 +57,8 @@ public class Client {
                         clientCommand.start();
                         break;
                     case SECURITY:
-
+                        ClientSecurity clientSecurity = new ClientSecurity();
+                        clientSecurity.start();
                 }
             }
         } catch (Exception e) {

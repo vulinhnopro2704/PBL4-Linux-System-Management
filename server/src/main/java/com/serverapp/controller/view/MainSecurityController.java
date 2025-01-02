@@ -3,7 +3,6 @@ package com.serverapp.controller.view;
 import com.serverapp.controller.IController;
 import com.serverapp.database.Redis;
 import com.serverapp.model.ClientFirewallRow;
-import com.serverapp.model.ClientProcess;
 import com.serverapp.service.IClientSecurity;
 import com.serverapp.service.implement.ClientSecurity;
 import com.serverapp.socket.SocketManager;
@@ -29,7 +28,10 @@ public class MainSecurityController implements IController {
     private ListView<String> clientListView;
 
     @FXML
-    private TextArea txtAreaCommand;
+    private Button blackListButton;
+
+    @FXML
+    private Button whiteListButton;
 
     @FXML
     private TableView<ClientFirewallRow> tableClient;
@@ -45,9 +47,12 @@ public class MainSecurityController implements IController {
     private TextArea txtAreaTerminalLogs;
 
     private final ObservableList<String> clientList = FXCollections.observableArrayList();
+    private final ObservableList<String> blackListedClients = FXCollections.observableArrayList();
+    private final ObservableList<String> whiteListedClients = FXCollections.observableArrayList();
     private final IClientSecurity clientSecurityService = new ClientSecurity(this);
 
     private ContextMenu contextMenu = new ContextMenu();
+
     @FXML
     public void initialize() {
         clientSecurityService.initialize();
@@ -58,13 +63,16 @@ public class MainSecurityController implements IController {
         contextMenu.getItems().addAll(Item1, Item2, Item3);
 
         Item1.setOnAction(event -> {
-            String currentClientIP = tableClient.getSelectionModel().getSelectedItem().getIpAddress();
             try {
-                SocketManager.getInstance().sendEncryptedMessage(currentClientIP,currentClientIP);
+                sendCommand(tableClient.getSelectionModel().getSelectedItem());
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
         });
+
+        // Gán sự kiện cho các button
+        blackListButton.setOnAction(event -> showBlackListClients());
+        whiteListButton.setOnAction(event -> showWhiteListClients());
     }
 
     @Override
@@ -104,6 +112,18 @@ public class MainSecurityController implements IController {
         });
     }
 
+    public void addToBlackList(String ip) {
+        if (!blackListedClients.contains(ip)) {
+            blackListedClients.add(ip);
+        }
+    }
+
+    public void addToWhiteList(String ip) {
+        if (!whiteListedClients.contains(ip)) {
+            whiteListedClients.add(ip);
+        }
+    }
+
     // Hàm xử lý sự kiện chuột
     public void clickHandler(MouseEvent event) {
         if (event.getButton() == MouseButton.SECONDARY) {  // Chuột phải
@@ -127,13 +147,32 @@ public class MainSecurityController implements IController {
         Platform.runLater(() -> txtAreaTerminalLogs.setText(consoleLogs));
     }
 
-    @Override
-    public void stop() {
+    private void showBlackListClients() {
+        Platform.runLater(() -> {
+            txtAreaTerminalLogs.clear();
+            txtAreaTerminalLogs.appendText("Danh sách các client bị chặn:\n");
+            blackListedClients.forEach(client -> txtAreaTerminalLogs.appendText(client + "\n"));
+        });
     }
 
-    @FXML
-    public void sendCommand() throws Exception {
+    private void showWhiteListClients() {
+        Platform.runLater(() -> {
+            txtAreaTerminalLogs.clear();
+            txtAreaTerminalLogs.appendText("Danh sách các client được truy cập:\n");
+            whiteListedClients.forEach(client -> txtAreaTerminalLogs.appendText(client + "\n"));
+        });
+    }
 
+    @Override
+    public void stop() {
+        clientSecurityService.close();
+    }
+
+
+    @FXML
+    public void sendCommand(ClientFirewallRow clientFirewallRow) throws Exception {
+        String command = "sudo iptables -L -v -n";
+        clientSecurityService.sendCommand(command, clientFirewallRow, txtAreaTerminalLogs);
     }
 
     public void log(String message) {

@@ -136,6 +136,17 @@ public class ClientSocket {
         }
     }
 
+    public void sendExitSecurity() {
+        try {
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream));
+            writer.write(RequestType.EXIT_SECURITY_SCREEN.name() + "\n");
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     //Ham gui khong ma hoa
     // Send message without encryption for testing purposes
     public void sendPlainMessage(String message) {
