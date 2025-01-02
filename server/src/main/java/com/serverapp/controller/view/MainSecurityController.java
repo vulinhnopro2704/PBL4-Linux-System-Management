@@ -3,8 +3,10 @@ package com.serverapp.controller.view;
 import com.serverapp.controller.IController;
 import com.serverapp.database.Redis;
 import com.serverapp.model.ClientFirewallRow;
+import com.serverapp.model.ClientProcess;
 import com.serverapp.service.IClientSecurity;
 import com.serverapp.service.implement.ClientSecurity;
+import com.serverapp.socket.SocketManager;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -54,6 +56,15 @@ public class MainSecurityController implements IController {
         MenuItem Item3 = new MenuItem("Exit");
 
         contextMenu.getItems().addAll(Item1, Item2, Item3);
+
+        Item1.setOnAction(event -> {
+            String currentClientIP = tableClient.getSelectionModel().getSelectedItem().getIpAddress();
+            try {
+                SocketManager.getInstance().sendEncryptedMessage(currentClientIP,currentClientIP);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @Override
