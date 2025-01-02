@@ -114,6 +114,7 @@ public class AppController implements IController {
         if (!fxmlPath.equals("/view/main-security-view.fxml")){
             resetButtonStyles();
             btnSecurityManagement.getStyleClass().setAll("active-button");
+            System.out.println("Navigating to Security");
             loadPage("/view/main-security-view.fxml");
         }
     }

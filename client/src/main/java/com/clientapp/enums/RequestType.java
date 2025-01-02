@@ -5,6 +5,7 @@ public enum RequestType {
     SYSTEM_INFO,
     PROCESS_LIST,
     COMMAND,
+    SECURITY,
     PERFORMANCE_INFO,
     CPU_INFO,
     FILE_TRANSFER,

@@ -56,6 +56,8 @@ public class Client {
                         ClientCommand clientCommand = new ClientCommand();
                         clientCommand.start();
                         break;
+                    case SECURITY:
+
                 }
             }
         } catch (Exception e) {
