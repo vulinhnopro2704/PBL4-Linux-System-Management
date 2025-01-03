@@ -19,7 +19,7 @@ import lombok.Setter;
 @Setter
 public class ClientSocket {
     private Socket socket;
-    private String serverIp = "localhost";
+    private String serverIp = "10.10.2.41";
     private int serverPort = 8080;
     private SecretKey aesKey;
     private InputStream inputStream;
@@ -54,19 +54,6 @@ public class ClientSocket {
             WatchDirectoryClamAVClient watchDirectoryClamAVClient = new WatchDirectoryClamAVClient();
             watchDirectoryClamAVClient.run();
         }).start();
-    }
-
-    public void close() {
-        try {
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public Boolean isAvailableToRead() throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-        return reader.ready();
     }
 
     // Method to send encrypted message
@@ -109,12 +96,6 @@ public class ClientSocket {
         String downloadDir = "D:\\FileReceive";
         try{
             DataInputStream dataInputStream = new DataInputStream(getInputStream());
-//            // Đảm bảo thư mục lưu trữ tồn tại
-//            File directory = new File(downloadDir);
-//            if (!directory.exists() && !directory.mkdirs()) {
-//                throw new IOException("Failed to create directory: " + downloadDir);
-//            }
-
             // Nhận tên tệp
             int nameLength = dataInputStream.readInt();
             byte[] fileNameBytes = new byte[nameLength];

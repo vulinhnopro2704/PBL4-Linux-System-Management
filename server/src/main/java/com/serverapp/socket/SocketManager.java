@@ -59,7 +59,7 @@ public class SocketManager {
         return _INSTANCE;
     }
 
-    // Private constructor để ngăn chặn việc khởi tạo từ bên ngoài
+    // Private constructor để ngăn chặn việc khởi tạo từ
     private SocketManager() {
         socketMap = new HashMap<>();
         generateRSAKeys();  // Tạo cặp khóa RSA

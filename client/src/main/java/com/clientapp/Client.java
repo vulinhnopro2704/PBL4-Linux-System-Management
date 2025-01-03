@@ -45,6 +45,7 @@ public class Client {
                         break;
                     case PERFORMANCE_INFO:
                         //Handle performance info request
+
                         ClientMemoryUsage memoryUsage = new ClientMemoryUsage();
                         memoryUsage.sendMemoryUsage();
                         break;
@@ -59,7 +60,7 @@ public class Client {
                         break;
                     case FILE_TRANSFER:
                         // Handle file transfer request
-                        ClientReceiveFile clientReceiveFile = new ClientReceiveFile();
+                        ClientReceiveFile clientReceiveFile = new ClientReceiveFile(ClientSocket.getInstance().getServerIp(), 2208);
                         clientReceiveFile.start();
                         break;
                     case DETECT_MALWARE:

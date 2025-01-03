@@ -1,79 +1,57 @@
 package com.serverapp.controller.view;
 
-import com.serverapp.Server;
 import com.serverapp.controller.IController;
 import com.serverapp.database.Redis;
-import com.serverapp.enums.RequestType;
 import com.serverapp.model.ClientCommnandRow;
 import com.serverapp.model.FileSendDetail;
-import com.serverapp.socket.SocketManager;
-import com.serverapp.util.CurrentType;
+
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-
-import java.io.*;
-
 import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.ProgressBarTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 
-
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import com.serverapp.model.ClientCredentials;
-import javafx.stage.FileChooser;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.serverapp.util.AlertHelper.showAlert;
 
-
 public class MainFileDirectoryController implements IController {
     @FXML
-    private ImageView btnUpfile;
-
-    @FXML
     private TableView<FileSendDetail> tableFile;
-
-    @FXML
-    private TableColumn<FileSendDetail, String> fileNameCol;
-
-    @FXML
-    private TableColumn<FileSendDetail, String> ipClientColumn;
-
-    @FXML
-    private TableColumn<FileSendDetail, Double> statusCol;
-
-    @FXML
-    private TableColumn<FileSendDetail, Long> sizeFileCol;
-
     @FXML
     private TableView<ClientCommnandRow> tableClient;
-
+    @FXML
+    private TableColumn<FileSendDetail, String> fileNameCol;
+    @FXML
+    private TableColumn<FileSendDetail, String> ipClientColumn;
+    @FXML
+    private TableColumn<FileSendDetail, Double> statusCol;
+    @FXML
+    private TableColumn<FileSendDetail, Long> sizeFileCol;
     @FXML
     private TableColumn<ClientCommnandRow, Boolean> checkboxColumn;
-
     @FXML
     private TableColumn<ClientCommnandRow, String> desktopNameColumn;
-
     @FXML
     private TableColumn<ClientCommnandRow, String> ipAddressColumn;
-
     @FXML
     private TableColumn<ClientCommnandRow, String> macAddressColumn;
 
     private ObservableList<FileSendDetail> fileDetails;
-    private final ExecutorService executor = Executors.newCachedThreadPool();
-    private volatile boolean isRunning = false;
+    private final ExecutorService clientExecutor = Executors.newCachedThreadPool(); // Thread pool để gửi file
+    private final AtomicBoolean isRunning = new AtomicBoolean(true); // Trạng thái server
+    private ServerSocket serverSocket;
+    private final Map<String, Socket> connectedClients = new ConcurrentHashMap<>(); // Quản lý các client kết nối
 
     public void setupTableColumns() {
         checkboxColumn.setCellValueFactory(cellData -> cellData.getValue().checkboxProperty());
@@ -118,52 +96,41 @@ public class MainFileDirectoryController implements IController {
     }
 
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
+        serverSocket = new ServerSocket(2208);
+        startServer();
         setupTableFile();
         setupTableColumns();
-        try {
-            CurrentType.getInstance().setType(RequestType.FILE_TRANSFER);
-            isRunning = true;
-            Platform.runLater(() -> {
-                HashMap<String, ClientCredentials> clients = SocketManager.getInstance().getAllClientCredentials();
-                clients.forEach((ip, clientData) -> {
-                    BufferedWriter writer = null;
-                    try {
-                        writer = new BufferedWriter(new OutputStreamWriter(clientData.getOutputStream()));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                    try {
-                        writer.write(RequestType.FILE_TRANSFER + "\n");
-                        writer.flush();
-
-                    } catch (IOException e) {
-                        log("Error initializing file transfer for client: " + ip);
-                        throw new RuntimeException(e);
-                    }
-                });
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
-    @Override
-    public void update() {
-        Platform.runLater(() -> {
-            ObservableList<ClientCommnandRow> data = Redis.getInstance().getAllAvailableClient();
-            tableClient.setItems(data);
-            tableClient.setEditable(true);
+    /**
+     * Khởi động server để lắng nghe kết nối từ các client
+     */
+    private void startServer() {
+        clientExecutor.submit(() -> {
+            log("Server is running and waiting for client connections...");
+            while (isRunning.get()) {
+                try {
+                    Socket clientSocket = serverSocket.accept();
+                    String clientIp = clientSocket.getInetAddress().getHostAddress();
+                    log("Client connected: " + clientIp);
+
+                    // Lưu client vào danh sách
+                    connectedClients.put(clientIp, clientSocket);
+                } catch (IOException e) {
+                    if (isRunning.get()) {
+                        log("Error accepting client connection: " + e.getMessage());
+                    }
+                }
+            }
         });
     }
 
+    /**
+     * Gửi file tới các client đã chọn
+     */
     @FXML
     public void sendFile() {
-        if (!isRunning) {
-            log("File transfer is not running.");
-            return;
-        }
-
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Select File to Upload");
         fileChooser.getExtensionFilters().addAll(
@@ -172,11 +139,12 @@ public class MainFileDirectoryController implements IController {
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
         );
 
-        File selectedFile = fileChooser.showOpenDialog(btnUpfile.getScene().getWindow());
+        File selectedFile = fileChooser.showOpenDialog(null);
         if (selectedFile == null) {
             showAlert(Alert.AlertType.WARNING, "No File Selected", "Please select a file", "Please select at least one file to send!");
             return;
         }
+
         log("File selected: " + selectedFile.getAbsolutePath());
 
         List<ClientCommnandRow> checkedClients = tableClient.getItems().stream()
@@ -189,50 +157,77 @@ public class MainFileDirectoryController implements IController {
         }
 
         for (ClientCommnandRow clientRow : checkedClients) {
-            try {
-                String clientAddress = clientRow.getIpAddress();
-                long fileSize = selectedFile.length();
+            String clientIp = clientRow.getIpAddress();
+            Socket clientSocket = connectedClients.get(clientIp);
 
-                FileSendDetail fileDetail = new FileSendDetail(selectedFile.getName(), 0, clientAddress, fileSize);
-                Platform.runLater(() -> fileDetails.add(fileDetail));
-
-                SocketManager.getInstance().sendMessage("FILE_TRANSFER", clientAddress);
-                SocketManager.getInstance().sendEncryptedFile(clientAddress, selectedFile, fileDetail);
-
-            } catch (Exception e) {
-                log("Error sending file to client: " + clientRow.getIpAddress() + " - " + e.getMessage());
+            if (clientSocket == null) {
+                log("Client not connected: " + clientIp);
+                continue;
             }
+
+            clientExecutor.submit(() -> {
+                try (DataOutputStream dos = new DataOutputStream(clientSocket.getOutputStream());
+                     FileInputStream fis = new FileInputStream(selectedFile)) {
+
+                    long fileSize = selectedFile.length();
+                    FileSendDetail fileDetail = new FileSendDetail(selectedFile.getName(), 0, clientIp, fileSize);
+                    Platform.runLater(() -> fileDetails.add(fileDetail));
+
+                    // Gửi thông tin file
+                    dos.writeUTF("FILE_TRANSFER");
+                    dos.writeUTF(selectedFile.getName());
+                    dos.writeLong(fileSize);
+
+                    // Gửi nội dung file
+                    byte[] buffer = new byte[8192];
+                    long totalBytesSent = 0;
+                    int bytesRead;
+                    while ((bytesRead = fis.read(buffer)) != -1) {
+                        dos.write(buffer, 0, bytesRead);
+                        totalBytesSent += bytesRead;
+
+                        double progress = (double) totalBytesSent / fileSize;
+                        Platform.runLater(() -> fileDetail.setProgress(progress));
+                    }
+
+                    log("File sent successfully to " + clientIp);
+
+                } catch (IOException e) {
+                    log("Error sending file to " + clientIp + ": " + e.getMessage());
+                }
+            });
         }
     }
 
     @Override
     public void stop() {
-        isRunning = false;
-        log("Stopping file transfer...");
-
-        HashMap<String, ClientCredentials> clients = SocketManager.getInstance().getAllClientCredentials();
-        clients.forEach((ip, clientData) -> {
-            BufferedWriter writer = null;
-            try {
-                writer = new BufferedWriter(new OutputStreamWriter(clientData.getOutputStream()));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            try {
-                writer.write(RequestType.EXIT_FILE_SCREEN + "\n");
-                writer.flush();
-
-            } catch (IOException e) {
-                log("Error initializing file transfer for client: " + ip);
-                throw new RuntimeException(e);
-            }
-        });
-        executor.shutdown();
-        executor.shutdownNow();
-        log("File transfer stopped.");
+        isRunning.set(false);
+        try {
+            serverSocket.close();
+            connectedClients.values().forEach(clientSocket -> {
+                try {
+                    clientSocket.close();
+                } catch (IOException e) {
+                    log("Error closing client socket: " + e.getMessage());
+                }
+            });
+        } catch (IOException e) {
+            log("Error closing server socket: " + e.getMessage());
+        }
+        clientExecutor.shutdownNow();
+        log("Server stopped.");
     }
 
-    public void log(String message) {
+    @Override
+    public void update() {
+        Platform.runLater(() -> {
+            ObservableList<ClientCommnandRow> data = Redis.getInstance().getAllAvailableClient();
+            tableClient.setItems(data);
+            tableClient.setEditable(true);
+        });
+    }
+
+    private void log(String message) {
         String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         System.out.println("[" + timestamp + "] " + message);
     }
