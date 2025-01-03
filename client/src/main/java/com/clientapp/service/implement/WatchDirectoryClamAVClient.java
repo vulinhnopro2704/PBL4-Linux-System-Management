@@ -1,5 +1,7 @@
 package com.clientapp.service.implement;
 
+import com.clientapp.socket.ClientSocket;
+
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.*;
@@ -7,7 +9,7 @@ import java.nio.file.*;
 public class WatchDirectoryClamAVClient {
     private static final String WATCHED_DIR = System.getProperty("user.home") + "/Documents"; // Thư mục cần theo dõi
     TcpClient tcpClient;
-    private static final String TCP_SERVER_HOST = "127.0.0.1"; // Địa chỉ TCP server
+    private static final String TCP_SERVER_HOST = ClientSocket.getInstance().getServerIp(); // Địa chỉ TCP server
     private static final int TCP_SERVER_PORT = 12345;          // Cổng TCP server
 
     public WatchDirectoryClamAVClient() {

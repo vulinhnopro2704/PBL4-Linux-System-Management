@@ -41,7 +41,7 @@ public class Redis {
      *                     - Value is ClientDetail
      */
     public void putClientDetail(String key, ClientDetail clientDetail){
-        if (mapClientDetailView.get(key) == null) {
+        if (mapClientDetailView.get(key) == null || !mapClientDetailView.get(key).getIsConnect()) {
             mapClientDetailView.put(key, clientDetail);
         }
     }
