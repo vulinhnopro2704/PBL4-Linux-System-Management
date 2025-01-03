@@ -75,15 +75,19 @@ public class Redis {
         );
     }
 
-    public List<ClientCard> getAllClientCard(){
-        var list = mapClientDetailView.values().stream().map(clientDetail -> new ClientCard(
-                clientDetail.getHostName(),
-                clientDetail.getIpAddress(),
-                clientDetail.getMacAddress(),
-                clientDetail.getOsVersion(),
-                clientDetail.getIsConnect()
-        ));
-        return list.toList();
+    public List<ClientCard> getAllClientCard() {
+        var list = mapClientDetailView.values().stream()
+                .sorted(Comparator.comparing(ClientDetail::getIpAddress))
+                .sorted(Comparator.comparing(ClientDetail::getIsConnect).reversed())
+                .map(clientDetail -> new ClientCard(
+                        clientDetail.getHostName(),
+                        clientDetail.getIpAddress(),
+                        clientDetail.getMacAddress(),
+                        clientDetail.getOsVersion(),
+                        clientDetail.getIsConnect()
+                ))
+                .collect(Collectors.toList());
+        return list;
     }
 
     public List<ClientDetail> getAllClientDetail(){
@@ -173,5 +177,9 @@ public class Redis {
     // Clear Malware Response from Map
     public void clearMalwareResponse(String ip) {
         clientMalwareResponse.put(ip, "");
+    }
+
+    public void disconnectClient(String ip) {
+        mapClientDetailView.get(ip).setIsConnect(false);
     }
 }
