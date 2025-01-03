@@ -110,7 +110,6 @@ public class ClientCommand implements IClientCommand {
             SocketManager.getInstance().sendEncryptedMessage(jsonCommand, clientAddress);
 
             controller.log("Sent command to " + clientAddress + " Waiting for response...");
-//            isWaitingForResponse = true;
             isWaitingForResponse = false;
         }
     }

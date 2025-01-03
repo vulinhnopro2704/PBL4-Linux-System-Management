@@ -88,10 +88,10 @@ public class ClientScreenUDP {
                 byte[] sendData = json.getBytes();
 
                 DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
-                System.out.println("Screen --> " + sendPacket.getLength());
+//                System.out.println("Screen --> " + sendPacket.getLength());
                 socket.send(sendPacket);
 
-                System.out.println("Sent chunk " + (i + 1) + " of " + totalChunks);
+//                System.out.println("Sent chunk " + (i + 1) + " of " + totalChunks);
             }
             baos.close();
         } catch (IOException e) {
@@ -125,7 +125,7 @@ public class ClientScreenUDP {
             while (isRunning) {
                 socket.receive(receivePacket);  // Nhận gói tin UDP
                 String message = new String(receivePacket.getData(), 0, receivePacket.getLength());
-                System.out.println("Received message: " + message);
+//                System.out.println("Received message: " + message);
 
                 // Chuyển chuỗi nhận được thành Enum RequestType
                 try {
@@ -137,15 +137,15 @@ public class ClientScreenUDP {
                             close();
                             break;
                         case START_SCREEN_CAPTURE:
-                            System.out.println("Received START_SCREEN_CAPTURE request. Starting screen capture.");
+//                            System.out.println("Received START_SCREEN_CAPTURE request. Starting screen capture.");
                             // Thực hiện hành động bắt đầu capture màn hình (nếu cần)
                             break;
                         case PAUSE_SCREEN_CAPTURE:
-                            System.out.println("Received PAUSE_SCREEN_CAPTURE request. Pausing screen capture.");
+//                            System.out.println("Received PAUSE_SCREEN_CAPTURE request. Pausing screen capture.");
                             // Thực hiện hành động tạm dừng capture màn hình (nếu cần)
                             break;
                         default:
-                            System.out.println("Unknown request type received: " + requestType);
+//                            System.out.println("Unknown request type received: " + requestType);
                     }
                 } catch (IllegalArgumentException e) {
                     System.err.println("Invalid request type received: " + message);

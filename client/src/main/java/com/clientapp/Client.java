@@ -45,7 +45,6 @@ public class Client {
                         break;
                     case PERFORMANCE_INFO:
                         //Handle performance info request
-
                         ClientMemoryUsage memoryUsage = new ClientMemoryUsage();
                         memoryUsage.sendMemoryUsage();
                         break;
