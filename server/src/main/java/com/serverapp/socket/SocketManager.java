@@ -306,19 +306,6 @@ public class SocketManager {
         writer.flush();
     }
 
-    private boolean isStreamClosed(DataInputStream stream) {
-        try {
-            stream.mark(1); // Đánh dấu để kiểm tra
-            if (stream.read() == -1) {
-                return true; // Đạt đến cuối luồng
-            }
-            stream.reset(); // Đặt lại nếu không phải cuối
-            return false;
-        } catch (IOException e) {
-            return true; // Xảy ra lỗi nghĩa là luồng đã đóng
-        }
-    }
-
     // Encrypt with AES
     private String encryptWithAES(String plainText, SecretKey aesKey) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
@@ -363,13 +350,6 @@ public class SocketManager {
 
         byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
         return new String(decryptedBytes, "UTF-8");
-    }
-
-    public Boolean isAvailableToRead(String ipAddress) throws IOException {
-        Socket clientSocket = getClientCredentials(ipAddress).getSocket();
-        if (clientSocket == null) return false;
-        BufferedReader reader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        return reader.ready();
     }
 
     /**

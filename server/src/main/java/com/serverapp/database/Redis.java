@@ -63,18 +63,6 @@ public class Redis {
         return mapClientDetailView.get(key);
     }
 
-
-    public ClientCard getClientCard(String key){
-        ClientDetail clientDetail = mapClientDetailView.get(key);
-        return new ClientCard(
-                clientDetail.getHostName(),
-                clientDetail.getIpAddress(),
-                clientDetail.getMacAddress(),
-                clientDetail.getOsVersion(),
-                clientDetail.getIsConnect()
-        );
-    }
-
     public List<ClientCard> getAllClientCard() {
         var list = mapClientDetailView.values().stream()
                 .sorted(Comparator.comparing(ClientDetail::getIpAddress))
