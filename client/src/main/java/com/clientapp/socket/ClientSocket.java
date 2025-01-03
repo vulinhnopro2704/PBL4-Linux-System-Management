@@ -1,12 +1,6 @@
 package com.clientapp.socket;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -113,9 +107,8 @@ public class ClientSocket {
 
     public void receiveDecryptedFile() throws Exception {
         String downloadDir = "D:\\FileReceive";
-        try (
-                DataInputStream dataInputStream = new DataInputStream(getInputStream())
-        ) {
+        try{
+            DataInputStream dataInputStream = new DataInputStream(getInputStream());
 //            // Đảm bảo thư mục lưu trữ tồn tại
 //            File directory = new File(downloadDir);
 //            if (!directory.exists() && !directory.mkdirs()) {

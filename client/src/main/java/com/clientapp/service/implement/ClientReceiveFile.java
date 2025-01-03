@@ -25,7 +25,7 @@ public class ClientReceiveFile implements IReceiveFile {
                             ClientSocket.getInstance().receiveDecryptedFile();
                     }
                     } else {
-                        System.out.println("Nhận được lệnh rỗng. Tắt trạng thái chạy.");
+
                     }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
