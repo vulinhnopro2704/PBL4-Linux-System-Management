@@ -1,5 +1,7 @@
 package com.serverapp.service.implement;
 
+import com.serverapp.controller.view.AppController;
+import com.serverapp.database.Redis;
 import com.serverapp.socket.SocketManager;
 import com.serverapp.util.AlertHelper;
 import javafx.application.Platform;
@@ -43,8 +45,16 @@ public class WatchDirectoryClamAVServer {
                 System.out.println("Received: " + message);
                 String messageFound = message;
                 String ip = socket.getInetAddress().getHostAddress();
-                Platform.runLater(() -> AlertHelper.showAlert(Alert.AlertType.ERROR, "Found Malware", "Found malware in client " + ip, messageFound));
+                Platform.runLater(() ->
+                        AlertHelper.showAlert(Alert.AlertType.ERROR,
+                                "Found Malware",
+                                "Found malware in client " +
+                                        ip,
+                                messageFound)
+                );
                 SocketManager.getInstance().removeClientCredentials(ip);
+                Redis.getInstance().disconnectClient(ip);
+                AppController.getInstance().update();
                 Platform.runLater(() ->
                         AlertHelper.showAlert(Alert.AlertType.INFORMATION,
                                 "Disconnect " + ip,
