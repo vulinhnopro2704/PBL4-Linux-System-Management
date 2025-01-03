@@ -71,7 +71,6 @@ public class SystemMonitoring implements ISystemMonitoring {
 
     public void setUpConnection() {
         SocketManager.getInstance().getAllClientCredentials().forEach((ip, clientCredentials) -> {
-            if (!Redis.getInstance().containsIp(ip)) {
                 try {
                     PrintWriter writer = new PrintWriter(clientCredentials.getOutputStream(), true);
                     writer.println(CurrentType.getInstance().getType());
@@ -79,7 +78,6 @@ public class SystemMonitoring implements ISystemMonitoring {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
-            }
         });
         Platform.runLater(() -> {
             mainSystemController.updateUI();

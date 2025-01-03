@@ -29,7 +29,7 @@ public class Client {
 
                     case SCREEN_CAPTURE:
                         // Handle screen capture request
-                        ClientScreenUDP screenCaptureClient = new ClientScreenUDP("localhost", 9876);
+                        ClientScreenUDP screenCaptureClient = new ClientScreenUDP(ClientSocket.getInstance().getServerIp(), 9876);
                         screenCaptureClient.start();
                         break;
                     case SYSTEM_INFO:

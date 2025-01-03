@@ -20,8 +20,10 @@ import com.serverapp.enums.RequestType;
 import com.serverapp.model.ClientCredentials;
 
 import com.serverapp.service.implement.WatchDirectoryClamAVServer;
+import com.serverapp.util.AlertHelper;
 import com.serverapp.util.CurrentType;
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import lombok.Getter;
 
 import static com.serverapp.util.PushNotification.showInformationNotification;
@@ -140,13 +142,28 @@ public class SocketManager {
                     System.out.println("Client is ready: " + clientSocket.getInetAddress().getHostAddress());
                     // Lưu thông tin client và AES key vào HashMap
                     addClientCredentials(ip, new ClientCredentials(clientSocket, aesKey));
-                    showInformationNotification("Client connected", "Client connected: " + ip);
+                    Platform.runLater(() -> {
+                        showInformationNotification("Client connected", "Client connected: " + ip);
+                        AlertHelper.showAlert(Alert.AlertType.INFORMATION,
+                                "Information",
+                                "New Client connected",
+                                "Client connected: " + ip
+                        );
+                    });
                 } catch (Exception e) {
-                    System.out.println("Error decrypting AES key: " + e.getMessage());
+                    Platform.runLater(() -> {
+                        AlertHelper.showAlert(Alert.AlertType.ERROR, "Error",
+                                "Something went wrong with Client " + clientSocket.getInetAddress().getHostAddress(),
+                                "Error decrypting AES key: " + e.getMessage());
+                    });
                     e.printStackTrace();
                 }
             } else {
-                System.out.println("Failed to receive AES key from client: " + clientSocket.getInetAddress().getHostAddress());
+                Platform.runLater(() -> {
+                    AlertHelper.showAlert(Alert.AlertType.ERROR,"Error",
+                            "Something went wrong with Client " + clientSocket.getInetAddress().getHostAddress(),
+                            "Failed to receive AES key from client: " + clientSocket.getInetAddress().getHostAddress());
+                });
             }
         } catch (Exception e) {
             System.out.println("(Handle Client) Client disconnected: " + clientSocket.getInetAddress().getHostAddress() + " - " + e.getMessage());
