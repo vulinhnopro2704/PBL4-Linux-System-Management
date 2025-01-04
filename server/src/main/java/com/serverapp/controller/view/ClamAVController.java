@@ -21,8 +21,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.Stage;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,10 +35,6 @@ public class ClamAVController implements IController {
     @FXML private Button chooseDirectoryButton, scanButton;
     @FXML private ToggleButton realtimeScanToggle;
     @FXML private TextArea resultArea;
-    @FXML private TableView<ClientCommnandRow> clientTable;
-    @FXML private TableColumn<ClientCommnandRow, Boolean> checkBoxColumn;
-    @FXML private TableColumn<ClientCommnandRow, String> hostNameColumn, ipAddressColumn, macAddressColumn;
-
     DetectMalware detectMalware;
 
     @FXML
@@ -45,37 +44,10 @@ public class ClamAVController implements IController {
         scanButton.setOnAction(e -> startScan());
         realtimeScanToggle.setOnAction(e -> toggleRealtimeScan());
         CurrentType.getInstance().setType(RequestType.DETECT_MALWARE);
-        setupTableColumns();
-    }
-
-    public void setupTableColumns() {
-        checkBoxColumn.setCellValueFactory(cellData -> cellData.getValue().checkboxProperty());
-        checkBoxColumn.setCellFactory(CheckBoxTableCell.forTableColumn(checkBoxColumn));
-        checkBoxColumn.setEditable(true);
-
-        hostNameColumn.setCellValueFactory(new PropertyValueFactory<>("desktopName"));
-        ipAddressColumn.setCellValueFactory(new PropertyValueFactory<>("ipAddress"));
-        macAddressColumn.setCellValueFactory(new PropertyValueFactory<>("macAddress"));
-
-        checkBoxColumn.setResizable(false);
-        checkBoxColumn.setSortable(false);
-        hostNameColumn.setResizable(false);
-        hostNameColumn.setSortable(false);
-        ipAddressColumn.setResizable(false);
-        ipAddressColumn.setSortable(false);
-        macAddressColumn.setResizable(false);
-        macAddressColumn.setSortable(false);
-
-        update();
     }
 
     @Override
     public void update() {
-        Platform.runLater(() -> {
-            ObservableList<ClientCommnandRow> data = Redis.getInstance().getAllAvailableClient();
-            clientTable.setItems(data);
-            clientTable.setEditable(true);
-        });
     }
 
     @Override
@@ -109,14 +81,76 @@ public class ClamAVController implements IController {
                     .verboseCheck(verboseCheck.isSelected())
                     .logFileField(logFileField.getText())
                     .build();
-            List<String> checkedClient = clientTable.getItems().stream()
-                    .filter(row -> row.checkboxProperty().get()) // Filter rows where the checkbox is checked
-                    .map(row -> row.getIpAddress())     // Map to the desired property (e.g., a String)
-                    .toList();               // Collect the results into a List
 
-            detectMalware.send(checkedClient, clamAV);
+            // Xây dựng lệnh clamscan
+            List<String> command = buildClamscanCommand(clamAV);
+
+            // Chạy lệnh clamscan trên server
+            runClamscan(command);
         }
     }
+
+    private List<String> buildClamscanCommand(ClamAV clamAV) {
+        List<String> command = new ArrayList<>();
+        command.add("clamscan");
+
+        // Thêm các tùy chọn vào lệnh từ đối tượng ClamAV
+        if (clamAV.getRecursiveCheck() != null && clamAV.getRecursiveCheck()) command.add("-r");
+        if (clamAV.getMoveCheck() != null && clamAV.getMoveCheck()) command.add("--move=" + clamAV.getMoveDirField());
+        if (clamAV.getCopyCheck() != null && clamAV.getCopyCheck()) command.add("--copy=" + clamAV.getCopyDirField());
+        if (clamAV.getRemoveCheck() != null && clamAV.getRemoveCheck()) command.add("--remove");
+        if (clamAV.getInfectedOnlyCheck() != null && clamAV.getInfectedOnlyCheck()) command.add("--infected");
+        if (clamAV.getScanArchiveCheck() != null && clamAV.getScanArchiveCheck()) command.add("--archive");
+        if (clamAV.getScanMailCheck() != null && clamAV.getScanMailCheck()) command.add("--mail");
+        if (clamAV.getScanOle2Check() != null && clamAV.getScanOle2Check()) command.add("--ole2");
+        if (clamAV.getScanPdfCheck() != null && clamAV.getScanPdfCheck()) command.add("--pdf");
+        if (clamAV.getVerboseCheck() != null && clamAV.getVerboseCheck()) command.add("--verbose");
+        if (clamAV.getLogFileField() != null && !clamAV.getLogFileField().isEmpty()) {
+            command.add("--log=" + clamAV.getLogFileField());
+        }
+
+        // Thêm đường dẫn thư mục cần quét vào cuối lệnh
+        command.add(clamAV.getDirectoryPath());
+
+        return command;
+    }
+
+    private void runClamscan(List<String> command) {
+        try {
+            // Tạo ProcessBuilder và chạy lệnh
+            System.out.println("Running clamscan with command: " + command);
+            ProcessBuilder processBuilder = new ProcessBuilder(command);
+            processBuilder.redirectErrorStream(true); // Kết hợp cả output và error stream
+
+            // Thực thi lệnh
+            Process process = processBuilder.start();
+
+            // Đọc output stream của lệnh clamscan
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            StringBuilder output = new StringBuilder();
+            List<String> suspiciousFiles = new ArrayList<>();
+
+            while ((line = reader.readLine()) != null) {
+                output.append(line).append("\n");
+                if (line.contains("FOUND")) {
+                    suspiciousFiles.add(line); // Thêm các tệp đáng nghi vào danh sách
+                }
+            }
+
+            // Hiển thị kết quả quét trong TextArea
+            Platform.runLater(() -> resultArea.setText(output.toString()));
+
+            // Hiển thị cảnh báo nếu tìm thấy tệp đáng nghi
+            if (!suspiciousFiles.isEmpty()) {
+                Platform.runLater(() -> showSuspiciousFilesAlert(suspiciousFiles));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Platform.runLater(() -> showAlert("Error", "An error occurred while running Clamscan", Alert.AlertType.ERROR));
+        }
+    }
+
 
     private void toggleRealtimeScan() {
 
