@@ -17,7 +17,6 @@ public class Client {
             while (true) {
                 request = in.readLine();
                 if (request == null || request.isEmpty()) continue;
-                System.out.println("receive Request Type: " + request);
                 RequestType requestType = RequestType.valueOf(request);
                 System.out.println(requestType);
                 switch (requestType) {
