@@ -70,7 +70,7 @@
                         <Insets left="35.0" />
                      </FlowPane.margin>
                         </Button>
-                        <Button id="btnSecurityManagement" fx:id="btnSecurityManagement" mnemonicParsing="false" onMouseClicked="#handleSecurityManagement" prefHeight="35.0" prefWidth="265.0" styleClass="normal-button" stylesheets="@../styles/styles.css" text="   Security Management">
+                        <Button id="btnSecurityManagement" fx:id="btnSecurityManagement" mnemonicParsing="false" onMouseClicked="#handleSecurityManagement" prefHeight="35.0" prefWidth="265.0" styleClass="normal-button" stylesheets="@../styles/styles.css" text="   Firewall Config">
                             <graphic>
                                 <ImageView id="icon-security" fitHeight="16.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                                     <image>
@@ -91,7 +91,7 @@
                               <String fx:value="gray-background" />
                           </styleClass>
                       </Line>
-                      <Button id="btnSetting" fx:id="btnSetting" mnemonicParsing="false" onMouseClicked="#handleSetting" prefHeight="35.0" prefWidth="265.0" styleClass="normal-button" stylesheets="@../styles/styles.css" text="   Setting">
+                      <Button id="btnSetting" fx:id="btnSetting" mnemonicParsing="false" onMouseClicked="#handleSetting" prefHeight="35.0" prefWidth="265.0" styleClass="normal-button" stylesheets="@../styles/styles.css" text="   Detect Malware in Server">
                           <graphic>
                               <ImageView id="icon-setting" fx:id="iconSetting" fitHeight="16.0" fitWidth="17.0" pickOnBounds="true" preserveRatio="true">
                                   <image>
