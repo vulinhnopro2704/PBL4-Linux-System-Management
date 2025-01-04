@@ -72,10 +72,8 @@ public class ScreenCaptureClient implements IScreenCaptureClient {
                 int length = Math.min(imageBytes.length - start, CHUNK_SIZE);
                 out.writeInt(length);
                 out.write(imageBytes, start, length);
-                System.out.println("Length: " + length);
                 out.flush();
             }
-            System.out.println("Screen Captured and Sent");
 
             baos.close();
         } catch (AWTException | IOException e) {
