@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Builder
+@Getter
+@Setter
 public class ClamAV {
     public String directoryPath;
     public Boolean recursiveCheck;
