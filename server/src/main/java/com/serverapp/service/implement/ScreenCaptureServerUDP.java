@@ -5,7 +5,6 @@ import com.serverapp.controller.view.ClientScreenControllerUDP;
 import com.serverapp.enums.RequestType;
 import com.serverapp.model.ScreenPacket;
 import com.serverapp.service.IScreenCaptureHandler;
-import com.serverapp.socket.SocketManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

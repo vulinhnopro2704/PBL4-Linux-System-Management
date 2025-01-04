@@ -45,7 +45,6 @@ public class ClientScreenController implements IController {
 
     @FXML
     public void initialize() throws IOException {
-        System.out.println("Client Screen Controller run");
         // Initialize and start the screen capture server
         CurrentType.getInstance().setType(RequestType.SCREEN_CAPTURE);
         currentClientIp = AppController.getInstance().getCurrentClientIp();
