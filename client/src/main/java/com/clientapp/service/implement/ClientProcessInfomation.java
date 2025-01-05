@@ -49,11 +49,16 @@ public class ClientProcessInfomation
                     if (isValidRequestType(message)){
                         if (!message.trim().isEmpty() && RequestType.valueOf(message) == RequestType.EXIT_PROCESS) {
                             isRunning = false; // Đặt cờ thoát khi nhận yêu cầu
-                            break; // Thoát khỏi vòng lặp lắng nghe
+                            break;
                         }
                     }else if (!message.trim().isEmpty()) {
-                        String pid = ClientSocket.getInstance().receiveDecryptedMessage();
-                        killProcess(pid);
+                            try {
+                                String pid = message.trim();
+                                System.out.println(pid);
+                                killProcess(pid);
+                            } catch (Exception e) {
+                                throw new RuntimeException(e);
+                            }
                     }
                 }
             } catch (Exception e) {
@@ -71,7 +76,7 @@ public class ClientProcessInfomation
                 } else {
                     break;
                 }
-                Thread.sleep(3000); // Thời gian nghỉ giữa các lần gửi
+                Thread.sleep(5000); // Thời gian nghỉ giữa các lần gửi
             }
         } catch (Exception e) {
             throw new RuntimeException(e);

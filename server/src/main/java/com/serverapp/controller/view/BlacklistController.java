@@ -131,7 +131,7 @@ public class BlacklistController {
     private void blockIp(String ip) {
         try {
             // Chặn IP bằng iptables
-            String command = "iptables -A INPUT -s " + ip + " -j DROP";
+            String command = "sudo iptables -A INPUT -s " + ip + " -j DROP";
             Runtime.getRuntime().exec(command);
             System.out.println("Executing: " + command);
         } catch (IOException e) {
@@ -144,7 +144,7 @@ public class BlacklistController {
     private void unblockIp(String ip) {
         try {
             // Xóa quy tắc chặn IP bằng iptables
-            String command = "iptables -D INPUT -s " + ip + " -j DROP";
+            String command = "sudo iptables -D INPUT -s " + ip + " -j DROP";
             Runtime.getRuntime().exec(command);
             System.out.println("Executing: " + command);
         } catch (IOException e) {

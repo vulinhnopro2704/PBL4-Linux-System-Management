@@ -145,17 +145,16 @@ public class WhitelistController {
             if (ALLOW_ALL_OPTION.equals(selectedOption)) {
                 // Allow all IPs (Example: Accept all incoming traffic)
                 System.out.println("Executing: iptables -A INPUT -j ACCEPT");
-                Runtime.getRuntime().exec("iptables -A INPUT -j ACCEPT");
+                Runtime.getRuntime().exec("sudo iptables -A INPUT -j ACCEPT");
             } else if (DENY_ALL_OPTION.equals(selectedOption)) {
                 // Deny all IPs (Example: Reject all incoming traffic)
                 System.out.println("Executing: iptables -A INPUT -j DROP");
-                Runtime.getRuntime().exec("iptables -A INPUT -j DROP");
+                Runtime.getRuntime().exec("sudo iptables -A INPUT -j DROP");
             } else if (CUSTOM_OPTION.equals(selectedOption)) {
                 String startIp = startIpTextField.getText().trim();
                 String endIp = endIpTextField.getText().trim();
-                // Example: Deny IP range (This example just shows how to add the IP range to iptables)
                 System.out.println("Executing: iptables -A INPUT -s " + startIp + " -d " + endIp + " -j ACCEPT");
-                Runtime.getRuntime().exec("iptables -A INPUT -s " + startIp + " -d " + endIp + " -j ACCEPT");
+                Runtime.getRuntime().exec("sudo iptables -A INPUT -s " + startIp + " -d " + endIp + " -j ACCEPT");
             }
         } catch (IOException e) {
             e.printStackTrace();
